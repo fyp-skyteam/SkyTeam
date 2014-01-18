@@ -1,29 +1,32 @@
 package entity;
-//import javax.persistence.*;
+import javax.persistence.*;
 
-public class Location{
+public class Location implements java.io.Serializable{
 	/**
 	 * 
 	 */
-	//private static final long serialVersionUID = 1L;
-	//@Id private Long id;
-        private long id;
+	private static final long serialVersionUID = 1L;
+	@Id private Long id;
+    //private long id;
 	private double latitude; 
 	private double longitude;
-        private String buildingName;
-        private String buildingType;
-        private double buildingHeight;
-        //private String buildingName;
-        private int yearBuilt;
-        private int capacity;
-        private double premium;
-        private double propertyCoverageLimit;
-        private double lossCoverageLimit;
-        private String currency;
-        private String foundationType;
-        private String remarks;
-        private int datasetNumber;
-        private String csvName;
+    private String buildingName;
+    private String buildingType;
+    private double buildingHeight;
+    private int yearBuilt;
+    private int capacity;
+    private double premium;
+    private double propertyCoverageLimit;
+    private double lossCoverageLimit;
+    private String currency;
+    private String foundationType;
+    private String remarks;
+    private int datasetNumber;
+    private String csvName;
+    
+    public Location(){
+    	
+    }
 	
         public Location(double latitude, double longitude, String buildingName, String buildingType, double buildingHeight,int yearBuilt, int capacity,
                 double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks,

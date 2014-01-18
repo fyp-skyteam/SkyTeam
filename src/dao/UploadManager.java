@@ -1,11 +1,18 @@
 package dao;
 
 import entity.*;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.ZipInputStream;
+
+import entity.*;
+
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.Query;
 
 public class UploadManager {
 
@@ -78,6 +85,8 @@ public class UploadManager {
         public HashMap<String,ArrayList<String>> getLocationErrors(){
             return locationErrors;
         }
+        
+        
         
         public ArrayList<String> getLocationErrorStr(ArrayList<Location> locations,String latitudeStr, String longitudeStr, String buildingName, String buildingType,String buildingHeightStr,
                                String yearBuiltStr,String capacityStr, String premiumStr, String propertyCoverageLimitStr,
