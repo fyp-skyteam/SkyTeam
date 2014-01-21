@@ -1,10 +1,13 @@
 <%
-String errorMsg = request.getParameter("errorMsg");
-
+String errorMsg = request.getParameter("LogInErrorMsg");
+String username = request.getParameter("username");
 // if this page is not forwarded, errorMsg would be null, we set it to an empty
 // String to prevent displaying null
 if (errorMsg == null) {
   errorMsg = "";
+}
+if(username==null){
+	username="";
 }
 %>
 
@@ -47,9 +50,9 @@ if (errorMsg == null) {
       <%if (!errorMsg.equals("")) { %>
       <div class="alert alert-danger"><center><%=errorMsg%></center></div>
       <%}%>
-      <form name="login_form" class="form-signin" method="post" action="authenticate.jsp">
+      <form name="login_form" class="form-signin" method="post" action="login">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" name="username" class="form-control" placeholder="Email address" autofocus>
+        <input type="text" name="username" value="<%=username %>" class="form-control" placeholder="Email address" autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password">
         <br/>
         <label class="checkbox">

@@ -10,6 +10,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         </session-timeout>
     </session-config>
     
+    
+  <servlet>
+        <servlet-name>LogIn</servlet-name>
+        <servlet-class>servlet.LogInServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogIn</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    
     <servlet>
         <servlet-name>UploadFile</servlet-name>
         <servlet-class>servlet.UploadFileServlet</servlet-class>
@@ -17,6 +27,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-mapping>
         <servlet-name>UploadFile</servlet-name>
         <url-pattern>upload</url-pattern>
+    </servlet-mapping> 
+    
+    <servlet>
+        <servlet-name>Bootstrap</servlet-name>
+        <servlet-class>servlet.BootstrapServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Bootstrap</servlet-name>
+        <url-pattern>bootstrap</url-pattern>
     </servlet-mapping> 
     
     <servlet>

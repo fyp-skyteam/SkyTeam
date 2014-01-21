@@ -5,6 +5,7 @@ import com.googlecode.objectify.ObjectifyService;
 public class OfyService {
 	static{
 		ObjectifyService.register(Location.class);
+		ObjectifyService.register(User.class);
 	}
 	
 	public static Objectify getOfy(){

@@ -27,18 +27,18 @@ public class Location implements java.io.Serializable{
     public Location(){
     	
     }
-	
+    	/**	
         public Location(double latitude, double longitude, String buildingName, String buildingType, double buildingHeight,int yearBuilt, int capacity,
                 double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks,
                 int datasetNumber, String csvName){
             this(-1,latitude,longitude,buildingName,buildingType,buildingHeight,yearBuilt,capacity,premium,
                     propertyCoverageLimit, lossCoverageLimit, currency, foundationType, remarks, datasetNumber, csvName);
-        }
+        }*/
 	
-        public Location(long id, double latitude, double longitude, String buildingName, String buildingType, double height, int yearBuilt, int capacity,
+        public Location(double latitude, double longitude, String buildingName, String buildingType, double height, int yearBuilt, int capacity,
                 double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks,
         int datasetNumber, String csvName){
-            this.id=id;
+            //this.id=id;
             this.latitude=latitude;
             this.longitude=longitude;
             this.buildingName=buildingName;

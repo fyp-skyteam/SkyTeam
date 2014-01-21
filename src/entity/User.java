@@ -1,20 +1,29 @@
 package entity;
+import javax.persistence.*;
 
-public class User {
+public class User implements java.io.Serializable{
+  private static final long serialVersionUID = 1;
+	@Id private Long id;
   private String username;  
-  private String name;
-  private String password;
+	private String name;
+	private String password;
   
   
   public User() {
-  } // default constructor
-  // Constructor for easy creation
+  } 
 
+  
+  /**
   public User(String username, String name, String password) {
-    this.username = username;
-    this.name = name;
-    this.password = password;
-  }
+    this(-1,username, name,password);
+  }*/
+  
+  public User(String username, String name, String password) {
+	  	//this.id = id;  
+	  	this.username = username;
+	    this.name = name;
+	    this.password = password;
+ }
 
   public String getUsername(){
       return username;
@@ -33,7 +42,6 @@ public class User {
   }
   
   public void setPassword(String password) {
-    // encryption here possible
     this.password = password;
   } // setPassword
 
