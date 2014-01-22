@@ -35,17 +35,51 @@ public class UploadManager {
 		return output;
 	}
 	
-	public ArrayList<User> convertDataToUsers(ArrayList<String> locationData){
+	public ArrayList<User> convertDataToUsers(ArrayList<String> locationData, String datasetName){
 		ArrayList<User> users = new ArrayList<User>();
         for(int i=0;i<locationData.size();i++){
 			String[] data = locationData.get(i).split(",",-1);
 			String username = data[0].trim();
 			String name = data[1].trim();
-            String password = data[2].trim();
-            User user = new User(username, name, password);
-            users.add(user);
+            String password = data[2].trim();  
+            ArrayList<String> userErrorStr = getUserErrorStr(users,username,name,password);
+            if(userErrorStr.isEmpty()){
+            	User user = new User(username, name, password);
+            	users.add(user);
+            }else{
+            	this.userErrors.put("("+datasetName + ", line " + (i+2)+")", userErrorStr);
+            }     
 		}
             return users;
+	}
+	
+	public ArrayList<String> getUserErrorStr(ArrayList<User> users,String username, String name, String password){
+		ArrayList<String> output = new ArrayList<String>();
+		if(username.isEmpty()||username==null){
+			output.add("username field is empty");
+		}else if(duplicateUsername(users,username)){
+			output.add("duplicate username");
+		}
+		if(name.isEmpty()||name==null){
+			output.add("name field is empty");
+		}
+		if(password.isEmpty()||password==null){
+			output.add("password field is empty");
+		}
+		return output;
+	}
+	
+	public boolean duplicateUsername(ArrayList<User> users, String username){
+		for(User u: users){
+			if(u.getUsername().equals(username)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public HashMap<String,ArrayList<String>> getUserErrors(){
+		return userErrors;
 	}
 	
 	public ArrayList<Location> convertDataToLocations(ArrayList<String> locationData, String datasetName, int datasetNumber, String currency){
@@ -84,7 +118,7 @@ public class UploadManager {
 				this.locationErrors.put("("+datasetName + ", line " + (i+2)+")", locationErrorStr);
 			}
 		}
-                return locations;
+        return locations;
 	}
         
     public HashMap<String,ArrayList<String>> getLocationErrors(){
@@ -95,16 +129,16 @@ public class UploadManager {
                                String yearBuiltStr,String capacityStr, String premiumStr, String propertyCoverageLimitStr,
                                String lossCoverageLimitStr, String foundationType){ 
 		ArrayList<String> locationErrorStr = new ArrayList<String>();
-                if(!invalidDoubleStr(latitudeStr)&&!invalidDoubleStr(longitudeStr)){
-                    if(duplicateLocation(locations, latitudeStr, longitudeStr)){
-                        locationErrorStr.add("duplicate latitude and longitude");
-                    }
-                }
-                if(latitudeStr.isEmpty()){
-			locationErrorStr.add("latitude field is empty");
-                }else if(invalidDoubleStr(latitudeStr)){
-                        locationErrorStr.add("invalid latitude");
-                }        
+        if(!invalidDoubleStr(latitudeStr)&&!invalidDoubleStr(longitudeStr)){
+            if(duplicateLocation(locations, latitudeStr, longitudeStr)){
+                locationErrorStr.add("duplicate latitude and longitude");
+            }
+        }
+        if(latitudeStr.isEmpty()){
+    		locationErrorStr.add("latitude field is empty");
+        }else if(invalidDoubleStr(latitudeStr)){
+            locationErrorStr.add("invalid latitude");
+        }        
 		if(longitudeStr.isEmpty()){
 			locationErrorStr.add("longitude field is empty");
 		}else if(invalidDoubleStr(longitudeStr)){
