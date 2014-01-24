@@ -39,17 +39,27 @@ public class LocationDAO implements java.io.Serializable{
 	    ofy.delete(allLocationKeys); 
 	}
 	
-	public int getNumberOfDataset(){
+	public void removeUserLocations(){
+		Objectify ofy = OfyService.getOfy();
+		Query<Location> q = ofy.query(Location.class);
+		q.filter("csvName !=", "bootstrap location dataset");
+		Iterable<Key<Location>> allLocationKeys = q.fetchKeys();
+		ofy.delete(allLocationKeys);
+	}
+	
+	public ArrayList<String> getDatasetList(){
+		ArrayList<String> duplicateDatasets = new ArrayList<String>();
 		List<Location> locations = retrieveAll();
-		int output = 0;
 		if(locations.size()!=0 || locations!=null){
-			for(Location l:locations){
-				if(l.getDatasetNumber()>output){
-					output = l.getDatasetNumber();
-				}
+			for(Location l: locations){
+				duplicateDatasets.add(l.getCSVName());
 			}
+			Set set = new HashSet(duplicateDatasets);
+			ArrayList uniqueDatasets = new ArrayList(set);
+			return uniqueDatasets;
+		}else{
+			return duplicateDatasets;
 		}
-		return output;
 	}
 	
 	public List<String> retrieveAllBuildingTypes(){

@@ -21,24 +21,15 @@ public class Location implements java.io.Serializable{
     private String currency;
     private String foundationType;
     private String remarks;
-    private int datasetNumber;
     private String csvName;
     
     public Location(){
     	
     }
-    	/**	
-        public Location(double latitude, double longitude, String buildingName, String buildingType, double buildingHeight,int yearBuilt, int capacity,
-                double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks,
-                int datasetNumber, String csvName){
-            this(-1,latitude,longitude,buildingName,buildingType,buildingHeight,yearBuilt,capacity,premium,
-                    propertyCoverageLimit, lossCoverageLimit, currency, foundationType, remarks, datasetNumber, csvName);
-        }*/
+ 
 	
         public Location(double latitude, double longitude, String buildingName, String buildingType, double height, int yearBuilt, int capacity,
-                double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks,
-        int datasetNumber, String csvName){
-            //this.id=id;
+                double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks, String csvName){
             this.latitude=latitude;
             this.longitude=longitude;
             this.buildingName=buildingName;
@@ -52,7 +43,6 @@ public class Location implements java.io.Serializable{
             this.currency=currency;
             this.foundationType=foundationType;
             this.remarks=remarks;
-            this.datasetNumber=datasetNumber;
             this.csvName=csvName;
         }
         
@@ -110,10 +100,6 @@ public class Location implements java.io.Serializable{
         
         public String getRemarks(){
             return remarks;
-        }
-        
-        public int getDatasetNumber(){
-            return datasetNumber;
         }
         
         public String getCSVName(){

@@ -31,79 +31,42 @@ public class UploadFileServlet extends HttpServlet{
                         out.println("form field");
                         
                     } else {
-                        
                         ZipInputStream zis = new ZipInputStream(stream);
                         ZipEntry ze = zis.getNextEntry();
-                       UploadManager uploadManager = new UploadManager();
-                       //uploadManager.removeAll(); 
-                       LocationDAO locationDAO = new LocationDAO();	
-                        locationDAO.removeAll();
-                        
-                       
+                       UploadManager uploadManager = new UploadManager();            
+                       	LocationDAO locationDAO = new LocationDAO();	
+                       locationDAO.removeUserLocations();
                         HashMap<String,ArrayList<String>> locationDatasets = new HashMap<String,ArrayList<String>>();
-                        ArrayList<String> fileErrors = new ArrayList<String>();
+                        boolean invalidFileType = false;
                         while (ze != null){
-                                String datasetName = ze.getName();
-                                out.println(datasetName);
-                                out.println(datasetName.substring(datasetName.length()-3,datasetName.length()));
-                                if(!datasetName.substring(datasetName.length()-3,datasetName.length()).equals("csv")){
-                                    fileErrors.add("("+datasetName+")");
-                                }else{
-                                    ArrayList<String> locationData = new ArrayList<String>();
-                                    locationData.addAll(uploadManager.readCSV(zis));
-                                    out.println(locationData.size());
-                                    locationDatasets.put(datasetName, locationData);
-                                }
-                                ze = zis.getNextEntry();
+                            String datasetName = ze.getName();   
+                            ArrayList<String> locationData = new ArrayList<String>();
+                            locationData.addAll(uploadManager.readCSV(zis));
+                            locationDatasets.put(datasetName, locationData);
+                            ze = zis.getNextEntry();
                                 
                         }
                         zis.close();
-                        
-                    
-                       
-                        out.println("test5");
-                        Iterator iterator = locationDatasets.keySet().iterator();
-                        int datasetNumber = 1;
-                       
+                        Iterator<String> iterator = locationDatasets.keySet().iterator();
                         while(iterator.hasNext()){
                                 String datasetName = (String)iterator.next();
                                 ArrayList<String> dataset = locationDatasets.get(datasetName);
                                 out.println(dataset.size());
                                 for(int i=0;i<dataset.size();i++){
                                     out.println(dataset.get(i));
-                                }
-                                out.println(datasetName + " " + datasetNumber);
-                                out.println("abc");
-                                ArrayList<Location> locations = uploadManager.convertDataToLocations(dataset,datasetName,datasetNumber,currency);
-                                datasetNumber++;
-                                out.println(" def");
-                                out.println(locations.size());
-                                out.println("test");
-                                //for(int i=0;i<locations.size();i++){
-                                  //  locationDAO.create(locations.get(i)); 
-                                   
-                                //}
+                                }        
+                                ArrayList<Location> locations = uploadManager.convertDataToLocations(dataset,datasetName,currency);
                                 locationDAO.addLocations(locations);
-                        }
-                        
-                        out.println("final test");
-                        HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();
-                        out.println(locationErrors.size());
-                        
-                        
-                        if(!locationErrors.isEmpty() || !fileErrors.isEmpty()){
-                            
+                        }           
+                        HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();       
+                        if(!locationErrors.isEmpty()){      
                             out.println("test error");
                             request.setAttribute("locationErrors",locationErrors);
-                            request.setAttribute("fileErrors",fileErrors);
                             RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp");
-                           // dispatcher.forward(request, response);
+                           dispatcher.forward(request, response);
                         }else{
-                           //response.sendRedirect("welcome.jsp");
-                        }
-                       
-                        
-                       
+                           response.sendRedirect("welcome.jsp");
+                        }                    
                     }
                 }
         }catch(Exception e){

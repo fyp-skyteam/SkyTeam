@@ -82,7 +82,7 @@ public class UploadManager {
 		return userErrors;
 	}
 	
-	public ArrayList<Location> convertDataToLocations(ArrayList<String> locationData, String datasetName, int datasetNumber, String currency){
+	public ArrayList<Location> convertDataToLocations(ArrayList<String> locationData, String datasetName, String currency){
 		ArrayList<Location> locations = new ArrayList<Location>();
         for(int i=0;i<locationData.size();i++){
 			String[] data = locationData.get(i).split(",",-1);
@@ -112,7 +112,7 @@ public class UploadManager {
                 double lossCoverageLimit = Double.parseDouble(lossCoverageLimitStr);
                 Location location = new Location (latitude, longitude, buildingName, buildingType,
                 buildingHeight,yearBuilt,capacity,premium,propertyCoverageLimit,
-                lossCoverageLimit, currency, foundationType, remarks,datasetNumber, datasetName);
+                lossCoverageLimit, currency, foundationType, remarks, datasetName);
                 locations.add(location);
 			}else{                      
 				this.locationErrors.put("("+datasetName + ", line " + (i+2)+")", locationErrorStr);

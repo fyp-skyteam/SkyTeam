@@ -63,7 +63,7 @@ public class BootstrapServlet extends HttpServlet{
                         }
                         zis.close();
                         
-                        ArrayList<Location> locations = uploadManager.convertDataToLocations(locationData, "bootstrap location dataset",-1 , "USD");                
+                        ArrayList<Location> locations = uploadManager.convertDataToLocations(locationData, "bootstrap location dataset" , "USD");                
                         locationDAO.addLocations(locations);
                         
                         ArrayList<User> users = uploadManager.convertDataToUsers(userData,"bootstrap user dataset");
@@ -112,6 +112,8 @@ public class BootstrapServlet extends HttpServlet{
                         	}
                         	out.println("The following data is invalid and therefore, was not bootstraped completely: </br>");
                         	out.println(errorMsg);
+                        	
+                        	
                         }else{
                         	out.println("The data was successfully bootstraped completely");
                         }

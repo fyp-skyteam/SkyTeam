@@ -10,48 +10,42 @@
 
 <%
 User user = (User) session.getAttribute("authenticated.user");
-//String errorMsg = request.getParameter("errorMsg");
 String errorMsg="";
 HashMap<String,ArrayList<String>> locationErrors = (HashMap<String,ArrayList<String>>)request.getAttribute("locationErrors");
 ArrayList<String> fileErrors = (ArrayList<String>)request.getAttribute("fileErrors");
-// if this page is not forwarded, errorMsg would be null, we set it to an empty
-// String to prevent displaying null
-//if (errorMsg == null) {
-  //errorMsg = "";
-//}
 if(locationErrors!=null){
-    Iterator iterator1 = locationErrors.keySet().iterator();
+    Iterator<String> iterator1 = locationErrors.keySet().iterator();
     while(iterator1.hasNext()){
-        String errorLine = (String)iterator1.next();
-        //out.println(errorLine);
+        String errorLine = iterator1.next();
         errorMsg += errorLine+": ";
         ArrayList<String> errorStr = locationErrors.get(errorLine);
         for(int i=0;i<errorStr.size();i++){
-             errorMsg += errorStr.get(i)+ ", ";
-             //out.println(errors.get(i));
+            if(i==errorStr.size()){
+            	errorMsg += errorStr.get(i);
+            }else{
+            	errorMsg += errorStr.get(i)+ ", ";
+            }
         }
         errorMsg += "</br>";
 
     }
 }
-
 if(fileErrors!=null){
     for(int i=0;i<fileErrors.size();i++){
         errorMsg += fileErrors.get(i) + ": invalid data file";
         errorMsg +="</br>";
     }
 }
-
-%>
-
-<%
 LocationDAO locationDAO = new LocationDAO();
 List<Location> locations = locationDAO.retrieveAll();
-for(int i=0;i<locations.size();i++){
-    out.println(locations.get(i)+"</br>");
+for(Location l: locations){
+	out.println(l.toString()+"</br>");
+}
+ArrayList<String> datasetList = locationDAO.getDatasetList();
+for(String dataset: datasetList){
+	out.println(dataset);
 }
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -134,7 +128,7 @@ for(int i=0;i<locations.size();i++){
                     var locations = [
                         <%for(int i=0;i<locations.size(); i++) { 
                                 Location l=locations.get(i);%>
-                                          [<%=l.getLatitude()%>,<%=l.getLongitude()%>,<%=l.getDatasetNumber()%>,"<%=l.getBuildingName()%>", <%=l.getPremium()%> + " <%=l.getCurrency()%>",<%=(int)l.getId()%>],
+                                          [<%=l.getLatitude()%>,<%=l.getLongitude()%>,<%=l.getCSVName()%>,"<%=l.getBuildingName()%>", <%=l.getPremium()%> + " <%=l.getCurrency()%>",<%=(int)l.getId()%>],
                         <%}%>
                     ];
                     
@@ -260,10 +254,11 @@ for(int i=0;i<locations.size();i++){
         }
                   </script>
                  </div>
-              <% if (locationDAO.getNumberOfDataset() > 0) { %>
+              <% if (locationDAO.getDatasetList().size() > 0) { %>
                   <div class="row">
-                     <%for (int a = 0; a < locationDAO.getNumberOfDataset(); a++) {%>
-                    <input type="checkbox" id="markerCheckbox" onclick="toggleData(<%=a+1%>)" checked/> Dataset # <%=a+1%>
+                     <% 
+                     for (int i = 0; i < datasetList.size(); i++) {%>
+                    <input type="checkbox" id="markerCheckbox"/> Dataset <%=datasetList.get(i)%>
                     <%}%>
                   </div>
                <%}%>
@@ -282,10 +277,11 @@ for(int i=0;i<locations.size();i++){
                             <select class="selectpicker show-tick" id="datalist" data-style="btn-default" data-width="100%">
                            
                                 <option value="all">All Data</option>
-                                <% if (locationDAO.getNumberOfDataset() > 0) { %>
+                                <% if (locationDAO.getDatasetList().size() > 0) { %>
                            <optgroup label="Data">
-                               <%for (int a = 0; a < locationDAO.getNumberOfDataset(); a++) {%>
-                               <option value="<%=a+1%>">Dataset # <%=a+1%></option>
+                               <%
+                               for (int a = 0; a < datasetList.size(); a++) {%>
+                               <option value="<%=datasetList.get(a)%>">Dataset <%=datasetList.get(a)%></option>
                                <%}%>
                            </optgroup>
                            <%}%>
@@ -293,12 +289,12 @@ for(int i=0;i<locations.size();i++){
                      </div>
                  </div>
                     <hr />-->
-         <% if (locationDAO.getNumberOfDataset() > 0) { %>
+         <% if (locationDAO.getDatasetList().size() > 0) { %>
                  <div class="row"> 
                      <div class="panel panel-primary" style="height:auto">
                           <div class="panel-body" id="details">
                               <%for (int a=0; a < locations.size(); a++) {%> 
-                                <a id="datamarker" href="#" onclick="centerData(<%=locations.get(a).getId()%>);return false;" data-setnumber="<%=locations.get(a).getDatasetNumber()%>"><%=locations.get(a).getBuildingName()%></a>
+                                <a id="datamarker" href="#" onclick="centerData(<%=locations.get(a).getId()%>);return false;" data-setnumber="<%=a+1%>"><%=locations.get(a).getBuildingName()%></a>
                                 <br />
                               <%}%>
                           </div>
