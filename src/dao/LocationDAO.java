@@ -62,7 +62,7 @@ public class LocationDAO implements java.io.Serializable{
 		}
 	}
 	
-	public List<String> retrieveAllBuildingTypes(List<Location> locations){
+	public ArrayList<String> retrieveAllBuildingTypes(List<Location> locations){
 		ArrayList<String> duplicateBuildingTypes = new ArrayList<String>();
 		if(locations.size()!=0 || locations!=null){
 			for(Location l: locations){
@@ -73,21 +73,21 @@ public class LocationDAO implements java.io.Serializable{
 			return uniqueBuildingTypes;
 		}else{
 			return duplicateBuildingTypes;
-		}
-		
+		}	
 	}
 	
-	public double getMinimumHeight(List<Location> locations){
-		double output = 0;
+	public ArrayList<String> retrieveAllFoundationTypes(List<Location> locations){
+		ArrayList<String> duplicateFoundationTypes = new ArrayList<String>();
 		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getBuildingHeight();
 			for(Location l: locations){
-				if(l.getBuildingHeight()<output){
-					output = l.getBuildingHeight();
-				}
+				duplicateFoundationTypes.add(l.getFoundationType());
 			}
-		}
-		return output;
+			Set set = new HashSet(duplicateFoundationTypes);
+			ArrayList uniqueFoundationtypes = new ArrayList(set);
+			return uniqueFoundationtypes;
+		}else{
+			return duplicateFoundationTypes;
+		}	
 	}
 	
 	public double getMaximumHeight(List<Location> locations){
@@ -103,29 +103,275 @@ public class LocationDAO implements java.io.Serializable{
 		return output;
 	}
 	
-	public List<Location> retrieveByConditions(String[] buildingTypes, String buildingName){
-		List<Location> locations = retrieveAll();
+	public double getMinimumHeight(List<Location> locations){
+		double output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getBuildingHeight();
+			for(Location l: locations){
+				if(l.getBuildingHeight()<output){
+					output = l.getBuildingHeight();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public double getMaximumPremium(List<Location> locations){
+		double output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getPremium();
+			for(Location l: locations){
+				if(l.getPremium()>output){
+					output = l.getPremium();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public double getMinimumPremium(List<Location> locations){
+		double output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getPremium();
+			for(Location l: locations){
+				if(l.getPremium()<output){
+					output = l.getPremium();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public double getMaximumPropertyCoverageLimit(List<Location> locations){
+		double output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getPropertyCoverageLimit();
+			for(Location l: locations){
+				if(l.getPropertyCoverageLimit()>output){
+					output = l.getPropertyCoverageLimit();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public double getMinimumPropertyCoverageLimit(List<Location> locations){
+		double output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getPropertyCoverageLimit();
+			for(Location l: locations){
+				if(l.getPropertyCoverageLimit()<output){
+					output = l.getPropertyCoverageLimit();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public double getMaximumLossCoverageLimit(List<Location> locations){
+		double output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getLossCoverageLimit();
+			for(Location l: locations){
+				if(l.getLossCoverageLimit()>output){
+					output = l.getLossCoverageLimit();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public double getMinimumLossCoverageLimit(List<Location> locations){
+		double output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getLossCoverageLimit();
+			for(Location l: locations){
+				if(l.getLossCoverageLimit()<output){
+					output = l.getLossCoverageLimit();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public int getMaximumCapacity(List<Location> locations){
+		int output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getCapacity();
+			for(Location l: locations){
+				if(l.getCapacity()>output){
+					output = l.getCapacity();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public int getMinimumCapacity(List<Location> locations){
+		int output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getCapacity();
+			for(Location l: locations){
+				if(l.getCapacity()<output){
+					output = l.getCapacity();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public int getMaximumYearBuilt(List<Location> locations){
+		int output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getYearBuilt();
+			for(Location l: locations){
+				if(l.getYearBuilt()>output){
+					output = l.getYearBuilt();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public int getMinimumYearBuilt(List<Location> locations){
+		int output = 0;
+		if(locations.size()!=0 || locations!=null){
+			output = locations.get(1).getYearBuilt();
+			for(Location l: locations){
+				if(l.getYearBuilt()<output){
+					output = l.getYearBuilt();
+				}
+			}
+		}
+		return output;
+	}
+	
+	/**
+	public List<Location> retrieveByConditions(String username, String[] buildingTypes, String buildingName){
+		List<Location> locations = retrieveByUsername(username);
+		locations.addAll(retrieveByUsername("admin"));
 		for(String buildingType: buildingTypes){
 			locations = retrieveByBuildingType(buildingType, locations);
 		}
 		locations = retrieveByBuildingName(buildingName, locations);
 		return locations;
-	}
+	}*/
 	
-	public List<Location> retrieveByBuildingType(String buildingType, List<Location> locations){
+	public List<Location> retrieveByBuildingType(String[] buildingTypes, List<Location> locations){
 		List<Location> output = new ArrayList<Location>();
 		for(Location l: locations){
-			if(l.getBuildingType().equals(buildingType)){
-				output.add(l);
-			}
+			for(String str: buildingTypes){
+				if(l.getBuildingType().equals(str)){
+					output.add(l);
+					break;
+				}
+			}	
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByFoundationType(String[] foundationTypes, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			for(String str: foundationTypes){
+				if(l.getFoundationType().equals(str)){
+					output.add(l);
+					break;
+				}
+			}	
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByDataset(String[] datasets, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			for(String str: datasets){
+				if(l.getCSVName().equals(str)){
+					output.add(l);
+					break;
+				}
+			}	
 		}
 		return output;
 	}
 	
 	public List<Location> retrieveByBuildingName(String buildingName, List<Location> locations){
 		List<Location> output = new ArrayList<Location>();
+		buildingName = buildingName.toLowerCase();
 		for(Location l: locations){
-			if(l.getBuildingName().equals(buildingName)){
+			if(l.getBuildingName().toLowerCase().indexOf(buildingName)>=0){
+				output.add(l);
+			}
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByRemark(String remark, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		remark = remark.toLowerCase();
+		for(Location l: locations){
+			if(l.getRemarks().toLowerCase().indexOf(remark)>=0){
+				output.add(l);
+			}
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByHeight(double minHeight, double maxHeight, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			if(l.getBuildingHeight()>=minHeight && l.getBuildingHeight()<=maxHeight){
+				output.add(l);
+			}
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByYearBuilt(int minYearBuilt, int maxYearBuilt, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			if(l.getYearBuilt()>=minYearBuilt && l.getYearBuilt()<=maxYearBuilt){
+				output.add(l);
+			}
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByCapacity(int minCapacity, int maxCapacity, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			if(l.getCapacity()>=minCapacity && l.getCapacity()<=maxCapacity){
+				output.add(l);
+			}
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByPremium(double minPremium, double maxPremium, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			if(l.getPremium()>=minPremium && l.getPremium()<=maxPremium){
+				output.add(l);
+			}
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByPropertyCoverageLimit(double minProCovLimit, double maxProCovLimit, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			if(l.getPropertyCoverageLimit()>=minProCovLimit && l.getPropertyCoverageLimit()<=maxProCovLimit){
+				output.add(l);
+			}
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByLossCoverageLimit(double minLossCovLimit, double maxLossCovLimit, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			if(l.getLossCoverageLimit()>=minLossCovLimit && l.getLossCoverageLimit()<=maxLossCovLimit){
 				output.add(l);
 			}
 		}
