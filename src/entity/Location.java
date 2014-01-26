@@ -22,6 +22,7 @@ public class Location implements java.io.Serializable{
     private String foundationType;
     private String remarks;
     private String csvName;
+    private String username;
     
     public Location(){
     	
@@ -29,7 +30,7 @@ public class Location implements java.io.Serializable{
  
 	
         public Location(double latitude, double longitude, String buildingName, String buildingType, double height, int yearBuilt, int capacity,
-                double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks, String csvName){
+                double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks, String csvName, String username){
             this.latitude=latitude;
             this.longitude=longitude;
             this.buildingName=buildingName;
@@ -44,6 +45,7 @@ public class Location implements java.io.Serializable{
             this.foundationType=foundationType;
             this.remarks=remarks;
             this.csvName=csvName;
+            this.username = username;
         }
         
         public long getId(){
@@ -58,57 +60,61 @@ public class Location implements java.io.Serializable{
             return longitude;
 	}
         
-        public String getBuildingName(){
-            return buildingName;
-        }
-        
-        public String getBuildingType(){
-            return buildingType;
-        }
-        
-        public double getBuildingHeight(){
-            return buildingHeight;
-        }
-        
-        public int getYearBuilt(){
-            return yearBuilt;
-        }
-        
-        public int getCapacity(){
-            return capacity;
-        }
-        
-        public double getPremium(){
-            return premium;
-        }
-        
-        public double getPropertyCoverageLimit(){
-            return propertyCoverageLimit;
-        }
-        
-        public double getLossCoverageLimit(){
-            return lossCoverageLimit;
-        }
-        
-        public String getCurrency(){
-            return currency;
-        }
-        
-        public String getFoundationType(){
-            return foundationType;
-        }
-        
-        public String getRemarks(){
-            return remarks;
-        }
-        
-        public String getCSVName(){
-            return csvName;
-        }
-        
-        public void setId(long id){
-            this.id=id;
-        }
+    public String getBuildingName(){
+        return buildingName;
+    }
+    
+    public String getBuildingType(){
+        return buildingType;
+    }
+    
+    public double getBuildingHeight(){
+        return buildingHeight;
+    }
+    
+    public int getYearBuilt(){
+        return yearBuilt;
+    }
+    
+    public int getCapacity(){
+        return capacity;
+    }
+    
+    public double getPremium(){
+        return premium;
+    }
+    
+    public double getPropertyCoverageLimit(){
+        return propertyCoverageLimit;
+    }
+    
+    public double getLossCoverageLimit(){
+        return lossCoverageLimit;
+    }
+    
+    public String getCurrency(){
+        return currency;
+    }
+    
+    public String getFoundationType(){
+        return foundationType;
+    }
+    
+    public String getRemarks(){
+        return remarks;
+    }
+    
+    public String getCSVName(){
+        return csvName;
+    }
+    
+    public String getUsername(){
+    	return username;
+    }
+    
+    public void setId(long id){
+        this.id=id;
+    }
 	
 	public void setLatitude(double latitude){
 		this.latitude=latitude;
@@ -124,6 +130,6 @@ public class Location implements java.io.Serializable{
         
         @Override
         public String toString(){
-            return "id=" + id + "building name=" + buildingName + ", latitude=" + latitude + ", longitude=" + longitude + ", premium= "+ premium + ", file=" + csvName;
+            return "building name=" + buildingName + ", file=" + csvName + ", username=" + username;
         }
 }

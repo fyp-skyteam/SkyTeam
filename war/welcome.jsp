@@ -10,6 +10,7 @@
 
 <%
 User user = (User) session.getAttribute("authenticated.user");
+String username = user.getUsername();
 String errorMsg="";
 HashMap<String,ArrayList<String>> locationErrors = (HashMap<String,ArrayList<String>>)request.getAttribute("locationErrors");
 ArrayList<String> fileErrors = (ArrayList<String>)request.getAttribute("fileErrors");
@@ -36,15 +37,15 @@ if(fileErrors!=null){
         errorMsg +="</br>";
     }
 }
+out.println("</br></br></br>");
 LocationDAO locationDAO = new LocationDAO();
-List<Location> locations = locationDAO.retrieveAll();
+List<Location> locations = locationDAO.retrieveByUsername(username);
+locations.addAll(locationDAO.retrieveByUsername("admin"));
 for(Location l: locations){
 	out.println(l.toString()+"</br>");
 }
-ArrayList<String> datasetList = locationDAO.getDatasetList();
-for(String dataset: datasetList){
-	out.println(dataset);
-}
+ArrayList<String> userDatasetList = locationDAO.getDatasetListByUsername(username);
+userDatasetList.add("system location dataset");
 %>
 <!DOCTYPE html>
 <html>
@@ -95,11 +96,27 @@ for(String dataset: datasetList){
 
      <!-- Collect the nav links, forms, and other content for toggling -->
      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-         <form class="form-inline navbar-form navbar-left" name="upload-file" action="upload" method="post" enctype="multipart/form-data" role="form">
+         <form class="form-inline navbar-form navbar-left" name="upload-file" action="upload" method="post" enctype="multipart/form-data"  role="form">
            <div class="form-group">
              <input type="file" name="data">
          </div>
-          
+          	<select name="currency">
+          		<option value="SGD" selected>SGD</option>
+          		<option value="AUD">AUD</option>
+          		<option value="CAD">CAD</option>
+          		<option value="CHF">CHF</option>
+          		<option value="CNY">CNY</option>
+          		<option value="EUR">EUR</option>
+          		<option value="GBP">GBP</option>
+          		<option value="HKD">HKD</option>
+          		<option value="INR">INR</option>
+          		<option value="JPY">JPY</option>
+          		<option value="USD">USD</option>
+          	</select>
+          	
+          <input type="checkbox" name="check-data" value="clear-data">Clear all the previously stored data by you
+          	
+         <input type="hidden" name="username" value="<%=username%>" >
          <div class="form-group">
            <button type="submit" value="Upload" class="btn btn btn-primary">Submit</button>
          </div>
@@ -111,7 +128,8 @@ for(String dataset: datasetList){
          <li class="dropdown">
            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <%=user.getName()%><b class="caret"></b></a>
            <ul class="dropdown-menu">
-             <li><a href="logout.jsp">Logout</a></li>
+             <li><a href="logout.jsp">Logout (Remove all the data from server)</a></li>
+          	 <li><a href="logoutandsavedata.jsp">Logout (Keep all the data from server)</a></li>
            </ul>
          </li>
        </ul>
@@ -254,11 +272,11 @@ for(String dataset: datasetList){
         }
                   </script>
                  </div>
-              <% if (locationDAO.getDatasetList().size() > 0) { %>
+              <% if (userDatasetList.size() > 0) { %>
                   <div class="row">
                      <% 
-                     for (int i = 0; i < datasetList.size(); i++) {%>
-                    <input type="checkbox" id="markerCheckbox"/> Dataset <%=datasetList.get(i)%>
+                     for (int i = 0; i < userDatasetList.size(); i++) {%>
+                    <input type="checkbox" id="markerCheckbox"/> Dataset <%=userDatasetList.get(i)%>
                     <%}%>
                   </div>
                <%}%>
@@ -277,11 +295,11 @@ for(String dataset: datasetList){
                             <select class="selectpicker show-tick" id="datalist" data-style="btn-default" data-width="100%">
                            
                                 <option value="all">All Data</option>
-                                <% if (locationDAO.getDatasetList().size() > 0) { %>
+                                <% if (userDatasetList.size() > 0) { %>
                            <optgroup label="Data">
                                <%
-                               for (int a = 0; a < datasetList.size(); a++) {%>
-                               <option value="<%=datasetList.get(a)%>">Dataset <%=datasetList.get(a)%></option>
+                               for (int a = 0; a < userDatasetList.size(); a++) {%>
+                               <option value="<%=userDatasetList.get(a)%>">Dataset <%=userDatasetList.get(a)%></option>
                                <%}%>
                            </optgroup>
                            <%}%>
@@ -289,7 +307,7 @@ for(String dataset: datasetList){
                      </div>
                  </div>
                     <hr />-->
-         <% if (locationDAO.getDatasetList().size() > 0) { %>
+         <% if (userDatasetList.size() > 0) { %>
                  <div class="row"> 
                      <div class="panel panel-primary" style="height:auto">
                           <div class="panel-body" id="details">
@@ -337,9 +355,9 @@ for(String dataset: datasetList){
             <div class="modal-body">
 
 <%
-List<String> buildingTypes = locationDAO.retrieveAllBuildingTypes();
-double minHeight = locationDAO.getMinimumHeight();
-double maxHeight = locationDAO.getMaximumHeight();
+List<String> buildingTypes = locationDAO.retrieveAllBuildingTypes(locations);
+double minHeight = locationDAO.getMinimumHeight(locations);
+double maxHeight = locationDAO.getMaximumHeight(locations);
 %>
     <form name="search_location" method="post" action="search">
     <table>
@@ -362,7 +380,14 @@ double maxHeight = locationDAO.getMaximumHeight();
                 <input name="buildingName" type="text" value="Any">
             </td>
         </tr>
-        
+        <tr>
+            <td>
+                Building Height:
+            </td>
+            <td>
+                <input name="buildingName" type="text" value="Any">
+            </td>
+        </tr>
     </table>  
             <input type="submit" class="btn btn-primary" value="Search"/>
     </form>

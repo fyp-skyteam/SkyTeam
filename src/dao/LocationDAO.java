@@ -39,17 +39,17 @@ public class LocationDAO implements java.io.Serializable{
 	    ofy.delete(allLocationKeys); 
 	}
 	
-	public void removeUserLocations(){
+	public void removeUserLocations(String username){
 		Objectify ofy = OfyService.getOfy();
 		Query<Location> q = ofy.query(Location.class);
-		q.filter("csvName !=", "bootstrap location dataset");
+		q.filter("username ==", username);
 		Iterable<Key<Location>> allLocationKeys = q.fetchKeys();
 		ofy.delete(allLocationKeys);
 	}
-	
-	public ArrayList<String> getDatasetList(){
+
+	public ArrayList<String> getDatasetListByUsername(String username){
 		ArrayList<String> duplicateDatasets = new ArrayList<String>();
-		List<Location> locations = retrieveAll();
+		List<Location> locations = retrieveByUsername(username);
 		if(locations.size()!=0 || locations!=null){
 			for(Location l: locations){
 				duplicateDatasets.add(l.getCSVName());
@@ -62,9 +62,8 @@ public class LocationDAO implements java.io.Serializable{
 		}
 	}
 	
-	public List<String> retrieveAllBuildingTypes(){
+	public List<String> retrieveAllBuildingTypes(List<Location> locations){
 		ArrayList<String> duplicateBuildingTypes = new ArrayList<String>();
-		List<Location> locations = retrieveAll();
 		if(locations.size()!=0 || locations!=null){
 			for(Location l: locations){
 				duplicateBuildingTypes.add(l.getBuildingType());
@@ -78,8 +77,7 @@ public class LocationDAO implements java.io.Serializable{
 		
 	}
 	
-	public double getMinimumHeight(){
-		List<Location> locations = retrieveAll();
+	public double getMinimumHeight(List<Location> locations){
 		double output = 0;
 		if(locations.size()!=0 || locations!=null){
 			output = locations.get(1).getBuildingHeight();
@@ -92,8 +90,7 @@ public class LocationDAO implements java.io.Serializable{
 		return output;
 	}
 	
-	public double getMaximumHeight(){
-		List<Location> locations = retrieveAll();
+	public double getMaximumHeight(List<Location> locations){
 		double output = 0;
 		if(locations.size()!=0 || locations!=null){
 			output = locations.get(1).getBuildingHeight();
@@ -131,6 +128,17 @@ public class LocationDAO implements java.io.Serializable{
 			if(l.getBuildingName().equals(buildingName)){
 				output.add(l);
 			}
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByUsername(String username){
+		List<Location> output = new ArrayList<Location>();
+		Objectify ofy = OfyService.getOfy();
+		Query<Location> q = ofy.query(Location.class);
+		q.filter("username ==", username);
+		for(Location location: q){
+			output.add(location);
 		}
 		return output;
 	}
