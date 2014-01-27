@@ -46,6 +46,24 @@ for(Location l: locations){
 }
 ArrayList<String> userDatasetList = locationDAO.getDatasetListByUsername(username);
 userDatasetList.add("system location dataset");
+for(String str: userDatasetList){
+	out.println(str);
+}
+HashMap<String,Integer> datasetMap = new HashMap<String,Integer>();
+for(int i=0;i<userDatasetList.size();i++){
+	if(!datasetMap.containsKey(userDatasetList.get(i))){
+		datasetMap.put(userDatasetList.get(i).toString(),i+1);
+	}
+}
+
+
+Iterator<String> iter = datasetMap.keySet().iterator();
+out.println(datasetMap.keySet().size());
+while(iter.hasNext()){
+	String str = iter.next();
+	out.println(str);
+	out.println(datasetMap.get(str));
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -145,18 +163,20 @@ userDatasetList.add("system location dataset");
                     // Setup markers based on CSV
                     var locations = [
                         <%for(int i=0;i<locations.size(); i++) { 
-                                Location l=locations.get(i);%>
-                                          [<%=l.getLatitude()%>,<%=l.getLongitude()%>,<%=l.getCSVName()%>,"<%=l.getBuildingName()%>", <%=l.getPremium()%> + " <%=l.getCurrency()%>",<%=(int)l.getId()%>],
+                           Location l=locations.get(i);%>
+                           [<%=l.getLatitude()%>,<%=l.getLongitude()%>,"<%=l.getBuildingName()%>",<%=l.getPremium()%> + "<%=l.getCurrency()%>",<%=(int)datasetMap.get(l.getCSVName())%>],
                         <%}%>
                     ];
                     
                     var details = [
-                        <%for(int i=0;i<locations.size(); i++) { 
-                                Location l=locations.get(i);%>
-                                ["<%=l.getBuildingName()%>","<%=l.getBuildingType()%>",<%=l.getBuildingHeight()%>,<%=l.getYearBuilt()%>,<%=l.getCapacity()%>,
-                                <%=l.getPropertyCoverageLimit()%>,<%=l.getLossCoverageLimit()%>,"<%=l.getFoundationType()%>","<%=l.getRemarks()%>",<%=l.getPremium()%> + " <%=l.getCurrency()%>"],
-                        <%}%>
+                       <%for(int i=0;i<locations.size(); i++) { 
+                               Location l=locations.get(i);%>
+                               ["<%=l.getBuildingName()%>","<%=l.getBuildingType()%>",<%=l.getBuildingHeight()%>,<%=l.getYearBuilt()%>,<%=l.getCapacity()%>,
+                               <%=l.getPropertyCoverageLimit()%>,<%=l.getLossCoverageLimit()%>,"<%=l.getFoundationType()%>",
+                               "<%=l.getRemarks()%>",<%=l.getPremium()%> + "<%=l.getCurrency()%>"],
+                       <%}%>
                     ];
+            
 
                     // Setup the different icons and shadows
                     var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
@@ -194,17 +214,16 @@ userDatasetList.add("system location dataset");
                       marker = new google.maps.Marker({
                         position: new google.maps.LatLng(locations[i][0], locations[i][1]),
                         map: map,
-                        id: locations[i][2],
-                        icon : icons[locations[i][2]-1],
-                        dbID: locations[i][5]
+                        name: locations[i][2],
+                        icon: icons[locations[i][3]-1]
                       });
 
                       markers.push(marker);
-                      
+                  
                       //Hover Function for info window
                       google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
                         return function() {
-                          infowindow.setContent('<h4>' + locations[i][3] + '<br />(' + locations[i][4] + ')</h4>' + '<b>Latitude:</b> ' + locations[i][0] + '<br /> ' +' <b>Longitude:</b> ' + locations[i][1]);
+                          infowindow.setContent('<h4>' + locations[i][2] + '<br />(' + locations[i][3] + ')</h4>' + '<b>Latitude:</b> ' + locations[i][0] + '<br /> ' +' <b>Longitude:</b> ' + locations[i][1]);
                           infowindow.open(map, marker);
                         };
                       })(marker, i));
