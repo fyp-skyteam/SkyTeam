@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Tutorial: Mapping data from a database</title>
+    <style type="text/css">
+        html { height: 100% }
+        body { height: 100%; margin: 0px; padding: 0px }
+        #map_canvas { height: 100% }
+        /* bootstrap fix */
+        #map_canvas img {
+            max-width: none;
+        }
+    </style> 
+ 
+<!-- Google Maps and Places and Drawing API -->
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places,drawing&sensor=false"></script>
+ 
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+ 
+<!-- bootstrap -->
+<link rel="stylesheet" type="text/css" href="http://www.yohman.com/students/yoh/bootstrap/css/bootstrap.min.css" />
+<script src="http://www.yohman.com/students/yoh/bootstrap/js/bootstrap.min.js"></script>
+ 
+<!-- ArcGIS -->
+<script type="text/javascript" src="http://www.yohman.com/scripts/arcgislink.js"></script>
+ 
+<script type="text/javascript">
+//declare namespace
+var up206b = {};
+ 
+//declare map
+var map;
+ 
+//set the drawing manager
+var drawingManager;
+ 
+function trace(message)
+{
+    if (typeof console != 'undefined')
+    {
+        console.log(message);
+    }
+}
+ 
+//Function that gets run when the document loads
+
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+//function to toggle edit mode
+up206b.toggleEditMode = function()
+{
+    if (drawingManager.getMap() == null)
+    {
+        $('#edit-button').html('I am done drawing');
+        drawingManager.setMap(map);
+    }
+    else
+    {
+        $('#edit-button').html('Let me draw on this map');
+        drawingManager.setMap(null);
+    }
+    $('#edit-button').toggleClass('btn-danger');
+ 
+}
+
+//function to query server and add public layer
+
+
+up206b.initialize = function()
+{
+    var latlng = new google.maps.LatLng(34.1072563966312, 241.61155700683597);
+    var myOptions = {
+        zoom:11,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: true //disable the map type control
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+ 
+    //add the drawing tool that allows users to draw points on the map
+    drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.MARKER,
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [google.maps.drawing.OverlayType.MARKER]
+        },
+        markerOptions: {
+            icon: new google.maps.MarkerImage('http://www.yohman.com/students/yoh/week10/images/question.png'),
+            draggable: true
+        }
+    });
+ 
+    //add the tools to the map
+    // drawingManager.setMap(map);
+ 
+    //event listener that does the following after user draws point on the map
+    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (point)
+    {
+        //"clone" the save-form to put in the infowindow
+        var form =    $(".save-form").clone().show();
+        var infowindow_content = form[0];
+        var infowindow = new google.maps.InfoWindow({
+            content: infowindow_content
+        });
+ 
+        //make each marker clickable
+        google.maps.event.addListener(point.overlay, 'click', function() {
+            infowindow.open(map,point.overlay);
+        });
+ 
+        //open infowindow by default
+        infowindow.open(map,point.overlay);
+ 
+        //when user clicks on the "submit" button
+        form.submit({point: point}, function (event) {
+            //prevent the default form behavior (which would refresh the page)
+            event.preventDefault();
+ 
+            //form validation
+            if( !$("input[name=name]", this).val() ) {
+              alert('You forgot to enter a name!');
+              return false;
+         }
+            if( !$("textarea[name=description]", this).val() ) {
+              alert('You forgot to enter a description!');
+              return false;
+         }
+ 
+            //put all form elements in a "data" object
+            var data = {
+                name: $("input[name=name]", this).val(),
+                description: $("textarea[name=description]", this).val(),
+                category: $("input[name=category]:checked",this).val(),
+                lat: event.data.point.overlay.getPosition().lat(),
+                lon: event.data.point.overlay.getPosition().lng()
+            };
+ 
+            //send the results to the PHP script that adds the point to the database
+            $.post("adddata.php", data, up206b.saveStopResponse, "json");
+ 
+            //Erase the form and replace with new message
+            infowindow.setContent('done');
+ 
+            //Change the icon based on what user said it was
+            if($("input[name=category]:checked",this).val() == "asset")
+            {
+                point.overlay.setIcon('http://www.yohman.com/students/yoh/week10/images/happy.png')
+            }
+            else
+            {
+                point.overlay.setIcon('http://www.yohman.com/students/yoh/week10/images/devil.png')
+            }
+            return false;
+        });
+    });
+}
+ 
+//function called after data has been submitted to server
+up206b.saveStopResponse = function (data) {
+    if (typeof data.error != "undefined")
+    {
+        alert(data.error);
+    }
+    else
+    {
+        alert(data.message);
+    }
+}
+ 
+//function to toggle edit mode
+up206b.toggleEditMode = function()
+{
+    if (drawingManager.getMap() == null)
+    {
+        $('#edit-button').html('I am done drawing');
+        drawingManager.setMap(map);
+    }
+    else
+    {
+        $('#edit-button').html('Let me draw on this map');
+        drawingManager.setMap(null);
+    }
+    $('#edit-button').toggleClass('btn-danger');
+ 
+}
+ 
+</script>
+</head>
+<body onload="up206b.initialize()">
+    <!-- side panel div container -->
+    
+ 	 <!-- Button to go into edit mode -->
+        <p>
+            <button id="edit-button" class="btn " onclick="up206b.toggleEditMode()">Let me draw on this map</button>
+        </p>
+    <div style="position:absolute; width:380px; height: 100%; overflow:auto; float:left; padding-left:10px; padding-right:10px;"> 
+ 
+        <div class="hero-unit">
+            <h1>UP206B</h1>
+            <p>Mapping data from a database</p>
+        </div>
+ 
+        <!--
+            This is the form that will show up in the infowindow for
+            each marker created.  The display is set to "none" by default
+        -->
+        <form class="form-horizontal save-form" style="display: none">
+            <h1>Add me!</h1>
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="name">Name</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" name="name">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">What is this?</label>
+                    <div class="controls">
+                        <label class="radio">
+                            <input type="radio" name="category" id="optionsRadios1" value="asset" checked="">
+                            <img src="http://www.yohman.com/students/yoh/week10/images/happy.png">
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="category" id="optionsRadios2" value="deficit">
+                            <img src="http://www.yohman.com/students/yoh/week10/images/devil.png">
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="description">Description</label>
+                    <div class="controls">
+                        <textarea class="input-xlarge" name="description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save me</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- map div container -->
+    <div id="map_canvas" style="height:100%; margin-left:400px;"></div>
+</body>
+</html>

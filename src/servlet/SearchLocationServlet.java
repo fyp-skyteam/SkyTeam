@@ -34,6 +34,8 @@ public class SearchLocationServlet extends HttpServlet{
 		String[] foundationTypes = request.getParameterValues("foundationType");
 		String[] datasets = request.getParameterValues("datasets");
 		String remark = request.getParameter("remark");		
+		
+		/**
 		out.println(buildingName);
 		for(String str: buildingTypes){
 			out.println(str);
@@ -58,6 +60,8 @@ public class SearchLocationServlet extends HttpServlet{
 		}
 		out.println(remark);
 		out.println("</br></br>");
+		*/
+		
 		double minHeight = Double.parseDouble(strMinHeight);
 		double maxHeight = Double.parseDouble(strMaxHeight);
 		int minYearBuilt = Integer.parseInt(strMinYearBuilt);
@@ -70,6 +74,8 @@ public class SearchLocationServlet extends HttpServlet{
 		double maxProCovLimit = Double.parseDouble(strMaxProCovLimit);
 		double minLossCovLimit = Double.parseDouble(strMinLossCovLimit);
 		double maxLossCovLimit = Double.parseDouble(strMaxLossCovLimit);
+		
+		/**
 		boolean anyBuildingType = false;
 		for(String str: buildingTypes){
 			if(str.equalsIgnoreCase("any")){
@@ -77,10 +83,8 @@ public class SearchLocationServlet extends HttpServlet{
 				break;
 			}
 		}
-		boolean anyBuildingName = false;
-		if(buildingName.equalsIgnoreCase("any")){
-			anyBuildingName = true;
-		}
+		//out.println(anyBuildingType);
+		
 		boolean anyFoundationType = false;
 		for(String str: foundationTypes){
 			if(str.equalsIgnoreCase("any")){
@@ -88,6 +92,15 @@ public class SearchLocationServlet extends HttpServlet{
 				break;
 			}
 		}
+		//out.println(anyFoundationType);
+		
+		
+		boolean anyBuildingName = false;
+		if(buildingName.equalsIgnoreCase("any")){
+			anyBuildingName = true;
+		}
+		//out.println(anyBuildingName);
+		
 		boolean anyDataset = false;
 		for(String str: datasets){
 			if(str.equalsIgnoreCase("any")){
@@ -95,38 +108,49 @@ public class SearchLocationServlet extends HttpServlet{
 				break;
 			}
 		}
+		//out.println(anyDataset);
+
 		boolean anyRemark = false;
 		if(remark.equalsIgnoreCase("any")){
-			anyBuildingName = true;
+			anyRemark = true;
 		}
+		//out.println(anyRemark);*/
+		
 		List<Location> locations = locationDAO.retrieveByUsername(username);
 		locations.addAll(locationDAO.retrieveByUsername("admin"));
-		if(!anyBuildingName){
+		//if(!anyBuildingName){
 			locations = locationDAO.retrieveByBuildingName(buildingName,locations);
-		}
-		if(!anyBuildingType){
+		//}
+		//if(!anyBuildingType){
 			locations = locationDAO.retrieveByBuildingType(buildingTypes,locations);
-		}		
+		//}		
 		locations = locationDAO.retrieveByHeight(minHeight, maxHeight,locations);
 		locations = locationDAO.retrieveByYearBuilt(minYearBuilt, maxYearBuilt,locations);
 		locations = locationDAO.retrieveByCapacity(minCapacity, maxCapacity,locations);
 		locations = locationDAO.retrieveByPremium(minPremium, maxPremium,locations);
 		locations = locationDAO.retrieveByPropertyCoverageLimit(minProCovLimit, maxProCovLimit,locations);
 		locations = locationDAO.retrieveByLossCoverageLimit(minLossCovLimit, maxLossCovLimit,locations);
-		if(!anyFoundationType){
+		//if(!anyFoundationType){
 			locations = locationDAO.retrieveByFoundationType(foundationTypes,locations);
-		}
-		if(!anyDataset){
+		//}
+		//if(!anyDataset){
 			locations = locationDAO.retrieveByDataset(datasets,locations);
-		}
-		if(!anyRemark){
+		//}
+		//if(!anyRemark){
 			locations = locationDAO.retrieveByRemark(remark,locations);
-		}		
+		//}
+		
+		/**
 		out.println(locations.size());
 		for(int i=0;i<locations.size();i++){
 			out.println(locations.get(i).toString()+"</br>");
 		}
-		out.println("</br></br></br>");
+		out.println("</br></br></br>");*/
+
+		session.setAttribute("locationSearchResult",locations);
+		response.sendRedirect("searchresultmenu.jsp");
+		
+		
 		
 	}
 	

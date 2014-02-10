@@ -84,6 +84,9 @@ while(iter.hasNext()){
  <!-- Initialize GeoXML3 -->
   <script src="assets/geoxml3/geoxml3.js"></script>
   
+   <!-- Initialize noUISlider -->
+  <script src="assets/js/jquery.nouislider.js"></script>
+  
   <!-- JQuery & Bootstrap-Select -->
   <script type="text/javascript" src="assets/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="assets/bootstrap-select/bootstrap-select.js"></script>
@@ -806,7 +809,7 @@ while(iter.hasNext()){
         <div class="navbar-collapse collapse">
           <form class="form-inline navbar-form navbar-left">
             <a class="btn btn btn-primary" data-toggle="modal" data-target="#UploadModal">Upload File</a>
-            <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Search</a>
+            <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Filter</a>
           </form>
           
           <ul class="nav navbar-nav navbar-right">
@@ -999,7 +1002,7 @@ while(iter.hasNext()){
     <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id=SearchModalLabel">Search</h4>
+              <h4 class="modal-title" id=SearchModalLabel">Filter Markers</h4>
             </div>
             <div class="modal-body">
 
@@ -1021,25 +1024,27 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
 
 %>
     <form name="search_location" method="post" action="search">
+	
     <table>
+    <tr>
+    </tr>
         <tr>
             <td>
                 Building Type:
             </td>
             <td>
                <%for (int i=0;i<buildingTypes.size();i++){%>
-                <input name="buildingType" type="checkbox" value="<%=buildingTypes.get(i)%>"/>
+                <input name="buildingType" type="checkbox" value="<%=buildingTypes.get(i)%>" checked/>
                 <%=buildingTypes.get(i)%>
             <%}%>
-            <input name="buildingType" type="checkbox" value="any" checked/>Any
             </td>
         </tr>
         <tr>
             <td>
-                Building Name:
+                Building Name (containing):
             </td>
             <td>
-                <input name="buildingName" type="text" value="Any">
+                <input name="buildingName" type="text" placeholder="e.g. Shenton House">
             </td>
         </tr>
         <tr>
@@ -1059,9 +1064,13 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
             <td>
               Max:
                 <select name="maxHeight">
-                <%  for(double i=roundMinHeight;i<=roundMaxHeight; i+=10){ %>
-                  <option value="<%=i%>"><%=i %></option>
-                <%} %>
+                <%  for(double i=roundMinHeight;i<=roundMaxHeight; i+=10){ %>             
+					<%if(i==roundMaxHeight){%>
+						 <option value="<%=i%>" selected><%=i %></option>
+					<%}else{%>
+						<option value="<%=i%>"><%=i %></option>
+					<%} 
+				} %>
                 </select>  
             
             </td>
@@ -1084,8 +1093,12 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
               To:
                 <select name="maxYearBuilt">
                 <%   for(int i=roundMinYearBuilt;i<=roundMaxYearBuilt; i+=10){ %>
-                  <option value="<%=i%>"><%=i %></option>
-                <%} %>
+                  <%if(i==roundMaxYearBuilt){%>
+						 <option value="<%=i%>" selected><%=i %></option>
+					<%}else{%>
+						<option value="<%=i%>"><%=i %></option>
+					<%} 
+                } %>
                 </select>  
             </td>
         </tr>
@@ -1107,8 +1120,12 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
               To:
                 <select name="maxCapacity">
                 <%   for(int i=roundMinCapacity;i<=roundMaxCapacity; i+=10){ %>
-                  <option value="<%=i%>"><%=i %></option>
-                <%} %>
+                  <%if(i==roundMaxCapacity){%>
+						 <option value="<%=i%>" selected><%=i %></option>
+					<%}else{%>
+						<option value="<%=i%>"><%=i %></option>
+					<%} 
+                } %>
                 </select>  
             </td>
         </tr>
@@ -1130,8 +1147,12 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
               Max:
                 <select name="maxPremium">
                 <%  for(double i=roundMinPremium;i<=roundMaxPremium; i+=100){ %>
-                  <option value="<%=i%>"><%=i %></option>
-                <%} %>
+                  <%if(i==roundMaxPremium){%>
+						 <option value="<%=i%>" selected><%=i %></option>
+					<%}else{%>
+						<option value="<%=i%>"><%=i %></option>
+					<%} 
+                } %>
                 </select>  
             
             </td>
@@ -1154,8 +1175,12 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
               Max:
                 <select name="maxPropertyCoverageLimit">
                 <%  for(double i=roundMinPropertyCoverageLimit;i<=roundMaxPropertyCoverageLimit; i+=100){ %>
-                  <option value="<%=i%>"><%=i %></option>
-                <%} %>
+                  <%if(i==roundMaxPropertyCoverageLimit){%>
+						 <option value="<%=i%>" selected><%=i %></option>
+					<%}else{%>
+						<option value="<%=i%>"><%=i %></option>
+					<%} 
+                } %>
                 </select>  
             
             </td>
@@ -1178,8 +1203,12 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
               Max:
                 <select name="maxLossCoverageLimit">
                 <%  for(double i=roundMinLossCoverageLimit;i<=roundMaxLossCoverageLimit; i+=100){ %>
-                  <option value="<%=i%>"><%=i %></option>
-                <%} %>
+                  <%if(i==roundMaxLossCoverageLimit){%>
+						 <option value="<%=i%>" selected><%=i %></option>
+					<%}else{%>
+						<option value="<%=i%>"><%=i %></option>
+					<%} 
+                } %>
                 </select>  
             </td>
         </tr>
@@ -1189,10 +1218,10 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
             </td>
             <td>
                <%for (int i=0;i<foundationTypes.size();i++){%>
-                <input name="foundationType" type="checkbox" value="<%=foundationTypes.get(i)%>"/>
+                <input name="foundationType" type="checkbox" value="<%=foundationTypes.get(i)%>" checked/>
                 <%=foundationTypes.get(i)%>
             <%}%>
-            <input name="foundationType" type="checkbox" value="any" checked/>Any
+
             </td>
         </tr>
         <tr>
@@ -1201,23 +1230,23 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
             </td>
             <td>
                <%for (int i=0;i<userDatasetList.size();i++){%>
-                <input name="datasets" type="checkbox" value="<%=userDatasetList.get(i)%>"/>
+                <input name="datasets" type="checkbox" value="<%=userDatasetList.get(i)%>" checked/>
                 <%=userDatasetList.get(i)%>
             <%}%>
-            <input name="datasets" type="checkbox" value="any" checked/>Any
+
             </td>
         </tr>
          <tr>
             <td>
-                Remark:
+                Remark (containing):
             </td>
             <td>
-                <input name="remark" type="text" value="Any">
+                <input name="remark" type="text" placeholder="e.g. pad foundation type">
             </td>
         </tr>
     </table>  
         <input type="hidden" name="username" value="<%=username%>"/>
-            <input type="submit" class="btn btn-primary" value="Search"/>
+        <input type="submit" class="btn btn-primary" value="Filter"/>
     </form>
         </div>
       </div><!-- /.modal-content -->
