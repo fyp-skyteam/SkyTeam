@@ -260,9 +260,30 @@ while(iter.hasNext()){
     
     <!-- css for poi-->
   <style>
+  
   table {
     font-size: 12px;
   }
+        #pac-input {
+        background-color: #fff;
+        padding: 0 11px 0 13px;
+        width: 400px;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+        margin-left: -1px;
+        padding-left: 14px;  /* Regular padding-left + 1. */
+        width: 401px;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+  }  
   #map_canvas {
     height: 100%;
     border: 1px solid grey;
@@ -280,6 +301,7 @@ while(iter.hasNext()){
     width: 346px;
     padding-top: 2px;
     margin-bottom: 4px;
+    margin-top: 16px;
   }
   #keywordField {
     width: 220px;
@@ -363,7 +385,63 @@ while(iter.hasNext()){
     }
     map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
     places = new google.maps.places.PlacesService(map);
+    
+
     google.maps.event.addListener(map, 'tilesloaded', tilesLoaded);
+   
+    // Create the search box and link it to the UI element.
+    var input = /** @type {HTMLInputElement} */(
+        document.getElementById('pac-input'));
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+    var searchBox = new google.maps.places.SearchBox(
+      /** @type {HTMLInputElement} */(input));
+ // [START region_getplaces]
+    // Listen for the event fired when the user selects an item from the
+    // pick list. Retrieve the matching places for that item.
+    google.maps.event.addListener(searchBox, 'places_changed', function() {
+      var places = searchBox.getPlaces();
+
+      for (var i = 0, marker; marker = markers[i]; i++) {
+        marker.setMap(null);
+      }
+
+      // For each place, get the icon, place name, and location.
+      markers = [];
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0, place; place = places[i]; i++) {
+        var image = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        };
+
+        // Create a marker for each place.
+        var marker = new google.maps.Marker({
+          map: map,
+          icon: image,
+          title: place.name,
+          position: place.geometry.location
+        });
+
+        markers.push(marker);
+
+        bounds.extend(place.geometry.location);
+      }
+
+      map.fitBounds(bounds);
+    });
+    // [END region_getplaces]
+
+    // Bias the SearchBox results towards places that are within the bounds of the
+    // current map's viewport.
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+      var bounds = map.getBounds();
+      searchBox.setBounds(bounds);
+    });
+    
     
     document.getElementById('keyword').onkeyup = function(e) {
       if (!e) var e = window.event;
@@ -506,7 +584,11 @@ while(iter.hasNext()){
                    "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] +
                    "<br />" + "<b>Foundation Type:</b> " + array[7] + "<br />" + "<b>Remarks:</b> " + array[8]);
        }
+               
+   
   }
+  
+
   
   function tilesLoaded() {
     search();
@@ -906,6 +988,8 @@ while(iter.hasNext()){
   <div id="keywordField">
     <input id="keyword" type="text" value="">
   </div>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+  
     <div id="map_canvas" style="background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
     </div>
 
