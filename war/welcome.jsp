@@ -40,8 +40,16 @@ if(fileErrors!=null){
 }
 //out.println("</br></br></br>");
 LocationDAO locationDAO = new LocationDAO();
-List<Location> locations = locationDAO.retrieveByUsername(username);
-locations.addAll(locationDAO.retrieveByUsername("admin"));
+List<Location> locations = new ArrayList<Location>();
+List<Location> searchResults = (List<Location>)session.getAttribute("locationSearchResult");
+if(searchResults==null || searchResults.isEmpty()){
+   //ADD ERROR THAT SAYS NO RESULTS FOUND
+	locations.addAll(locationDAO.retrieveByUsername(username));
+	locations.addAll(locationDAO.retrieveByUsername("admin"));
+} else {
+  locations = searchResults;
+}
+
 /*for(Location l: locations){
 	out.println(l.toString()+"</br>");
 }*/
@@ -71,45 +79,32 @@ while(iter.hasNext()){
 <html>
 <head>
 	
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>GeoIntel</title>
-	<!doctype html>
-	<meta charset="utf-8">
+  <title>GeoIntel</title>
 	<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/themes/base/jquery.ui.all.css">
-
- <!-- Initialize GeoXML3 -->
-  <script src="assets/geoxml3/geoxml3.js"></script>
   
    <!-- Initialize noUISlider -->
   <script src="assets/js/jquery.nouislider.js"></script>
   
   <!-- JQuery & Bootstrap-Select -->
-  <script type="text/javascript" src="assets/jquery/jquery.min.js"></script>
-  <script type="text/javascript" src="assets/bootstrap-select/bootstrap-select.js"></script>
-  <link rel="stylesheet" type="text/css" href="assets/bootstrap-select/bootstrap-select.css">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
   <!-- Bootstrap Core -->
-  <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
-  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
   
 	<!-- Extended Bootstrap -->
   <script type="text/javascript" src="assets/bootstrap-file/bootstrap-filestyle.min.js"> </script>
 
-  <!-- Initialize Select Dropdown List -->
-  <script type="text/javascript">
-      $(window).on('load', function () {
-          $(":file").filestyle(
-            {classButton: "btn btn-primary"}
-          );
-          $('.selectpicker').selectpicker();
-      });
-      
-  </script>
+  <!-- Bootstrap Select -->
+  <link href="assets/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+  <script src="assets/bootstrap-select/bootstrap-select.min.js" type="text/javascript"></script>
   
+  <!--  Initialize Bootstrap Select -->
+  <script>
+
+</script>
+	
   <!-- Initialize Custom jQuery Functionalities -->
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/jquery-1.10.2.js"></script>
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.core.js"></script>
@@ -118,7 +113,7 @@ while(iter.hasNext()){
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.draggable.js"></script>
 	<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
 	
-	<!-- Initialize custom draggable elements for widgets -->
+	<!-- Initialize custom drag-able elements for widgets -->
 	<style>
 		.draggable { 
 			padding: 0.5em; cursor: move;
@@ -142,9 +137,13 @@ while(iter.hasNext()){
 		}
 	</style>
 	<script>
-	$(function() {
-		$( "#draggable" ).draggable();
-	});
+	$(document).ready(function() {
+	    $('.selectpicker').selectpicker({
+	      style: 'btn-info',
+	      size: 4
+	    });
+	    $( "#draggable" ).draggable();
+	  });
 	</script>
 	
 	<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/themes/base/jquery.ui.all.css">
@@ -177,7 +176,7 @@ while(iter.hasNext()){
   <style>
   #widget1 { width: 240px; height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
   #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
-  #widget2 { width: 500px; height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+  #widget2 { width: 240px; height: 600px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
   #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
   </style>
   <script>
@@ -844,17 +843,16 @@ while(iter.hasNext()){
           <form class="form-inline navbar-form navbar-left">
             <a class="btn btn btn-primary" data-toggle="modal" data-target="#UploadModal">Upload File</a>
             <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Filter</a>
+             
           </form>
-          
+          <form name="view_data" method="post" action="view">
+              <button type="submit" value="All Data" class="btn btn btn-danger">Show all data</button>
+              <button type="submit" value="Data 1" class="btn btn btn-success">Show data 1</button>
+              <button type="submit" value="Data 2" class="btn btn btn-warning">Show data 2</button>
+              </form>
+         
           <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-             <a href="#" class="dropdown-toggle" data-toggle="dropdown">All Data<b class="caret"></b></a>
-             <ul class="dropdown-menu">
-               <li>All Data</li>
-               <li>Dataset # 1</li>
-               <li>Dataset # 2</li>
-             </ul>
-            </li>
+            
             <li class="dropdown">
 	           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <%=user.getName()%><b class="caret"></b></a>
 	           <ul class="dropdown-menu">

@@ -148,7 +148,7 @@ public class SearchLocationServlet extends HttpServlet{
 		out.println("</br></br></br>");*/
 
 		session.setAttribute("locationSearchResult",locations);
-		response.sendRedirect("searchresultmenu.jsp");
+		response.sendRedirect("welcome.jsp");
 		
 		
 		
