@@ -95,12 +95,6 @@ while(iter.hasNext()){
   
 	<!-- Extended Bootstrap -->
   <script type="text/javascript" src="assets/bootstrap-file/bootstrap-filestyle.min.js"> </script>
-
-  
-  <!--  Initialize Bootstrap Select -->
-  <script>
-
-</script>
 	
   <!-- Initialize Custom jQuery Functionalities -->
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/jquery-1.10.2.js"></script>
@@ -1343,21 +1337,32 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
           
            <!-- Initialize Bootstrap Checkbox -->
           <link href="assets/bootstrap-select/bootstrap-checkbox.css" rel="stylesheet" />
-		  <script src="assets/bootstrap-select/bootstrap-checkbox.js" type="text/javascript"></script>  	
-			    
-			    <input type="checkbox" class="checkbox" checked="checked" value="clear-data">Clear all the previously stored data by you</input>
-			   	<script>
-			    $('input[type="checkbox"]').checkbox({
+		  <script src="assets/bootstrap-select/bootstrap-checkbox.js" type="text/javascript"></script>
+		  		
+		  		<style>
+				$('input[type="checkbox"].style1').checkbox({
+			    	buttonStyleChecked: 'btn-success',
+			        checkedClass: 'icon-check',
+			        uncheckedClass: 'icon-check-empty'
+			    });
+		  		</style>
+		  		
+			    <script> 
+			    $('input[type="checkbox"].style1').checkbox({
+			    	buttonStyleChecked: 'btn-success',
 			        checkedClass: 'icon-check',
 			        uncheckedClass: 'icon-check-empty'
 			    });
 			    </script>
-			   
-			    <input type="hidden" name="username" value="<%=username%>" >
+			    
+			    <br/><input type="checkbox" class="style1"/> Clear all the previously stored data by you
+			    
+			   <input type="hidden" name="username" value="<%=username%>" >
+			    
 			    
 			    
 			    <div class="form-group">
-            <button type="submit" value="Upload" class="btn btn btn-primary">Submit</button>
+            <p align="right"><button type="submit" value="Upload" class="btn btn btn-primary">Submit</button></p>
           </div>
         </form>
       </div>
