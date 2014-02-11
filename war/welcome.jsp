@@ -96,9 +96,6 @@ while(iter.hasNext()){
 	<!-- Extended Bootstrap -->
   <script type="text/javascript" src="assets/bootstrap-file/bootstrap-filestyle.min.js"> </script>
 
-  <!-- Bootstrap Select -->
-  <link href="assets/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
-  <script src="assets/bootstrap-select/bootstrap-select.min.js" type="text/javascript"></script>
   
   <!--  Initialize Bootstrap Select -->
   <script>
@@ -111,6 +108,8 @@ while(iter.hasNext()){
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.widget.js"></script>
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.mouse.js"></script>
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.draggable.js"></script>
+	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.resizable.js"></script>
+	
 	<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
 	
 	<!-- Initialize custom drag-able elements for widgets -->
@@ -170,6 +169,8 @@ while(iter.hasNext()){
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.widget.js"></script>
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.mouse.js"></script>
 	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.draggable.js"></script>
+	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.resizable.js"></script>
+	
 	<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
 
   
@@ -194,6 +195,8 @@ while(iter.hasNext()){
 	
 	    });
 	    
+	    $( ".resizable" ).resizable();
+
 		        // set effect from select menu value
 	    $( "#button1" ).click(function() {
 	      // get effect type from
@@ -319,8 +322,6 @@ while(iter.hasNext()){
     border: 1px solid grey;
   }
   #listing {
-    width: 200px;
-    height: 200px;
     overflow: auto;
     cursor: pointer;
     overflow-x: hidden;
@@ -332,6 +333,7 @@ while(iter.hasNext()){
     padding-top: 2px;
     margin-bottom: 4px;
     margin-top: 16px;
+    text-align: center;
   }
   #keywordField {
     width: 220px;
@@ -354,7 +356,6 @@ while(iter.hasNext()){
   }
   #resultsTable {
     border-collapse: collapse;
-    width: 240px;
   }
   #rating {
     font-size: 13px;
@@ -933,7 +934,7 @@ while(iter.hasNext()){
 <!--widget box 1: POI-->
 <div id="dragZone">
 <div class="toggler draggable">
-  <div id="widget1" class="ui-corner-all">
+  <div id="widget1" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
 
     <h3>POI</h3>
@@ -1026,7 +1027,7 @@ while(iter.hasNext()){
 <!--end of widget box 1: POI-->
 
 <div class="toggler draggable">
-  <div id="widget2" class="ui-corner-all">
+  <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
 
     <h3>POI</h3>
@@ -1321,7 +1322,12 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
           <div class="form-group">
             <input type="file" name="data">
           </div>
-          <select name="currency">
+          
+         <!-- Initialize Bootstrap Select -->
+			  <link href="assets/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
+			  <script src="assets/bootstrap-select/bootstrap-select.js" type="text/javascript"></script>
+  
+          <select class="selectpicker" data-style="btn-info">
 			      <option value="SGD" selected>SGD</option>
 			      <option value="AUD">AUD</option>
 			      <option value="CAD">CAD</option>
@@ -1334,8 +1340,22 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
 			      <option value="JPY">JPY</option>
 			      <option value="USD">USD</option>
           </select>
-			    <input type="checkbox" name="check-data" value="clear-data">Clear all the previously stored data by you
+          
+           <!-- Initialize Bootstrap Checkbox -->
+          <link href="assets/bootstrap-select/bootstrap-checkbox.css" rel="stylesheet" />
+		  <script src="assets/bootstrap-select/bootstrap-checkbox.js" type="text/javascript"></script>  	
+			    
+			    <input type="checkbox" class="checkbox" checked="checked" value="clear-data">Clear all the previously stored data by you</input>
+			   	<script>
+			    $('input[type="checkbox"]').checkbox({
+			        checkedClass: 'icon-check',
+			        uncheckedClass: 'icon-check-empty'
+			    });
+			    </script>
+			   
 			    <input type="hidden" name="username" value="<%=username%>" >
+			    
+			    
 			    <div class="form-group">
             <button type="submit" value="Upload" class="btn btn btn-primary">Submit</button>
           </div>
