@@ -846,9 +846,11 @@ while(iter.hasNext()){
              
           </form>
           <form name="view_data" method="post" action="view">
-              <button type="submit" value="All Data" class="btn btn btn-danger">Show all data</button>
-              <button type="submit" value="Data 1" class="btn btn btn-success">Show data 1</button>
-              <button type="submit" value="Data 2" class="btn btn btn-warning">Show data 2</button>
+          <input type="hidden" name="username" value="<%=username%>">
+          <%for(String dataset: userDatasetList){%>
+        	  <button type="submit" name="<%=dataset%>" value="<%=dataset%>" class="btn btn btn-success"><%=dataset %></button>
+         <% }%>
+         <button type="submit" name="show all" value="all" class="btn btn btn-success">Show All</button>
               </form>
          
           <ul class="nav navbar-nav navbar-right">
@@ -1102,7 +1104,7 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
             </td>
         </tr>
         <tr>
-            <td>
+      		 <td>
                 Building Height:
             </td>
             <td>
@@ -1120,15 +1122,14 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
                 <select name="maxHeight">
                 <%  for(double i=roundMinHeight;i<=roundMaxHeight; i+=10){ %>             
 					<%if(i==roundMaxHeight){%>
-						 <option value="<%=i%>" selected><%=i %></option>
+					<option value="<%=i%>" selected><%=i %></option>
 					<%}else{%>
-						<option value="<%=i%>"><%=i %></option>
-					<%} 
-				} %>
+					<option value="<%=i%>"><%=i %></option>
+					<%} 			
+					} %>
                 </select>  
-            
             </td>
-        </tr>
+            </tr>
         <tr>
           <td>
                 Year Built:

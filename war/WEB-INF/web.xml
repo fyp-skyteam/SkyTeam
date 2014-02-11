@@ -45,6 +45,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-mapping>
         <servlet-name>Search</servlet-name>
         <url-pattern>search</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>View</servlet-name>
+        <servlet-class>servlet.ViewLocationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>View</servlet-name>
+        <url-pattern>view</url-pattern>
     </servlet-mapping> 
     
     <servlet>
