@@ -481,19 +481,24 @@ while(iter.hasNext()){
          
 
                  // Setup the different icons and shadows
-                 var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
+                 
 
                  var icons = [
-                   iconURLPrefix + 'blue-dot.png',
-                   iconURLPrefix + 'green-dot.png',
-                   iconURLPrefix + 'orange-dot.png',
-                   iconURLPrefix + 'purple-dot.png',
-                   iconURLPrefix + 'pink-dot.png',      
-                   iconURLPrefix + 'yellow-dot.png'
+                   'assets/markers/blu-blank.png',
+                   'assets/markers/grn-blank.png',
+                   'assets/markers/ltblu-blank.png',
+                   'assets/markers/pink-blank.png',
+                   'assets/markers/red-blank.png',
+                   'assets/markers/wht-blank.png',
+                   'assets/markers/ylw-blank.png'
                  ];
                  var icons_length = icons.length;
                  
                  var infowindow = new google.maps.InfoWindow({
+                     maxWidth: 160
+                   });
+                 
+                 var infowindow2 = new google.maps.InfoWindow({
                      maxWidth: 160
                    });
 
@@ -502,13 +507,13 @@ while(iter.hasNext()){
 
                    // Add the markers and infowindows to the map
                    for (var i = 0; i < locations.length; i++) {
+                	   var number = locations[i][4]
                      marker = new google.maps.Marker({
                        position: new google.maps.LatLng(locations[i][0], locations[i][1]),
                        map: map,
                        name: locations[i][2],
-                       icon: icons[locations[i][3]-1],
-                       id: locations[i][4],
-                       dbID: locations[i][5]
+                       icon: icons[number - 1],
+                       id: locations[i][4]
                      });
 
                      markers.push(marker);
@@ -517,21 +522,22 @@ while(iter.hasNext()){
                      google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
                        return function() {
                          infowindow.setContent('<h4>' + locations[i][2] + '<br />(' + locations[i][3] + ')</h4>' + '<b>Latitude:</b> ' + locations[i][0] + '<br /> ' +' <b>Longitude:</b> ' + locations[i][1]);
+                         if (!infowindow2.getMap()) {
                          infowindow.open(map, marker);
+                         }
+                         google.maps.event.addListenerOnce(map, 'mousemove', function(){
+                             infowindow.close();
+                         });
                        };
                      })(marker, i));
                      
-                     //Hover out Function for info window
-                     google.maps.event.addListener(marker, 'mouseout', (function() {
-                       return function() {
-                         infowindow.close();
-                       };
-                     })(marker, i));
+
                      
                      google.maps.event.addListener(marker, 'click', (function(marker, i) {
                        return function() {
+                    	   infowindow.close();
                          displayData(details[i]);
-                         infowindow.open(map, marker);
+                         infowindow2.open(map, marker);
                          map.setCenter(marker.position);
                          map.setZoom(15);
                          clearMarkers();
@@ -581,7 +587,7 @@ while(iter.hasNext()){
                    
                    //function to display all available information of the point
                    function displayData(array) {
-                      infowindow.setContent(
+                      infowindow2.setContent(
                    "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Height:</b> " + array[2] + "<br />" + 
                    "<b>Year Built:</b> " + array[3] + "<br />" + "<b>Capacity:</b> " + array[4] +
                    "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] +
@@ -631,9 +637,9 @@ while(iter.hasNext()){
       search.location = map.getCenter();
       centerMarker = new google.maps.Marker({
         position: search.location,
-        animation: google.maps.Animation.DROP,
         map: map
       });
+      centerMarker.setVisible(false);
     } else {
       search.bounds = map.getBounds();
     }
