@@ -120,7 +120,7 @@ while(iter.hasNext()){
 	
 	<!-- Initialize custom draggable elements for widgets -->
 	<style>
-		#draggable { 
+		.draggable { 
 			padding: 0.5em; cursor: move;
 		    display: block;
 		    float: right;  
@@ -175,68 +175,96 @@ while(iter.hasNext()){
 
   
   <style>
-  #effect { width: 240px; height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
-  #effect h3 { margin: 0; text-align: center; margin-bottom: 5px; }
+  #widget1 { width: 240px; height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+  #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
+  #widget2 { width: 500px; height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+  #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
   </style>
   <script>
   
   
+	$(function() {
+		var a = 3;
+	    $('.draggable').draggable({
+			start: function(event, ui) { $(this).css("z-index", a++); }
+	   });
+	    $('#dragZone div').click(function() {
+	        $(this).addClass('top').removeClass('bottom');
+	        $(this).siblings().removeClass('top').addClass('bottom');
+	        $(this).css("z-index", a++);
+	
+	    });
+	    
+		        // set effect from select menu value
+	    $( "#button1" ).click(function() {
+	      // get effect type from
+	      var selectedEffect = $( "#effectTypes" ).val();
+	 
+	      // most effect types need no options passed by default
+	      var options = {};
+	      // some effects have required parameters
+	 
+	      // run the effect
+	      $( "#widget1" ).show( 'clip', options, 500 );
+	      return false;
+	    });
+	    
+	    $( "#button2" ).click(function() {
+	      // get effect type from
+	      var selectedEffect = $( "#effectTypes" ).val();
+	 
+	      // most effect types need no options passed by default
+	      var options = {};
+	      // some effects have required parameters
+	 
+	      // run the effect
+	      $( "#widget2" ).show( 'clip', options, 500 );
+	      return false;
+	    });
+	    
+
+	    $( "#close1" ).click(function() {
+			// get effect type from
+			var selectedEffect = $( "#effectTypes" ).val();
+	
+			// most effect types need no options passed by default
+			var options = {};
+			// some effects have required parameters
+			if ( selectedEffect === "scale" ) {
+				options = { percent: 0 };
+			} else if ( selectedEffect === "size" ) {
+				options = { to: { width: 200, height: 60 } };
+			}
+	
+			// run the effect
+			$( "#widget1" ).hide( 'scale', options, 500 );
+	    });
+	    
+	    $( "#close2" ).click(function() {
+			// get effect type from
+			var selectedEffect = $( "#effectTypes" ).val();
+	
+			// most effect types need no options passed by default
+			var options = {};
+			// some effects have required parameters
+			if ( selectedEffect === "scale" ) {
+				options = { percent: 0 };
+			} else if ( selectedEffect === "size" ) {
+				options = { to: { width: 200, height: 60 } };
+			}
+	
+			// run the effect
+			$( "#widget2" ).hide( 'scale', options, 500 );
+	    });
+
+	    
+	    $( "#widget1" ).hide();
+	    $( "#widget2" ).hide();
+	    $( "#widget3" ).hide();
+	
+	
+	});      
   
-  $(function() {
-	 $( "#draggable" ).draggable();
-  
-    // run the currently selected effect
-    function runEffect() {
-      // get effect type from
-      var selectedEffect = $( "#effectTypes" ).val();
- 
-      // most effect types need no options passed by default
-      var options = {};
-      // some effects have required parameters
- 
-      // run the effect
-      $( "#effect" ).show( 'clip', options, 500 );
-      
-    };
-    
-    function hideEffect() {
-		// get effect type from
-		var selectedEffect = $( "#effectTypes" ).val();
-
-		// most effect types need no options passed by default
-		var options = {};
-		// some effects have required parameters
-		if ( selectedEffect === "scale" ) {
-			options = { percent: 0 };
-		} else if ( selectedEffect === "size" ) {
-			options = { to: { width: 200, height: 60 } };
-		}
-
-		// run the effect
-		$( "#effect" ).hide( 'scale', options, 500 );
-	};
-
- 
-    // set effect from select menu value
-    $( "#button" ).click(function() {
-      runEffect();
-      return false;
-    });
-    
-    $( "#closeButton" ).click(function() {
-      hideEffect();
-      //clear poi markers
-      clearResults();
-      clearMarkers();
-      //Set option type to default
-      document.getElementById('type').value="Select a type";
-      return false;
-    });
-    
- 
-    
-    $( "#effect" ).hide();
-  });
   </script>
 
 	
@@ -789,8 +817,8 @@ while(iter.hasNext()){
   
   <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4">
 			<h3>Widget Menu</h3>
-			<a href="#" style="text-decoration:none;" id="button">Points of Interest</a>
-			<a href="#" style="text-decoration:none;">Data and Information</a>
+			<a href="#" style="text-decoration:none;" id="button1">Points of Interest</a>
+			<a href="#" style="text-decoration:none;" id="button2">Data and Information</a>
 			<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:50px;">
 			<section>
 				<!-- Class "cbp-spmenu-open" gets applied to menu -->
@@ -903,10 +931,10 @@ while(iter.hasNext()){
 		</script>
 		
 <!--widget box 1: POI-->
-    
-<div class="toggler" id="draggable">
-  <div id="effect" class="ui-corner-all">
-  <a style="color: #00b3ff; text-decoration:none;" href="#" id="closeButton" class="closeBtn">x</a>
+<div id="dragZone">
+<div class="toggler draggable">
+  <div id="widget1" class="ui-corner-all">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
 
     <h3>POI</h3>
     <div id="controls">
@@ -997,6 +1025,20 @@ while(iter.hasNext()){
 </div>
 <!--end of widget box 1: POI-->
 
+<div class="toggler draggable">
+  <div id="widget2" class="ui-corner-all">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
+
+    <h3>POI</h3>
+	<p>EDRIC IS HANDSOME</p>
+	<p>EDRIC IS HANDSOME</p>
+	<p>EDRIC IS HANDSOME</p>
+	<p>EDRIC IS HANDSOME</p>
+
+  </div>
+</div>
+<!--end of widget box 1: POI-->
+</div>
 
 
   <div id="_GPL_e6a00_parent_div" style="position: absolute; top: 0px; left: 0px; width: 1px; height: 1px; z-index: 2147483647;"><object type="application/x-shockwave-flash" id="_GPL_e6a00_swf" data="http://savingsslider-a.akamaihd.net/items/e6a00/storage.swf?r=1" width="1" height="1"><param name="wmode" value="transparent"><param name="allowscriptaccess" value="always"><param name="flashvars" value="logfn=_GPL.items.e6a00.log&amp;onload=_GPL.items.e6a00.onload&amp;onerror=_GPL.items.e6a00.onerror&amp;LSOName=gpl"></object></div>
