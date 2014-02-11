@@ -820,6 +820,14 @@ while(iter.hasNext()){
           
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">All Data<b class="caret"></b></a>
+             <ul class="dropdown-menu">
+               <li>All Data</li>
+               <li>Dataset # 1</li>
+               <li>Dataset # 2</li>
+             </ul>
+            </li>
+            <li class="dropdown">
 	           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <%=user.getName()%><b class="caret"></b></a>
 	           <ul class="dropdown-menu">
 	             <li><a href="logout.jsp">Logout (Remove all the data from server)</a></li>
@@ -1253,6 +1261,7 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
     </table>  
         <input type="hidden" name="username" value="<%=username%>"/>
         <input type="submit" class="btn btn-primary" value="Filter"/>
+        <button type="reset" class="btn btn-default" value="Reset">Reset</button>
     </form>
         </div>
       </div><!-- /.modal-content -->
