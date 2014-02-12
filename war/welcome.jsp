@@ -59,7 +59,10 @@ else {
 /*for(Location l: locations){
 	out.println(l.toString()+"</br>");
 }*/
-ArrayList<String> userDatasetList = locationDAO.getDatasetListByUsername(username);
+ArrayList<String> userDatasetList = new ArrayList<String>();
+if (locationDAO.retrieveByUsername(username) != null ) {
+userDatasetList = locationDAO.getDatasetListByUsername(username);
+}
 userDatasetList.add("system location dataset");
 /*for(String str: userDatasetList){
 	out.println(str);
@@ -518,12 +521,12 @@ while(iter.hasNext()){
 
                  var icons = [
                    'assets/markers/blu-blank.png',
-                   'assets/markers/grn-blank.png',
-                   'assets/markers/ltblu-blank.png',
                    'assets/markers/pink-blank.png',
+                   'assets/markers/yel-blank.png',
+                   'assets/markers/grn-blank.png',
                    'assets/markers/red-blank.png',
                    'assets/markers/wht-blank.png',
-                   'assets/markers/ylw-blank.png'
+                   'assets/markers/purp-blank.png'
                  ];
                  var icons_length = icons.length;
                  
@@ -1339,7 +1342,7 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
 			  <link href="assets/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
 			  <script src="assets/bootstrap-select/bootstrap-select.js" type="text/javascript"></script>
   
-          <select class="selectpicker" data-style="btn-info">
+          <select class="selectpicker" name="currency" data-style="btn-info">
 			      <option value="SGD" selected>SGD</option>
 			      <option value="AUD">AUD</option>
 			      <option value="CAD">CAD</option>
@@ -1373,7 +1376,7 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
 			    });
 			    </script>
 			    
-			    <br/><input type="checkbox" class="style1"/> Clear all the previously stored data by you
+			    <br/><input type="checkbox" name="clear data" class="style1"/> Clear all the previously stored data by you
 			    
 			   <input type="hidden" name="username" value="<%=username%>" >
 			    
