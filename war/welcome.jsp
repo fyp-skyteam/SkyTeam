@@ -171,7 +171,7 @@ while(iter.hasNext()){
   <style>
   #widget1 { width: 240px; height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
   #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
-  #widget2 { width: 240px; height: 600px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+  #widget2 { min-width: 300px; min-height: 100px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
   #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
   </style>
   <script>
@@ -822,9 +822,10 @@ while(iter.hasNext()){
 	</div>
 		</nav>
 
-
+	
     <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;">
+    
+        <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -835,41 +836,37 @@ while(iter.hasNext()){
           <a class="navbar-brand" href="#">GeoIntel</a>
         </div>
         <div class="navbar-collapse collapse">
-          <form class="form-inline navbar-form navbar-left">
-            <a class="btn btn btn-primary" data-toggle="modal" data-target="#UploadModal">Upload File</a>
-            <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Filter</a>
-             
-          </form>
-          <form name="view_data" method="post" action="view">
+          <ul class="nav navbar-nav">
+  		<form name="view_data" method="post" action="view">
           <input type="hidden" name="username" value="<%=username%>">
           <%for(String dataset: userDatasetList){%>
         	  <button type="submit" name="<%=dataset%>" value="<%=dataset%>" class="btn btn btn-success"><%=dataset %></button>
          <% }%>
          <button type="submit" name="show all" value="all" class="btn btn btn-success">Show All</button>
-              </form>
-         
+         </form>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
-            
-            <li class="dropdown">
-	           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <%=user.getName()%><b class="caret"></b></a>
+          
+          <li class="dropdown">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <%=user.getName()%><b class="caret"></b></a>
 	           <ul class="dropdown-menu">
 	             <li><a href="logout.jsp">Logout (Remove all the data from server)</a></li>
 	             <li><a href="logoutandsavedata.jsp">Logout (Keep all the data from server)</a></li>
 	           </ul>
-            </li>
-          </ul>
-       </div><!--/.navbar-collapse -->         
+           </li>
+          
+        </div><!--/.nav-collapse -->
       </div>
     </div>
     
+    <div class="container">
 	<div class="main" style="bottom:0; position:absolute; z-index:3;">
 			<section>
 				<!-- Class "cbp-spmenu-open" gets applied to menu -->
 				<button id="showBottom">Widgets</button>
 			</section>
-		</div>
 	</div>
-	
+	</div>
 	
 	
 		<!-- Classie - class helper functions by @desandro https://github.com/desandro/classie -->
@@ -1024,11 +1021,13 @@ while(iter.hasNext()){
   <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
 
-    <h3>POI</h3>
-	<p>EDRIC IS HANDSOME</p>
-	<p>EDRIC IS HANDSOME</p>
-	<p>EDRIC IS HANDSOME</p>
-	<p>EDRIC IS HANDSOME</p>
+    <h3>Data & Information</h3>
+    <br/>
+	<form class="form-inline" style="text-align:center">
+        <a class="btn btn btn-primary" data-toggle="modal" data-target="#UploadModal">Upload File</a>
+        <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Filter</a>
+             
+    </form>
 
   </div>
 </div>
