@@ -178,9 +178,9 @@ while(iter.hasNext()){
 
   
   <style>
-  #widget1 { min-width: 240px; min-height: 100px; max-height: 500px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+  #widget1 { min-width: 240px; height: 500px; min-height: 200px; max-height: 500px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
   #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
-  #widget2 { min-width: 300px; min-height: 100px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+  #widget2 { min-width: 300px; height: 500px; min-height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
   #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
   </style>
   <script>
@@ -818,7 +818,7 @@ while(iter.hasNext()){
 
   </head>
 
-  <body class="cbp-spmenu-push">
+  <body class="cbp-spmenu-push" style="overflow: hidden">
   
   <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4">
 			<h3>Menu</h3>
@@ -845,12 +845,9 @@ while(iter.hasNext()){
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">GeoIntel</a>
+          <a class="navbar-brand" href="#" onClick="window.location.reload()">GeoIntel</a>
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-          <li><input id="pac-input" class="controls" type="text" placeholder="Search Box"></li>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
           
           <li class="dropdown">
@@ -866,9 +863,11 @@ while(iter.hasNext()){
     </div>
     
     <div class="container">
+    <input id="pac-input" class="controls" type="text" placeholder="Search for location">
 	<div class="main" style="bottom:0; position:absolute; z-index:3;">
 			<section>
 				<!-- Class "cbp-spmenu-open" gets applied to menu -->
+				
 				<button id="showBottom" style="font-size: 15px">Menu</button>
 			</section>
 	</div>
