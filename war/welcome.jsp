@@ -295,22 +295,23 @@ while(iter.hasNext()){
     
     <!-- css for poi-->
   <style>
-        #pac-input {
-        background-color: #fff;
-        padding: 0 11px 0 13px;
-        width: 400px;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        text-overflow: ellipsis;
-      }
+      #pac-input {
+    background-color: #fff;
+    margin-top: 15px;
+    padding: 0 15px 0 15px;
+    width: 600px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    text-overflow: ellipsis;
+    }
 
-      #pac-input:focus {
-        border-color: #4d90fe;
-        margin-left: -1px;
-        padding-left: 14px;  /* Regular padding-left + 1. */
-        width: 401px;
-      }
+    #pac-input:focus {
+      border-color: #4d90fe;
+      margin-left: -1px;
+      padding-left: 14px;  /* Regular padding-left + 1. */
+      width: 601px;
+    }
 
       .pac-container {
         font-family: Roboto;
@@ -819,9 +820,10 @@ while(iter.hasNext()){
   <body class="cbp-spmenu-push">
   
   <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4">
-			<h3>Widget Menu</h3>
+			<h3>Menu</h3>
 			<a href="#" style="text-decoration:none;" id="button1">Points of Interest</a>
 			<a href="#" style="text-decoration:none;" id="button2">Data and Information</a>
+			<a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
 			<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:50px;">
 			<section>
 				<!-- Class "cbp-spmenu-open" gets applied to menu -->
@@ -846,12 +848,12 @@ while(iter.hasNext()){
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-  		            <a class="btn btn btn-primary" data-toggle="modal" data-target="#UploadModal">Upload File</a>
+          <li><input id="pac-input" class="controls" type="text" placeholder="Search Box"></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
           
           <li class="dropdown">
-               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <%=user.getName()%><b class="caret"></b></a>
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <%=user.getName()%><b class="caret"></b>&nbsp;&nbsp;&nbsp;</a>
 	           <ul class="dropdown-menu">
 	             <li><a href="logout.jsp">Logout (Remove all the data from server)</a></li>
 	             <li><a href="logoutandsavedata.jsp">Logout (Keep all the data from server)</a></li>
@@ -866,7 +868,7 @@ while(iter.hasNext()){
 	<div class="main" style="bottom:0; position:absolute; z-index:3;">
 			<section>
 				<!-- Class "cbp-spmenu-open" gets applied to menu -->
-				<button id="showBottom">Widgets</button>
+				<button id="showBottom" style="font-size: 15px">Menu</button>
 			</section>
 	</div>
 	</div>
@@ -875,9 +877,6 @@ while(iter.hasNext()){
 		<!-- Classie - class helper functions by @desandro https://github.com/desandro/classie -->
 		<script src="assets/js/classie.js"></script>
 		<script>
-		
-		
-		
 			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
 				menuRight = document.getElementById( 'cbp-spmenu-s2' ),
 				menuTop = document.getElementById( 'cbp-spmenu-s3' ),
@@ -1018,6 +1017,8 @@ while(iter.hasNext()){
 </div>
 <!--end of widget box 1: POI-->
 
+
+<!-- widget box 2: data and information -->
 <div class="toggler draggable">
   <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
@@ -1025,34 +1026,31 @@ while(iter.hasNext()){
     <h3>Data & Information</h3>
     <br/>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-7">
 	      <form name="view_data" method="post" action="view">
-	      <!-- HUNG MAKE THIS WORK FOR THE DROPDOWN LIST -->
 	      <%String chosenData = (String) session.getAttribute("currentView");
 	      if (chosenData == null) { chosenData = "all"; }
 	      %>
+
 	       <select name="dataset" class="selectpicker show-tick" data-width="auto" onchange="this.form.submit()" >
+	         <%if (chosenData.equals("filter")){%>
+	         <option selected>Custom</option>
+	         <%}%>
 	         <option value="all"<%if (chosenData.equals("all")) {%>selected<%}%>>Show All</option>
 	         <%for(String dataset: userDatasetList){%>
             <option value="<%=dataset%>"<%if(chosenData.equals(dataset)){%>selected<%}%>><%=dataset%></option>
            <%}%>
 	       </select>
-	       <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Custom...</a>
-	       
-	       </div>
-	  </div>
-	       <!-- END OF FIX -->
-          <input type="hidden" name="username" value="<%=username%>">
-          <br />
-          <br />
-          <%for(String dataset: userDatasetList){%>
-            <button type="submit" name="<%=dataset%>" value="<%=dataset%>" class="btn btn btn-success"><%=dataset %></button>
-         <% }%>
-         <button type="submit" name="show all" value="all" class="btn btn btn-success">Show All</button>
-         </form>
+	       <input type="hidden" name="username" value="<%=username%>">
+	       </form>
+	      </div>
+	      <div class="col-sm-5">
+	       <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Custom View</a>   
+	     </div>
+	  </div>   
   </div>
 </div>
-<!--end of widget box 1: POI-->
+<!-- end of widget box 2 -->
 </div>
 
 
@@ -1062,7 +1060,7 @@ while(iter.hasNext()){
   <div id="keywordField">
     <input id="keyword" type="text" value="">
   </div>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    
   
     <div id="map_canvas" style="background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
     </div>
