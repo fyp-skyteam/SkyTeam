@@ -116,7 +116,8 @@ while(iter.hasNext()){
 		    position: absolute;
 		}
 		.resizable{
-			overflow:auto;
+			overflow:hidden;
+			
 		}
 		.closeBtn{
 			cursor: pointer;
@@ -318,7 +319,8 @@ while(iter.hasNext()){
 	}
 	#listing {
 	  width: 100%;
-	  overflow: auto;
+	  overflow-y: scroll;
+	  max-height: 400px;	  
 	  cursor: pointer;
 	  overflow-x: hidden;
 	  border: 1px solid lightgrey;
