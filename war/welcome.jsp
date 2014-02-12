@@ -115,7 +115,9 @@ while(iter.hasNext()){
 		    z-index: 3;
 		    position: absolute;
 		}
-		
+		.resizable{
+			overflow:auto;
+		}
 		.closeBtn{
 			cursor: pointer;
 		    display: block;
@@ -169,7 +171,7 @@ while(iter.hasNext()){
 
   
   <style>
-  #widget1 { width: 240px; height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+  #widget1 { min-width: 240px; min-height: 100px; max-height: 500px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
   #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
   #widget2 { min-width: 300px; min-height: 100px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
   #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
@@ -287,10 +289,6 @@ while(iter.hasNext()){
     
     <!-- css for poi-->
   <style>
-  
-  table {
-    font-size: 12px;
-  }
         #pac-input {
         background-color: #fff;
         padding: 0 11px 0 13px;
@@ -311,73 +309,77 @@ while(iter.hasNext()){
       .pac-container {
         font-family: Roboto;
   }  
-  #map_canvas {
-    height: 100%;
-    border: 1px solid grey;
-  }
-  #listing {
-    overflow: auto;
-    cursor: pointer;
-    overflow-x: hidden;
-    border: 1px solid lightgrey;
-  }
-  #controls {
-    left: 300px;
-    width: 346px;
-    padding-top: 2px;
-    margin-bottom: 4px;
-    margin-top: 16px;
-    text-align: center;
-  }
-  #keywordField {
-    width: 220px;
-    height: 25px;
-    top: 0;
-    left: 78px;
-    position: absolute;
-  }
-  #keyword {
-    width: 100%;
-  }
-  .placeIcon {
-    width: 32px;
-    height: 37px;
-    margin: 4px;
-  }
-  .hotelIcon {
-    width: 24px;
-    height: 24px;
-  }
-  #resultsTable {
-    border-collapse: collapse;
-  }
-  #rating {
-    font-size: 13px;
-    font-family: Arial Unicode MS;
-  }
-  #keywordsLabel {
-    text-align: right;
-    width: 70px;
-    font-size: 14px;
-    padding: 4px;
-    position: absolute;
-  }
-  .iw_table_row {
-    height: 18px;
-  }
-  .iw_attribute_name {
-    font-weight: bold;
-    text-align: right;
-  }
-  #iconCredit {
-    position: absolute;
-    top: 472px;
-    left: 0;
-    font-size: 11px;
-    text-align: right;
-    width: 640px;
-    font-style: italic;
-  }
+	table {
+	  font-size: 12px;
+	}
+	#map_canvas {
+	  height: 100%;
+	  border: 1px solid grey;
+	}
+	#listing {
+	  width: 100%;
+	  overflow: auto;
+	  cursor: pointer;
+	  overflow-x: hidden;
+	  border: 1px solid lightgrey;
+	  background-color: rgb(240, 240, 240);
+	}
+	#controls {
+	  text-align: center;
+	  padding-top: 2px;
+	  margin-bottom: 4px;
+	}
+	#keywordField {
+	  width: 220px;
+	  height: 25px;
+	  top: 0;
+	  left: 78px;
+	  position: absolute;
+	}
+	#keyword {
+	  width: 100%;
+	}
+	.placeIcon {
+	  width: 32px;
+	  height: 37px;
+	  margin: 4px;
+	}
+	.hotelIcon {
+	  width: 24px;
+	  height: 24px;
+	}
+	#resultsTable {
+	  border-collapse: collapse;
+	  width: 100%;
+	}
+	#rating {
+	  font-size: 13px;
+	  font-family: Arial Unicode MS;
+	}
+	#keywordsLabel {
+	  text-align: right;
+	  width: 70px;
+	  font-size: 14px;
+	  padding: 4px;
+	  position: absolute;
+	}
+	.iw_table_row {
+	  height: 18px;
+	}
+	.iw_attribute_name {
+	  font-weight: bold;
+	  text-align: right;
+	}
+	#iconCredit {
+	  position: absolute;
+	  top: 472px;
+	  left: 0;
+	  font-size: 11px;
+	  text-align: right;
+	  width: 640px;
+	  font-style: italic;
+	}
+
   </style>
 
     
@@ -825,7 +827,7 @@ while(iter.hasNext()){
 	
     <!-- Fixed navbar -->
     
-        <div class="navbar navbar-default navbar-fixed-top">
+      <div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;>
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -920,7 +922,7 @@ while(iter.hasNext()){
 					classie.toggle( showRightPush, 'disabled' );
 				}
 			}
-		</script>
+		</script>	
 		
 <!--widget box 1: POI-->
 <div id="dragZone">
@@ -929,11 +931,9 @@ while(iter.hasNext()){
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
 
     <h3>POI</h3>
+    <br/>
     <div id="controls">
-    <span id="typeLabel">
-      Type:
-    </span>
-    <select id="type">
+    <select id="type" class="form form-control">
       <option value="">Select a type</option>
 
       <option value="hospital">Hospital</option>
