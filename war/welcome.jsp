@@ -841,13 +841,7 @@ while(iter.hasNext()){
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-  		<form name="view_data" method="post" action="view">
-          <input type="hidden" name="username" value="<%=username%>">
-          <%for(String dataset: userDatasetList){%>
-        	  <button type="submit" name="<%=dataset%>" value="<%=dataset%>" class="btn btn btn-success"><%=dataset %></button>
-         <% }%>
-         <button type="submit" name="show all" value="all" class="btn btn btn-success">Show All</button>
-         </form>
+  		            <a class="btn btn btn-primary" data-toggle="modal" data-target="#UploadModal">Upload File</a>
           </ul>
           <ul class="nav navbar-nav navbar-right">
           
@@ -1025,12 +1019,23 @@ while(iter.hasNext()){
 
     <h3>Data & Information</h3>
     <br/>
-	<form class="form-inline" style="text-align:center">
-        <a class="btn btn btn-primary" data-toggle="modal" data-target="#UploadModal">Upload File</a>
-        <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Filter</a>
-             
-    </form>
-
+	      <form name="view_data" method="post" action="view">
+	      <!-- HUNG MAKE THIS WORK FOR THE DROPDOWN LIST -->
+	       <select class="selectpicker show-tick" data-width="auto" onchange="this.form.submit()">
+	         <option value="all">Show All</option>
+	         <%for(String dataset: userDatasetList){%>
+            <option value="<%=dataset%>"><%=dataset %></option>
+           <%}%>
+	       </select><a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Custom...</a>
+	       <!-- END OF FIX -->
+          <input type="hidden" name="username" value="<%=username%>">
+          <br />
+          <br />
+          <%for(String dataset: userDatasetList){%>
+            <button type="submit" name="<%=dataset%>" value="<%=dataset%>" class="btn btn btn-success"><%=dataset %></button>
+         <% }%>
+         <button type="submit" name="show all" value="all" class="btn btn btn-success">Show All</button>
+         </form>
   </div>
 </div>
 <!--end of widget box 1: POI-->
