@@ -44,9 +44,14 @@ List<Location> locations = new ArrayList<Location>();
 List<Location> searchResults = (List<Location>)session.getAttribute("locationSearchResult");
 if(searchResults==null || searchResults.isEmpty()){
    //ADD ERROR THAT SAYS NO RESULTS FOUND
-	locations.addAll(locationDAO.retrieveByUsername(username));
-	locations.addAll(locationDAO.retrieveByUsername("admin"));
-} else {
+  if (locationDAO.retrieveByUsername(username) != null ) {
+	 locations.addAll(locationDAO.retrieveByUsername(username));
+  }
+  if (locationDAO.retrieveByUsername("admin") != null) {
+	 locations.addAll(locationDAO.retrieveByUsername("admin"));
+	} 
+}
+else {
   locations = searchResults;
 }
 
@@ -1019,14 +1024,23 @@ while(iter.hasNext()){
 
     <h3>Data & Information</h3>
     <br/>
+    <div class="row">
+      <div class="col-md-12">
 	      <form name="view_data" method="post" action="view">
 	      <!-- HUNG MAKE THIS WORK FOR THE DROPDOWN LIST -->
-	       <select class="selectpicker show-tick" data-width="auto" onchange="this.form.submit()">
-	         <option value="all">Show All</option>
+	      <%String chosenData = (String) session.getAttribute("currentView");
+	      if (chosenData == null) { chosenData = "all"; }
+	      %>
+	       <select name="dataset" class="selectpicker show-tick" data-width="auto" onchange="this.form.submit()" >
+	         <option value="all"<%if (chosenData.equals("all")) {%>selected<%}%>>Show All</option>
 	         <%for(String dataset: userDatasetList){%>
-            <option value="<%=dataset%>"><%=dataset %></option>
+            <option value="<%=dataset%>"<%if(chosenData.equals(dataset)){%>selected<%}%>><%=dataset%></option>
            <%}%>
-	       </select><a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Custom...</a>
+	       </select>
+	       <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Custom...</a>
+	       
+	       </div>
+	  </div>
 	       <!-- END OF FIX -->
           <input type="hidden" name="username" value="<%=username%>">
           <br />
