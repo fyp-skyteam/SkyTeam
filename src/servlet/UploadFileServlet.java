@@ -41,7 +41,7 @@ public class UploadFileServlet extends HttpServlet{
                 		username = str.toString();
                 	}
                 } else {   
-                	out.println("error: stuck at servlet");
+                	//out.println("error: stuck at servlet");
                     ZipInputStream zis = new ZipInputStream(stream);
                     ZipEntry ze = zis.getNextEntry();
                   
@@ -57,6 +57,9 @@ public class UploadFileServlet extends HttpServlet{
                     zis.close();
                 }
             }
+            //out.println(currency);
+            //out.println(clearUserData);
+            //out.println(username);
             if(clearUserData){
             	locationDAO.removeUserLocations(username);  
             } 
@@ -64,18 +67,38 @@ public class UploadFileServlet extends HttpServlet{
             while(iterator.hasNext()){
                     String datasetName = (String)iterator.next();
                     ArrayList<String> dataset = locationDatasets.get(datasetName);
-                    out.println(dataset.size());
-                    for(int i=0;i<dataset.size();i++){
-                        out.println(dataset.get(i));
-                    }        
+                    //out.println(dataset.size());
+                    //for(int i=0;i<dataset.size();i++){
+                      //  out.println(dataset.get(i));
+                    //}        
                     ArrayList<Location> locations = uploadManager.convertDataToLocations(dataset,datasetName,currency,username);
                     locationDAO.addLocations(locations);
             }           
-            HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();       
+            HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();  
+            
             if(!locationErrors.isEmpty()){      
-                out.println("test error");
-                request.setAttribute("locationErrors",locationErrors);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp");
+                //out.println("test error");
+                String errorMsg="";
+                //HashMap<String,ArrayList<String>> locationErrors = (HashMap<String,ArrayList<String>>)request.getAttribute("locationErrors");
+                //ArrayList<String> fileErrors = (ArrayList<String>)request.getAttribute("fileErrors");
+               
+                Iterator<String> iterator1 = locationErrors.keySet().iterator();
+                while(iterator1.hasNext()){
+                    String errorLine = iterator1.next();
+                    errorMsg += errorLine+": ";
+                    ArrayList<String> errorStr = locationErrors.get(errorLine);
+                    for(int i=0;i<errorStr.size();i++){
+                        if(i==errorStr.size()){
+                        	errorMsg += errorStr.get(i);
+                        }else{
+                        	errorMsg += errorStr.get(i)+ ", ";
+                        }
+                    }
+                    errorMsg += "</br>";
+
+                }
+                out.println(errorMsg);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp?locationErrors="+errorMsg);
                dispatcher.forward(request, response);
             }else{
                response.sendRedirect("welcome.jsp");

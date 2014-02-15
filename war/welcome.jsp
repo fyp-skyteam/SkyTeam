@@ -1,12 +1,36 @@
 <%@page import="entity.*"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@include file="protect.jsp"%>
-
 <%@page import="dao.*"%>
 <%@page import="java.util.*"%>
 <%@page import="java.text.*"%>
 <%@page import ="java.io.Serializable" %>
+
+<%@include file="protect.jsp"%>
+
+<!-- Initialize noUISlider -->
+<script src="assets/js/jquery.nouislider.js"></script>
+
+<!-- JQuery & Bootstrap-Select -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<!-- Bootstrap Core -->
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+ 
+<!-- Extended Bootstrap -->
+<script type="text/javascript" src="assets/bootstrap-file/bootstrap-filestyle.min.js"> </script>
+
+<!-- Initialize Custom jQuery Functionalities -->
+<script src="assets/jquery-ui-1.10.4.custom/development-bundle/jquery-1.10.2.js"></script>
+<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.core.js"></script>
+<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.widget.js"></script>
+<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.mouse.js"></script>
+<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.draggable.js"></script>
+<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.resizable.js"></script>
+
+<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
+	
 
 <!-- JAVA INITIALIZATION -->
 <%
@@ -87,34 +111,8 @@ while(iter.hasNext()){
 <!DOCTYPE html>
 <html>
 <head>
-	
-
   <title>GeoIntel</title>
-	<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/themes/base/jquery.ui.all.css">
-  
-   <!-- Initialize noUISlider -->
-  <script src="assets/js/jquery.nouislider.js"></script>
-  
-  <!-- JQuery & Bootstrap-Select -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-  <!-- Bootstrap Core -->
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-  
-	<!-- Extended Bootstrap -->
-  <script type="text/javascript" src="assets/bootstrap-file/bootstrap-filestyle.min.js"> </script>
-	
-  <!-- Initialize Custom jQuery Functionalities -->
-	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/jquery-1.10.2.js"></script>
-	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.core.js"></script>
-	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.widget.js"></script>
-	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.mouse.js"></script>
-	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.draggable.js"></script>
-	<script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.resizable.js"></script>
-	
-	<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
-	
+	<link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/themes/base/jquery.ui.all.css">    
 	<!-- Initialize custom drag-able elements for widgets -->
 	<style>
 		.draggable { 
