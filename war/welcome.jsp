@@ -34,7 +34,7 @@
 
 <!-- JAVA INITIALIZATION -->
 <%
-int a = 1;
+int a = 1234;
 User user = (User) session.getAttribute("authenticated.user");
 String username = user.getUsername();
 String errorMsg="";
