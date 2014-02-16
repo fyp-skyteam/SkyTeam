@@ -75,70 +75,19 @@ public class SearchLocationServlet extends HttpServlet{
 		double minLossCovLimit = Double.parseDouble(strMinLossCovLimit);
 		double maxLossCovLimit = Double.parseDouble(strMaxLossCovLimit);
 		
-		/**
-		boolean anyBuildingType = false;
-		for(String str: buildingTypes){
-			if(str.equalsIgnoreCase("any")){
-				anyBuildingType = true;
-				break;
-			}
-		}
-		//out.println(anyBuildingType);
-		
-		boolean anyFoundationType = false;
-		for(String str: foundationTypes){
-			if(str.equalsIgnoreCase("any")){
-				anyFoundationType = true;
-				break;
-			}
-		}
-		//out.println(anyFoundationType);
-		
-		
-		boolean anyBuildingName = false;
-		if(buildingName.equalsIgnoreCase("any")){
-			anyBuildingName = true;
-		}
-		//out.println(anyBuildingName);
-		
-		boolean anyDataset = false;
-		for(String str: datasets){
-			if(str.equalsIgnoreCase("any")){
-				anyDataset = true;
-				break;
-			}
-		}
-		//out.println(anyDataset);
-
-		boolean anyRemark = false;
-		if(remark.equalsIgnoreCase("any")){
-			anyRemark = true;
-		}
-		//out.println(anyRemark);*/
-		
 		List<Location> locations = locationDAO.retrieveByUsername(username);
 		locations.addAll(locationDAO.retrieveByUsername("admin"));
-		//if(!anyBuildingName){
-			locations = locationDAO.retrieveByBuildingName(buildingName,locations);
-		//}
-		//if(!anyBuildingType){
-			locations = locationDAO.retrieveByBuildingType(buildingTypes,locations);
-		//}		
+		locations = locationDAO.retrieveByBuildingName(buildingName,locations);
+		locations = locationDAO.retrieveByBuildingType(buildingTypes,locations);
 		locations = locationDAO.retrieveByHeight(minHeight, maxHeight,locations);
 		locations = locationDAO.retrieveByYearBuilt(minYearBuilt, maxYearBuilt,locations);
 		locations = locationDAO.retrieveByCapacity(minCapacity, maxCapacity,locations);
 		locations = locationDAO.retrieveByPremium(minPremium, maxPremium,locations);
 		locations = locationDAO.retrieveByPropertyCoverageLimit(minProCovLimit, maxProCovLimit,locations);
 		locations = locationDAO.retrieveByLossCoverageLimit(minLossCovLimit, maxLossCovLimit,locations);
-		//if(!anyFoundationType){
-			locations = locationDAO.retrieveByFoundationType(foundationTypes,locations);
-		//}
-		//if(!anyDataset){
-			locations = locationDAO.retrieveByDataset(datasets,locations);
-		//}
-		//if(!anyRemark){
-			locations = locationDAO.retrieveByRemark(remark,locations);
-		//}
+		locations = locationDAO.retrieveByFoundationType(foundationTypes,locations);
+		locations = locationDAO.retrieveByDataset(datasets,locations);
+		locations = locationDAO.retrieveByRemark(remark,locations);
 		
 		/**
 		out.println(locations.size());

@@ -34,12 +34,12 @@ List<Location> locations = new ArrayList<Location>();
 List<Location> searchResults = (List<Location>)session.getAttribute("locationSearchResult");
 if(searchResults==null || searchResults.isEmpty()){
    //ADD ERROR THAT SAYS NO RESULTS FOUND
-  if (locationDAO.retrieveByUsername(username) != null ) {
+ // if (locationDAO.retrieveByUsername(username) != null ) {
 	 locations.addAll(locationDAO.retrieveByUsername(username));
-  }
-  if (locationDAO.retrieveByUsername("admin") != null) {
+  //}
+  //if (locationDAO.retrieveByUsername("admin") != null) {
 	 locations.addAll(locationDAO.retrieveByUsername("admin"));
-	} 
+	//} 
 }
 else {
   locations = searchResults;

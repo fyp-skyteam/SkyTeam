@@ -228,7 +228,7 @@
 			      <option value="JPY">JPY</option>
 			      <option value="USD">USD</option>
           </select>
-			    <br/><input type="checkbox" name="clear data" class="style1"/> Clear all the previously stored data by you
+			    <br/><input type="checkbox" name="clear data" class="style1" value="clear-data"/> Clear all the previously stored data by you
 			    
 			   <input type="hidden" name="username" value="<%=username%>" >
 			    
