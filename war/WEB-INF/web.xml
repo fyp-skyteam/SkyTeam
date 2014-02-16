@@ -57,6 +57,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     </servlet-mapping> 
     
     <servlet>
+    <servlet-name>GetDataServlet</servlet-name>
+    <servlet-class>servlet.GetDataServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetDataServlet</servlet-name>
+    <url-pattern>get_data</url-pattern>
+  </servlet-mapping>
+    
+    <servlet>
   <servlet-name>SystemServiceServlet</servlet-name>
   <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
   <init-param>
