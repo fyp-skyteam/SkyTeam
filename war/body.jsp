@@ -228,18 +228,18 @@
 			  <link href="assets/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
 			  <script src="assets/bootstrap-select/bootstrap-select.js" type="text/javascript"></script>
   
-          <select class="selectpicker" name="currency" data-style="btn-info">
-			      <option value="SGD" selected>SGD</option>
-			      <option value="AUD">AUD</option>
-			      <option value="CAD">CAD</option>
-			      <option value="CHF">CHF</option>
-			      <option value="CNY">CNY</option>
-			      <option value="EUR">EUR</option>
-			      <option value="GBP">GBP</option>
-			      <option value="HKD">HKD</option>
-			      <option value="INR">INR</option>
-			      <option value="JPY">JPY</option>
-			      <option value="USD">USD</option>
+          <select class="selectpicker" name="currency" data-size="11">
+			      <option value="SGD" data-subtext="Singapore Dollar" selected>SGD</option>
+			      <option value="AUD" data-subtext="Australian Dollar">AUD</option>
+			      <option value="CAD" data-subtext="Canadian Dollar">CAD</option>
+			      <option value="CHF" data-subtext="Swiss Franc">CHF</option>
+			      <option value="CNY" data-subtext="Chinese Renminbi">CNY</option>
+			      <option value="EUR" data-subtext="Euro">EUR</option>
+			      <option value="GBP" data-subtext="British Pound">GBP</option>
+			      <option value="HKD" data-subtext="Hong Kong Dollar">HKD</option>
+			      <option value="INR" data-subtext="Indian Rupee">INR</option>
+			      <option value="JPY" data-subtext="Japanese Yen">JPY</option>
+			      <option value="USD" data-subtext="United States Dollar">USD</option>
           </select>
 			    <br/><input type="checkbox" name="clear data" class="style1" value="clear-data"/> Clear all the previously stored data by you	    
 			   <input type="hidden" name="username" value="<%=username%>">   
