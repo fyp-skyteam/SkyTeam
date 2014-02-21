@@ -187,16 +187,21 @@
 <div id="map_canvas" style="background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
     </div>
 
-<div class="modal fade" id="SearchModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true"></div>
-<div class="modal-dialog"></div>
-<div class="modal-content"></div>
+<div class="modal fade" id="SearchModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
   <h4 class="modal-title" id=SearchModalLabel">Filter Markers</h4>
 </div>
-<div class="modal-body"></div>
-
+<div class="modal-body">
 <%@include file="filterform.jsp"%>
+</div>
+</div>
+</div>
+</div>
+
+
 
 <div class="modal fade" id="UploadModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
   <div class="modal-dialog">
