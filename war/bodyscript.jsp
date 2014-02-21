@@ -307,9 +307,10 @@
 	                         }
 	                         
 	                         selectedIcon = marker.getIcon();
-	                         var txt = new String(marker.getIcon().url)
-	                         marker.setIcon("1-"+txt);
 	                         selected = marker;
+	                         
+	                         var txt = new String(marker.getIcon());
+	                         marker.setIcon(txt.substring(0,txt.length-4)+"-1.png");
 	                       };
 	                     })(marker, i));
 	                   }
