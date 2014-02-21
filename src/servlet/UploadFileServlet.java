@@ -97,7 +97,7 @@ public class UploadFileServlet extends HttpServlet{
                     errorMsg += "</br>";
 
                 }
-                out.println(errorMsg);
+                //out.println(errorMsg);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp?locationErrors="+errorMsg);
                dispatcher.forward(request, response);
             }else{

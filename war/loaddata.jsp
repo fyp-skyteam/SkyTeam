@@ -3,7 +3,8 @@
 int a = 12345;
 User user = (User) session.getAttribute("authenticated.user");
 String username = user.getUsername();
-String errorMsg="";
+String errorMsg=(String)request.getParameter("locationErrors");
+/**
 HashMap<String,ArrayList<String>> locationErrors = (HashMap<String,ArrayList<String>>)request.getAttribute("locationErrors");
 ArrayList<String> fileErrors = (ArrayList<String>)request.getAttribute("fileErrors");
 if(locationErrors!=null){
@@ -28,7 +29,7 @@ if(fileErrors!=null){
         errorMsg += fileErrors.get(i) + ": invalid data file";
         errorMsg +="</br>";
     }
-}
+}*/
 LocationDAO locationDAO = new LocationDAO();
 List<Location> locations = new ArrayList<Location>();
 List<Location> searchResults = (List<Location>)session.getAttribute("locationSearchResult");

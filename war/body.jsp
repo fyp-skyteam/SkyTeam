@@ -10,9 +10,10 @@
 	</section>
 </nav>
 
-<!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;>
+<!-- NAVIGATION BAR -->
+<div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;">
     <div class="container">
+   
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="icon-bar"></span>
@@ -32,8 +33,15 @@
          </li> 
       </div><!--/.nav-collapse -->
     </div>
+ <%if (errorMsg != null) {%><div class="alert alert-danger alert-dismissable" style="z-index:1; position:absolute; width:100%">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Warning! The following markers have not been uploaded due to the following errors:</strong><br /><%=errorMsg%>
+</div><%}%>
   </div>
-  
+<!-- END OF NAVIGATION BAR -->
+
+
+<!-- LOCATION SEARCH BAR -->
   <div class="container">
   <input id="pac-input" class="controls" type="text" placeholder="Search for location"></input>
 <div class="main" style="bottom:0; position:absolute; z-index:3;">
@@ -44,10 +52,10 @@
 		</section>
 	</div>
 </div>
+<!-- END OF LOCATION SEARCH BAR -->
 
-<!--widget box 1: POI-->
 <div id="dragZone">
-
+<!-- POINT OF INTEREST WIDGET-->
 	<div class="toggler draggable">
   <div id="widget1" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
@@ -137,10 +145,9 @@
 
   </div>
 </div>
-<!--end of widget box 1: POI-->
+<!--END OF POINT OF INTERESTS WIDGET-->
 
-
-<!-- widget box 2: data and information -->
+<!-- DATA AND INFORMATION WIDGET -->
 	<div class="toggler draggable">
   <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
@@ -172,7 +179,7 @@
 	  </div>   
   </div>
 </div>
-<!-- end of widget box 2 -->
+<!-- END OF DATA AND INFORMATION WIDGET -->
 </div>
 
 
@@ -187,6 +194,7 @@
 <div id="map_canvas" style="background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
     </div>
 
+<!-- SEARCH MODAL CONTAINER -->
 <div class="modal fade" id="SearchModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
@@ -200,9 +208,9 @@
 </div>
 </div>
 </div>
+<!-- END OF SEARCH MODAL CONTAINER -->
 
-
-
+<!-- UPLOAD MODAL CONTAINER -->
 <div class="modal fade" id="UploadModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -233,12 +241,8 @@
 			      <option value="JPY">JPY</option>
 			      <option value="USD">USD</option>
           </select>
-			    <br/><input type="checkbox" name="clear data" class="style1" value="clear-data"/> Clear all the previously stored data by you
-			    
-			   <input type="hidden" name="username" value="<%=username%>" >
-			    
-			    
-			    
+			    <br/><input type="checkbox" name="clear data" class="style1" value="clear-data"/> Clear all the previously stored data by you	    
+			   <input type="hidden" name="username" value="<%=username%>">   
 			    <div class="form-group">
             <p align="right"><button type="submit" value="Upload" class="btn btn btn-primary">Submit</button></p>
           </div>
@@ -247,5 +251,6 @@
     </div>
   </div>
 </div>
+<!-- END OF UPLOAD MODAL CONTAINER -->
 
 <%@include file="bodyscript.jsp"%>
