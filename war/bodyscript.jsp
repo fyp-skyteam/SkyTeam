@@ -291,7 +291,8 @@
 	                     })(marker, i));
 	                     
 
-	                     
+	                  var selected;
+	                  var selectedIcon;
 	                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
 	                       return function() {
 	                    	   infowindow.close();
@@ -301,6 +302,14 @@
 	                         map.setZoom(15);
 	                         clearMarkers();
 	                         clearResults();
+	                         if (selected) {
+	                        	 selected.setIcon(selectedIcon);
+	                         }
+	                         
+	                         selectedIcon = marker.getIcon();
+	                         var txt = new String(marker.getIcon().url)
+	                         marker.setIcon("1-"+txt);
+	                         selected = marker;
 	                       };
 	                     })(marker, i));
 	                   }

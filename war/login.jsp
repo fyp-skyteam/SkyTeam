@@ -67,7 +67,7 @@ if(username==null){
   <div class="col-md-4"></div>
 </div>
 
-    <script src=assets/jquery/js/jquery.jss"></script>
+    <script src="assets/jquery/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
