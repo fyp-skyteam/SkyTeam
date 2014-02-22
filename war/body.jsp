@@ -44,11 +44,11 @@
 <!-- LOCATION SEARCH BAR -->
   <div class="container">
   <input id="pac-input" class="controls" type="text" placeholder="Search for location"></input>
-<div class="main" style="bottom:0; position:absolute; z-index:3;">
+<div class="main" style="bottom:-60px; position:absolute; z-index:3;">
 	<section>
 		<!-- Class "cbp-spmenu-open" gets applied to menu -->
 		
-		<button id="showBottom" style="font-size: 15px">Menu</button>
+		<button id="showBottom" style="font-size: 15px">Widgets</button>
 		</section>
 	</div>
 </div>
@@ -67,7 +67,7 @@
       <option value="">Select a type</option>
 
       <option value="convenience_store">Convenience Store</option>
-      <option value="fire_station">Police Station</option>
+      <option value="fire_station">Fire Station</option>
       <option value="grocery_or_supermarket">Supermarket</option>
       <option value="hospital">Hospital</option>
       <option value="police">Police Station</option>      
