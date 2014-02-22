@@ -66,11 +66,12 @@
     <select id="type" class="form form-control">
       <option value="">Select a type</option>
 
-      <option value="hospital">Hospital</option>
       <option value="convenience_store">Convenience Store</option>
-      <option value="train_station">Trains Station</option>
-      <option value="police_station">Police Station</option>
+      <option value="fire_station">Police Station</option>
       <option value="grocery_or_supermarket">Supermarket</option>
+      <option value="hospital">Hospital</option>
+      <option value="police">Police Station</option>      
+      <option value="train_station">Trains Station</option>
     </select>
     
   </div>
