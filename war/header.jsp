@@ -50,9 +50,9 @@
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/component.css" />
   
 <style>
- #widget1 { min-width: 240px; height: 500px; min-height: 200px; max-height: 500px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+ #widget1 { min-width: 240px; min-height: 120px; max-height: 500px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
  #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget2 { min-width: 300px; height: 500px; min-height: 300px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+ #widget2 { min-width: 300px; min-height: 140px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
  #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  html { height: 100% }
  body { height: 100%; margin: 0; padding: 0 }

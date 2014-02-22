@@ -1,14 +1,19 @@
-<nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4">
-	<h3>Menu</h3>
+<div style="text-align:center">
+<nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4" style="margin: auto;">
 	<a href="#" style="text-decoration:none;" id="button1">Points of Interest</a>
-	<a href="#" style="text-decoration:none;" id="button2">Data and Information</a>
+	<a href="#" style="text-decoration:none;" id="button2">Data Information</a>
 	<a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
-	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:50px;">
+	<a href="#" style="text-decoration:none;" id="button4">Risk Calculation</a>
+	<a href="#" style="text-decoration:none;" id="button5">Historical Analysis</a>
+	<a href="#" style="text-decoration:none;" id="button5">Comparison</a>
+	<a href="#" style="text-decoration:none;" id="button5">Location News</a>
+	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:20px;">
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
-	<button id="closeBottom" style="width:20px;">x</button>
+	<button id="closeBottom" style="width:20px;right:0; background: rgba(32,153,223,0.91);">x</button>
 	</section>
 </nav>
+</div>
 
 <!-- NAVIGATION BAR -->
 <div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;">
@@ -44,11 +49,11 @@
 <!-- LOCATION SEARCH BAR -->
   <div class="container">
   <input id="pac-input" class="controls" type="text" placeholder="Search for location"></input>
-<div class="main" style="bottom:-60px; position:absolute; z-index:3;">
+<div class="main" style="bottom:-100px; position:absolute; z-index:3; text-align: center; padding: 0 0 90px 90px;">
 	<section>
 		<!-- Class "cbp-spmenu-open" gets applied to menu -->
 		
-		<button id="showBottom" style="font-size: 15px">Widgets</button>
+		<button id="showBottom" style="font-size: 15px">Expand &nbsp Widgets &nbsp Bar</button>
 		</section>
 	</div>
 </div>
@@ -63,6 +68,7 @@
     <h3>POI</h3>
     <br/>
     <div id="controls">
+    
     <select id="type" class="form form-control">
       <option value="">Select a type</option>
 
