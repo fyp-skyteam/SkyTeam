@@ -3,10 +3,9 @@
 	<a href="#" style="text-decoration:none;" id="button1">Points of Interest</a>
 	<a href="#" style="text-decoration:none;" id="button2">Data Information</a>
 	<a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
-	<a href="#" style="text-decoration:none;" id="button4">Risk Calculation</a>
-	<a href="#" style="text-decoration:none;" id="button5">Historical Analysis</a>
-	<a href="#" style="text-decoration:none;" id="button5">Comparison</a>
-	<a href="#" style="text-decoration:none;" id="button5">Location News</a>
+	<a href="#" style="text-decoration:none;" id="button4">Hazard Map</a>
+	<a href="#" style="text-decoration:none;" id="button5">Risk Calculation</a>
+	<a href="#" style="text-decoration:none;" id="button6">Historical Analysis</a>
 	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:20px;">
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
@@ -14,6 +13,7 @@
 	</section>
 </nav>
 </div>
+<!-- test test -->
 
 <!-- NAVIGATION BAR -->
 <div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;">
@@ -53,7 +53,7 @@
 	<section>
 		<!-- Class "cbp-spmenu-open" gets applied to menu -->
 		
-		<button id="showBottom" style="font-size: 15px">Expand &nbsp Widgets &nbsp Bar</button>
+		<button id="showBottom" style="font-size: 15px;">Widgets &nbsp Dashboard</button>
 		</section>
 	</div>
 </div>
@@ -155,7 +155,31 @@
 <!--END OF POINT OF INTERESTS WIDGET-->
 
 <!-- DATA AND INFORMATION WIDGET -->
-	<div class="toggler draggable">
+  <div class="toggler draggable">
+  <div id="widget6" class="ui-corner-all resizable">
+    <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
+  
+	<h3>Historical Analysis</h3>
+  </div>
+  </div>
+  
+  <div class="toggler draggable">
+  <div id="widget5" class="ui-corner-all resizable">
+    <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
+  
+	<h3>Risk Calculation</h3>
+  </div>
+  </div>
+  
+  <div class="toggler draggable">
+  <div id="widget4" class="ui-corner-all resizable">
+  	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
+  
+	<h3>Hazard Map</h3>
+  </div>
+  </div>
+  
+  <div class="toggler draggable">
   <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
 
@@ -184,7 +208,22 @@
 	       <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Custom View</a>   
 	     </div>
 	  </div>   
+	<div id="listing">
+    <table id="resultsTable" style="background-color:none;">
+    <tbody id="results2">
+	
+      <tr style="background-color: rgb(240, 240, 240);">
+        <td><img src="assets/markers/blu-blank.png" class="placeIcon" classname="placeIcon"></td>
+        <td></td>
+      </tr><tr style="background-color: rgb(255, 255, 255);">
+        <td><img src="assets/markers/blu-blank.png" class="placeIcon" classname="placeIcon">
+        </td><td></td>
+      </tr>
+    </tbody>
+   </table>
   </div>
+  </div>
+  
 </div>
 <!-- END OF DATA AND INFORMATION WIDGET -->
 </div>
@@ -260,4 +299,24 @@
 </div>
 <!-- END OF UPLOAD MODAL CONTAINER -->
 
+<script>
+
+for (var i = 0; i < 5; i++) {	
+  var results = document.getElementById('results2');
+  var tr = document.createElement('tr');
+  tr.style.backgroundColor = (i% 2 == 0 ? '#F0F0F0' : '#FFFFFF');
+  var iconTd = document.createElement('td');
+  var nameTd = document.createElement('td');
+  var icon = document.createElement('img');
+  icon.src = 'assets/markers/blu-blank.png';
+  icon.setAttribute('class', 'placeIcon');
+  icon.setAttribute('className', 'placeIcon');
+  var name = document.createTextNode("abcd");
+  iconTd.appendChild(icon);
+  nameTd.appendChild(name);
+  tr.appendChild(iconTd);
+  tr.appendChild(nameTd);
+  results.appendChild(tr);
+}
+</script>
 <%@include file="bodyscript.jsp"%>

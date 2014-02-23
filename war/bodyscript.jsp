@@ -12,14 +12,17 @@
 	showRightPush = document.getElementById( 'showRightPush' ),
 	body = document.body;
 	showBottom.onclick = function() {
-	classie.toggle( this, 'active' );
-	classie.toggle( menuBottom, 'cbp-spmenu-open' );
-	disableOther( 'showBottom' );
-	};
-	
-	closeBottom.onclick = function() {
+		$('#showBottom').hide();
 		classie.toggle( this, 'active' );
 		classie.toggle( menuBottom, 'cbp-spmenu-open' );
+		disableOther( 'showBottom' );
+	};
+	 
+	closeBottom.onclick = function() {
+		
+		classie.toggle( this, 'active' );
+		classie.toggle( menuBottom, 'cbp-spmenu-open' );
+		$('#showBottom').show();
 		disableOther( 'showBottom' );
 	};		
 	
@@ -89,6 +92,57 @@
 	      return false;
 	    });
 	    
+	    $( "#button4" ).click(function() {
+		      // get effect type from
+		      var selectedEffect = $( "#effectTypes" ).val();
+		 
+		      // most effect types need no options passed by default
+		      var options = {};
+		      // some effects have required parameters
+		 
+		      // run the effect
+		      $( "#widget4" ).show( 'clip', options, 500 );
+		      return false;
+		    });
+	    
+	    $( "#button5" ).click(function() {
+		      // get effect type from
+		      var selectedEffect = $( "#effectTypes" ).val();
+		 
+		      // most effect types need no options passed by default
+		      var options = {};
+		      // some effects have required parameters
+		 
+		      // run the effect
+		      $( "#widget5" ).show( 'clip', options, 500 );
+		      return false;
+		    });
+	    $( "#button6" ).click(function() {
+		      // get effect type from
+		      var selectedEffect = $( "#effectTypes" ).val();
+		 
+		      // most effect types need no options passed by default
+		      var options = {};
+		      // some effects have required parameters
+		 
+		      // run the effect
+		      $( "#widget6" ).show( 'clip', options, 500 );
+		      return false;
+		    });
+	   
+	    $( "#button7" ).click(function() {
+		      // get effect type from
+		      var selectedEffect = $( "#effectTypes" ).val();
+		 
+		      // most effect types need no options passed by default
+		      var options = {};
+		      // some effects have required parameters
+		 
+		      // run the effect
+		      $( "#widget7" ).show( 'clip', options, 500 );
+		      return false;
+		    });
+	    
 
 	    $( "#close1" ).click(function() {
 			// get effect type from
@@ -123,12 +177,86 @@
 			// run the effect
 			$( "#widget2" ).hide( 'scale', options, 500 );
 	    });
+	    
+	    $( "#close4" ).click(function() {
+			// get effect type from
+			var selectedEffect = $( "#effectTypes" ).val();
+	
+			// most effect types need no options passed by default
+			var options = {};
+			// some effects have required parameters
+			if ( selectedEffect === "scale" ) {
+				options = { percent: 0 };
+			} else if ( selectedEffect === "size" ) {
+				options = { to: { width: 200, height: 60 } };
+			}
+	
+			// run the effect
+			$( "#widget4" ).hide( 'scale', options, 500 );
+	    });
+		
+	    $( "#close5" ).click(function() {
+			// get effect type from
+			var selectedEffect = $( "#effectTypes" ).val();
+	
+			// most effect types need no options passed by default
+			var options = {};
+			// some effects have required parameters
+			if ( selectedEffect === "scale" ) {
+				options = { percent: 0 };
+			} else if ( selectedEffect === "size" ) {
+				options = { to: { width: 200, height: 60 } };
+			}
+	
+			// run the effect
+			$( "#widget5" ).hide( 'scale', options, 500 );
+	    });
+	    
+	    $( "#close6" ).click(function() {
+			// get effect type from
+			var selectedEffect = $( "#effectTypes" ).val();
+	
+			// most effect types need no options passed by default
+			var options = {};
+			// some effects have required parameters
+			if ( selectedEffect === "scale" ) {
+				options = { percent: 0 };
+			} else if ( selectedEffect === "size" ) {
+				options = { to: { width: 200, height: 60 } };
+			}
+	
+			// run the effect
+			$( "#widget6" ).hide( 'scale', options, 500 );
+	    });
+	    
+	    $( "#close7" ).click(function() {
+			// get effect type from
+			var selectedEffect = $( "#effectTypes" ).val();
+	
+			// most effect types need no options passed by default
+			var options = {};
+			// some effects have required parameters
+			if ( selectedEffect === "scale" ) {
+				options = { percent: 0 };
+			} else if ( selectedEffect === "size" ) {
+				options = { to: { width: 200, height: 60 } };
+			}
+	
+			// run the effect
+			$( "#widget7" ).hide( 'scale', options, 500 );
+	    });
+
+
 
 	    
 	    $( "#widget1" ).hide();
 	    $( "#widget2" ).hide();
 	    $( "#widget3" ).hide();
-	
+	    $( "#widget4" ).hide();
+	    $( "#widget5" ).hide();
+	    $( "#widget6" ).hide();
+	    $( "#widget7" ).hide();
+		
 	
 	});      
 	var map, places, iw;
@@ -536,4 +664,11 @@
 	    return content;
 	  }
 	  google.maps.event.addDomListener(window, 'load', initialize);
+	  
+
+
+
+	  
+		      
+		  
 </script>
