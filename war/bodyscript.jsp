@@ -260,7 +260,6 @@
 	
 	});
 	
-    google.load('visualization', '1', { packages: ['corechart'] });
 
     /**
      * Sector type mapped to a style rule.
@@ -326,7 +325,7 @@
 	  function initialize() {
 	  // marker's longitude and langitude
 
-      
+      displayMarkerInfo();
 	    var myOptions = {
 	      zoom: 15,
 	      mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -458,9 +457,26 @@
 	                       map: map,
 	                       name: locations[i][2],
 	                       icon: icons[number - 1],
-	                       id: locations[i][4]
+	                       id: locations[i][5]
 	                     });
-
+	                	   if(i%2==0){
+	                             
+                       document.getElementById('results2').innerHTML += 
+                            '<tr style="background-color: rgb(255, 255, 255);">'+
+                            '<td>&nbsp;&nbsp;&nbsp;<input type="checkbox" checked="checked" onClick="'+ toggleData(locations[i][5])+'"/></td>'+
+                            '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
+                            '<td>'+ locations[i][2] + '</td>'
+                            '</tr>';
+                            
+                        }
+                        else{
+                           document.getElementById('results2').innerHTML += 
+                        	   '<tr style="background-color: rgb(240, 240, 240);">'+
+                               '<td>&nbsp;&nbsp;&nbsp;<input type="checkbox" checked="checked" onChange="'+ toggleData(locations[i][5])+'"/></td>'+
+                               '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
+                               '<td>'+ locations[i][2] + '</td>'
+                               '</tr>'; 
+                       }
 	                     markers.push(marker);
 	                 
 	                     //Hover Function for info window
@@ -516,30 +532,18 @@
 	                     
 	                     // shows / hides the markers based on the ID
 	                     function toggleData(id) {
-	                       for (var i=0; i<markers.length; i++) {
-	                         if (markers[i].id === id) {
-	                           if (markers[i].getVisible()) {
-	                               markers[i].setVisible(false);
-	                           }
-	                           else {
-	                               markers[i].setVisible(true);
-	                           }
-	                       }
-	                       }
+	                    	 $.each(markers, function (index, marker) {
+	                    		 if (marker.id === id) {
+	                    			  if (marker.getVisible()) {
+	                                 marker.setVisible(false);
+	                             }
+	                             else {
+	                                 marker.setVisible(true);
+	                             }
+	                    		 }
+	                       });
 	                   }
-	                   
-	                   //function to open info and focus on point when selected
-	                   function centerData(id) {
-	                       for (var i=0; i<markers.length; i++) {
-	                         if (markers[i].dbID === id) {
-	                           var latLng = markers[i].getPosition();
-	                           map.setCenter(latLng);
-	                           map.setZoom(18);
-	                           google.maps.event.trigger(markers[i],'click');
-	                         }
-	                       }
-	                   }
-	                   
+	                  
 	                   //function to display all available information of the point
 	                   function displayData(array) {
 	                      infowindow2.setContent(
@@ -559,7 +563,6 @@
          
          google.maps.event.addListener(layer, 'click', function(e) {
              var county = e.row['name'].value;
-             drawVisualization(county);
 
              var risk = e.row['2013'].value;
              if (risk > 66) {
@@ -583,11 +586,8 @@
                'change', function() {
                  var county = this.value;
                  updateLayerQuery(layer, sector, county);
-                 drawVisualization(county);
                });
 	  }
-	  
-
 	  
 	  function tilesLoaded() {
 	    search();
@@ -871,40 +871,80 @@
 	        map.mapTypes.set('map-style', styledMapType);
 	        map.setMapTypeId('map-style');
 	      }
-
-	      function drawVisualization(county) {
-	        google.visualization.drawChart({
-	          containerId: "visualization",
-	          dataSourceUrl: "http://www.google.com/fusiontables/gvizdata?tq=",
-	          query: "SELECT 'Risk Factor','2006','2007','2008','2009','2010','2011','2012','2013' " +
-	              "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg WHERE name = '" + county + "'",
-	          chartType: "ColumnChart",
-	          options: {
-	            title: county,
-	            height: 400,
-	            width: 400
-	          }
-	        });
+	      
+	      function displayMarkerInfo() {
+	    	  
 	      }
+	      google.load('visualization', '1', {packages: ['motionchart']});
+	      
+	      function drawVisualization() {
+	          var state = 'Johor';  
+	             if (document.getElementById('state').value) {
+	               state = document.getElementById('state').value;
+	             }
+	           var query = "SELECT 'name','2006','2007','2008','2009','2010','2011','2012','2013','Risk Factor' " +
+	             "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg where 'name'='"+ state + "'";
+	             var queryText = encodeURIComponent(query);
+	             var gvizQuery = new google.visualization.Query(
+	                 'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+	             gvizQuery.send(function(response) {
+	                 var numRows = response.getDataTable().getNumberOfRows();
+	                 var data = new google.visualization.DataTable();
+	                 data.addColumn('string', 'name');
+	                 data.addColumn('date', 'Date');
+	                 data.addColumn('number', 'Flood Risk');
+	                 data.addColumn('number', 'Fire Risk');
+	                 data.addColumn('number', 'Earthquake Risk');
+	                 data.addColumn('number', 'Total Risk');
+	                 
+	                 var array = new Array(4);
+	            for (var j = 0; j < 4; j++) {
+	              array[j] = new Array(8);
+	            }
+	                 
+	                 for (var i = 0; i < numRows; i++) {
+	              var name = response.getDataTable().getValue(i,0); 
+	              var riskType = response.getDataTable().getValue(i,9);
+	                  
+	              if(riskType=="Flood"){
+	                for(var k=0;k<8;k++){
+	                  array[0][k] = response.getDataTable().getValue(i,k+1);
+	                }
+	              }
+	              if(riskType=="Fire"){
+	                for(var k=0;k<8;k++){
+	                  array[1][k] = response.getDataTable().getValue(i,k+1);
+	                }
+	              }
+	              if(riskType=="Earthquake"){
+	                for(var k=0;k<8;k++){
+	                  array[2][k] = response.getDataTable().getValue(i,k+1);
+	                }
+	              }
+	              if(riskType=="Total"){
+	                for(var k=0;k<8;k++){
+	                  array[3][k] = response.getDataTable().getValue(i,k+1);
+	                }
+	              }
+	                 }  
+	            data.addRows([
+	                     [name, new Date(2006,11,31), array[0][0],array[1][0],array[2][0],array[3][0]],
+	                     [name, new Date(2007,11,31), array[0][1],array[1][1],array[2][1],array[3][1]],
+	                     [name, new Date(2008,11,31), array[0][2],array[1][2],array[2][2],array[3][2]],
+	                     [name, new Date(2009,11,31), array[0][3],array[1][3],array[2][3],array[3][3]],
+	                     [name, new Date(2010,11,31), array[0][4],array[1][4],array[2][4],array[3][4]],
+	                     [name, new Date(2011,11,31), array[0][5],array[1][5],array[2][5],array[3][5]],
+	                     [name, new Date(2012,11,31), array[0][6],array[1][6],array[2][6],array[3][6]],
+	                     [name, new Date(2013,11,31), array[0][7],array[1][7],array[2][7],array[3][7]],
+	             ]);  
+	         
+	              var motionchart = new google.visualization.MotionChart(
+	                      document.getElementById('visualization'));
+	                  motionchart.draw(data, {'width': 800, 'height': 400});
+	               });
+	             
+	        }
+	      
+	      google.setOnLoadCallback(drawVisualization);
 
-	      for (var i = 0; i < 5; i++) { 
-	        if(i%2==0){
-	          
-	          document.getElementById('results2').innerHTML += 
-	            '<tr style="background-color: rgb(255, 255, 255);">'+
-	            '<td>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="clear data" class="style1" value="clear-data"/></td>'+
-	            '<td><img src="assets/markers/blu-blank.png" class="placeIcon" classname="placeIcon"></td>'+
-	            '<td>Test Data 1</td>'+
-	            '</tr>';
-	            
-	        }else{
-	           document.getElementById('results2').innerHTML += 
-	            '<tr style="background-color: rgb(240, 240, 240);">' +
-	            '<td>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="clear data" class="style1" value="clear-data"/></td>'+
-	            '<td><img src="assets/markers/blu-blank.png" class="placeIcon" classname="placeIcon"></td>'+
-	            '<td>Test Data 2</td>'+
-	            '</tr>';    
-	       }
-
-	      }
 </script>

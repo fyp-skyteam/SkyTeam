@@ -160,7 +160,26 @@
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
   
 	<h3>Historical Analysis</h3>
-	<div id="visualization"></div>
+		<div>
+		<label>State:</label>
+		      <select id="state" onchange="drawVisualization();">
+		        <option value="Johor">Johor</option>
+		        <option value="Kedah">Kedah</option>
+		        <option value="Kelantan">Kelantan</option>
+		        <option value="Melaka">Melaka</option>
+		        <option value="Negeri Sembilan">Negeri Sembilan</option>
+		        <option value="Pahang">Pahang</option>
+		        <option value="Perak">Perak</option>
+		        <option value="Perlis">Perlis</option>
+		        <option value="Pulau Pinang">Pulau Pinang</option>
+		        <option value="Sabah">Sabah</option>
+		        <option value="Sarawak">Sarawak</option>
+		        <option value="Selangor">Selangor</option>
+		        <option value="Terengganu">Terengganu</option>
+		        <option value="Wilayah Persekutuan">Wilayah Persekutuan</option>
+		      </select>
+		 </div>
+		 <div id="visualization" style="width: 800px; height: 400px;"></div>
   </div>
   </div>
 <!-- END OF HISTORICAL ANALYSIS WIDGET -->
@@ -245,14 +264,6 @@
 	<div id="listing">
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results2">
-	
-      <tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/markers/blu-blank.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/markers/blu-blank.png" class="placeIcon" classname="placeIcon">
-        </td><td></td>
-      </tr>
     </tbody>
    </table>
   </div>

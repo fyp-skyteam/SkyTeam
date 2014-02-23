@@ -58,7 +58,7 @@
  #widget4 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  #widget5 { min-width: 300px; min-height: 140px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
  #widget5 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget6 { min-width: 300px; min-height: 140px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+ #widget6 { min-width: 800px; min-height: 600px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
  #widget6 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  html { height: 100% }
  body { height: 100%; margin: 0; padding: 0 }
