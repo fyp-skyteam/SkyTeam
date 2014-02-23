@@ -887,8 +887,24 @@
 	        });
 	      }
 
+	      for (var i = 0; i < 5; i++) { 
+	        if(i%2==0){
+	          
+	          document.getElementById('results2').innerHTML += 
+	            '<tr style="background-color: rgb(255, 255, 255);">'+
+	            '<td>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="clear data" class="style1" value="clear-data"/></td>'+
+	            '<td><img src="assets/markers/blu-blank.png" class="placeIcon" classname="placeIcon"></td>'+
+	            '<td>Test Data 1</td>'+
+	            '</tr>';
+	            
+	        }else{
+	           document.getElementById('results2').innerHTML += 
+	            '<tr style="background-color: rgb(240, 240, 240);">' +
+	            '<td>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="clear data" class="style1" value="clear-data"/></td>'+
+	            '<td><img src="assets/markers/blu-blank.png" class="placeIcon" classname="placeIcon"></td>'+
+	            '<td>Test Data 2</td>'+
+	            '</tr>';    
+	       }
 
-	  
-		      
-		  
+	      }
 </script>
