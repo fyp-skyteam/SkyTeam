@@ -39,7 +39,7 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
 
 <script src="assets/js/classie.js"></script>
-
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 <link rel="stylesheet" href="assets/css/global.css">
 <link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
@@ -48,7 +48,7 @@
 <link rel="shortcut icon" href="../favicon.ico">
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/default.css" />
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/component.css" />
-  
+
 <style>
  #widget1 { min-width: 240px; min-height: 120px; max-height: 500px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
  #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
@@ -67,4 +67,43 @@ $('input[type="checkbox"].style1').checkbox({
        checkedClass: 'icon-check',
        uncheckedClass: 'icon-check-empty'
  });
+      #legend {
+        background: #FFF;
+        margin: 10px;
+        padding: 5px;
+        width: 150px;
+      }
+
+      #legend p {
+        font-weight: bold;
+        margin-top: 3px;
+      }
+
+      #legend div {
+        clear: both;
+      }
+
+      .color {
+        height: 12px;
+        width: 12px;
+        margin-right: 3px;
+        float: left;
+        display: block;
+      }
+
+      .high {
+        color: #F00;
+      }
+
+      .medium {
+        color: #0F0;
+      }
+
+      .low {
+        color: #00F;
+      }
+
+      .high, .medium, .low {
+        font-weight: bold;
+      }
 </style>

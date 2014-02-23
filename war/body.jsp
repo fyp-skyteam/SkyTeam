@@ -154,15 +154,18 @@
 </div>
 <!--END OF POINT OF INTERESTS WIDGET-->
 
-<!-- DATA AND INFORMATION WIDGET -->
+<!-- HISTORICAL ANALYSIS WIDGET -->
   <div class="toggler draggable">
   <div id="widget6" class="ui-corner-all resizable">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
   
 	<h3>Historical Analysis</h3>
+	<div id="visualization"></div>
   </div>
   </div>
-  
+<!-- END OF HISTORICAL ANALYSIS WIDGET -->
+ 
+<!-- RISK CALCULATION WIDGET -->
   <div class="toggler draggable">
   <div id="widget5" class="ui-corner-all resizable">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
@@ -170,15 +173,46 @@
 	<h3>Risk Calculation</h3>
   </div>
   </div>
-  
+<!-- END OF RISK CALCULATION WIDGET -->
+
+<!--  HAZARD MAP WIDGET -->
   <div class="toggler draggable">
   <div id="widget4" class="ui-corner-all resizable">
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
   
 	<h3>Hazard Map</h3>
+	<div id="legendWrapper"></div>
+	<form>
+      <label>Sector </label>
+      <select id="sector">
+        <option value="Flood">Flood</option>
+        <option value="Fire">Fire</option>
+        <option value="Earthquake">Earthquake</option>
+        <option value="Total">Total</option>
+      </select>
+      <label>County</label>
+      <select id="county">
+        <option value="Johor">Johor</option>
+        <option value="Kedah">Kedah</option>
+        <option value="Kelantan">Kelantan</option>
+        <option value="Melaka">Melaka</option>
+        <option value="Negeri Sembilan">Negeri Sembilan</option>
+        <option value="Pahang">Pahang</option>
+        <option value="Perak">Perak</option>
+        <option value="Perlis">Perlis</option>
+        <option value="Pulau Pinang">Pulau Pinang</option>
+        <option value="Sabah">Sabah</option>
+        <option value="Sarawak">Sarawak</option>
+        <option value="Selangor">Selangor</option>
+        <option value="Terengganu">Terengganu</option>
+        <option value="Wilayah Persekutuan">Wilayah Persekutuan</option>
+      </select>
+    </form>
   </div>
   </div>
-  
+<!-- END OF HAZARD MAP WIDGET -->
+
+<!--  DATA AND INFORMATION WIDGET -->
   <div class="toggler draggable">
   <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
@@ -235,10 +269,10 @@
 <div id="keywordField">
   <input id="keyword" type="text" value="">
 </div>
-  
-
+ 
 <div id="map_canvas" style="background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
     </div>
+    
 
 <!-- SEARCH MODAL CONTAINER -->
 <div class="modal fade" id="SearchModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
