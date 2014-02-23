@@ -50,15 +50,15 @@
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/component.css" />
 
 <style>
- #widget1 { min-width: 240px; min-height: 120px; max-height: 500px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+ #widget1 { min-width: 240px; min-height: 120px; max-height: 500px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget2 { min-width: 300px; min-height: 140px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+ #widget2 { min-width: 350px; min-height: 140px; left:850px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget4 { min-width: 300px; min-height: 140px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+ #widget4 { min-width: 300px; min-height: 140px; left:260px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget4 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget5 { min-width: 300px; min-height: 140px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+ #widget5 { min-width: 300px; min-height: 140px; top: 300px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget5 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget6 { min-width: 800px; min-height: 600px; padding: 1.2em; position: relative; background-color: rgba(255,255,255,0.82)}
+ #widget6 { min-width: 800px; min-height: 500px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget6 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  html { height: 100% }
  body { height: 100%; margin: 0; padding: 0 }
