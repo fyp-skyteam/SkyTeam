@@ -321,11 +321,11 @@
 	  var centerMarker;
 	  var autocomplete;
 	  var hostnameRegexp = new RegExp('^https?://.+?/');
-	  var selected;
+	  
 	  
 	  function initialize() {
 	  // marker's longitude and langitude
-
+      
       displayMarkerInfo();
 	    var myOptions = {
 	      zoom: 15,
@@ -494,7 +494,7 @@
 	                     })(marker, i));
 	                     
 
-	                  
+	                  var selected;
 	                  var selectedIcon;
 	                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
 	                       return function() {
@@ -512,8 +512,11 @@
 	                         selectedIcon = marker.getIcon();
 	                         selected = marker;
 	                         
+	                         
 	                         var txt = new String(marker.getIcon());
 	                         marker.setIcon(txt.substring(0,txt.length-4)+"-1.png");
+	                         displaySelectedPOI(selected);
+	                         displaySelectedRisk(selected);
 	                       };
 	                     })(marker, i));
 	                   }
@@ -997,4 +1000,11 @@
 		document.getElementById('maxLossCoverageLimit').value = sliderValue.substring(sepIndex+1, sliderValue.length);
 	});
 	
+	function displaySelectedRisk(selected) {
+    	document.getElementById('selectedRisk').innerHTML = ('<h4>Selected point: <b><u>' + selected.name + '</b></u></h4>' + '<h4>Vulnerability Index: <b><u>' + selected.vIndex + '</b></u></h4>' );
+	}
+	
+	function displaySelectedPOI(selected) {
+	      document.getElementById('selectedPOI').innerHTML = ('<h5>Selected point: <b><u>' + selected.name + '</b></u></h5>');
+	  }
 </script>

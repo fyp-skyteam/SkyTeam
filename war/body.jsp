@@ -81,7 +81,9 @@
     </select>
     
   </div>
+  <div id="selectedPOI"><h5>Please select a point to begin.</h5></div>
     <div id="listing">
+    
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results">
       <tr style="background-color: rgb(240, 240, 240);">
@@ -190,6 +192,7 @@
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
   
 	<h3>Risk Calculation</h3>
+	<div id="selectedRisk"><h5>Please select a point to begin.</h5></div>
   </div>
   </div>
 <!-- END OF RISK CALCULATION WIDGET -->
