@@ -325,6 +325,7 @@
 	  
 	  
 	  function initialize() {
+		  
 	  // marker's longitude and langitude
       
       displayMarkerInfo();
@@ -503,6 +504,7 @@
 	                         displayData(details[i]);
 	                         infowindow2.open(map, marker);
 	                         map.setCenter(marker.position);
+	                         drawTable(marker.position.lat(),marker.position.lng());
 	                         clearMarkers();
 	                         clearResults();
 	                         if (selected) {
@@ -891,6 +893,7 @@
 	    	  
 	      }
 	      google.load('visualization', '1', {packages: ['motionchart']});
+	      google.load('visualization', '1', { packages: ['table'] });
 	      
 	      function drawVisualization() {
 	          var state = 'Johor';  
@@ -1018,4 +1021,21 @@
 	function displaySelectedPOI(selected) {
 	      document.getElementById('selectedPOI').innerHTML = ('<h5>Selected point: <b><u>' + selected.name + '</b></u></h5>');
 	  }
+	
+	//Risk Calculation Table
+      function drawTable(latitude,longitude) {
+        var query = "SELECT 'name','Risk Factor','2006','2007','2008','2009','2010','2011','2012','2013' " +
+        "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
+        "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+        var queryText = encodeURIComponent(query);
+        var gvizQuery = new google.visualization.Query(
+            'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+        gvizQuery.send(function(response) {
+          var table = new google.visualization.Table(
+              document.getElementById('risktable'));
+          table.draw(response.getDataTable(), {
+            showRowNumber: true
+          });
+        });
+      }
 </script>
