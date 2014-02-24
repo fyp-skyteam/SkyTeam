@@ -844,7 +844,7 @@
 	            where: generateWhere(newMin, sector),
 	            polygonOptions: {
 	              fillColor: colors[i],
-	              fillOpacity: 1
+	              fillOpacity: 0.5
 	            }
 	          });
 	        }

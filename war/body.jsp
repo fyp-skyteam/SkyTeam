@@ -215,6 +215,7 @@
       <br />
 	   <label>County</label>
       <select id="county">
+        <option value="">Show All</option>
         <option value="Johor">Johor</option>
         <option value="Kedah">Kedah</option>
         <option value="Kelantan">Kelantan</option>
