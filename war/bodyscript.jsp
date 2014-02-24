@@ -321,7 +321,8 @@
 	  var centerMarker;
 	  var autocomplete;
 	  var hostnameRegexp = new RegExp('^https?://.+?/');
-
+	  var selected;
+	  
 	  function initialize() {
 	  // marker's longitude and langitude
 
@@ -493,7 +494,7 @@
 	                     })(marker, i));
 	                     
 
-	                  var selected;
+	                  
 	                  var selectedIcon;
 	                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
 	                       return function() {

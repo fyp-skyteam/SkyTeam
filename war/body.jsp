@@ -154,8 +154,8 @@
 </div>
 <!--END OF POINT OF INTERESTS WIDGET-->
 
-<!-- HISTORICAL ANALYSIS WIDGET -->
-  <div class="toggler draggable">
+<!-- HISTORICAL ANALYSIS WIDGET (TEMPORARILY NOT DRAGGABLE)-->
+  <div class="toggler">
   <div id="widget6" class="ui-corner-all resizable">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
   
