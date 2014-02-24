@@ -410,7 +410,7 @@
 	    var locations = [
 	                     <%for(int i=0;i<locations.size(); i++) { 
 	                        Location l=locations.get(i);%>
-	                        [<%=l.getLatitude()%>,<%=l.getLongitude()%>,"<%=l.getBuildingName()%>",<%=l.getPremium()%> + "<%=l.getCurrency()%>",<%=(int)datasetMap.get(l.getCSVName())%>,<%=l.getId()%>],
+	                        [<%=l.getLatitude()%>,<%=l.getLongitude()%>,"<%=l.getBuildingName()%>",<%=l.getPremium()%> + "<%=l.getCurrency()%>",<%=(int)datasetMap.get(l.getCSVName())%>,<%=l.getId()%>,<%=l.getVulnerabilityIndex()%>],
 	                     <%}%>
 	                 ];
 	                 
@@ -428,12 +428,11 @@
 	                 
 
 	                 var icons = [
+                     'assets/markers/pink-blank.png',        
 	                   'assets/markers/blu-blank.png',
-	                   'assets/markers/pink-blank.png',
 	                   'assets/markers/yel-blank.png',
 	                   'assets/markers/grn-blank.png',
 	                   'assets/markers/red-blank.png',
-	                   'assets/markers/wht-blank.png',
 	                   'assets/markers/purp-blank.png'
 	                 ];
 	                 var icons_length = icons.length;
@@ -457,7 +456,8 @@
 	                       map: map,
 	                       name: locations[i][2],
 	                       icon: icons[number - 1],
-	                       id: locations[i][5]
+	                       id: locations[i][5],
+	                       vIndex: locations[i][6]
 	                     });
 	                	   if(i%2==0){
 	                             
@@ -501,7 +501,7 @@
 	                         displayData(details[i]);
 	                         infowindow2.open(map, marker);
 	                         map.setCenter(marker.position);
-	                         map.setZoom(15);
+	                         
 	                         clearMarkers();
 	                         clearResults();
 	                         if (selected) {
