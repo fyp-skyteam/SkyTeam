@@ -502,7 +502,6 @@
 	                         displayData(details[i]);
 	                         infowindow2.open(map, marker);
 	                         map.setCenter(marker.position);
-	                         
 	                         clearMarkers();
 	                         clearResults();
 	                         if (selected) {
@@ -556,43 +555,54 @@
 	                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] +
 	                   "<br />" + "<b>Foundation Type:</b> " + array[7] + "<br />" + "<b>Remarks:</b> " + array[8]);
 	       }
-	               
-         var sector = 'Flood';
-         var layer = new google.maps.FusionTablesLayer();
-         updateLayerQuery(layer, sector);
-         layer.setMap(map);
-         createLegend(map, sector);
-         styleLayerBySector(layer, sector);
-         styleMap(map);
-         
-         google.maps.event.addListener(layer, 'click', function(e) {
-             var county = e.row['name'].value;
-
-             var risk = e.row['2013'].value;
-             if (risk > 66) {
-               e.infoWindowHtml = '<p class="high">High Risk!</p>';
-             } else if (risk > 33) {
-               e.infoWindowHtml = '<p class="medium">Medium Risk</p>';
-             } else {
-               e.infoWindowHtml = '<p class="low">Low Risk</p>';
-             }
-           });
-
-           google.maps.event.addDomListener(document.getElementById('sector'),
-               'change', function() {
-                 sector = this.value;
-                 updateLayerQuery(layer, sector);
-                 styleLayerBySector(layer, sector);
-                 updateLegend(sector);
-               });
-
-           google.maps.event.addDomListener(document.getElementById('county'),
-               'change', function() {
-                 var county = this.value;
-                 updateLayerQuery(layer, sector, county);
-               });
 	  }
 	  
+	  var layer;
+	  function displayHazard() {
+		  if (!layer) {
+			  sector = 'Flood';
+			  document.getElementById("hazardSelect").style.display="block";
+		         layer = new google.maps.FusionTablesLayer();
+		         updateLayerQuery(layer, sector);
+		         layer.setMap(map);
+		         createLegend(map, sector);
+		         styleLayerBySector(layer, sector);
+		         styleMap(map);
+		         
+		         google.maps.event.addListener(layer, 'click', function(e) {
+		             var county = e.row['name'].value;
+	
+		             var risk = e.row['2013'].value;
+		             if (risk > 66) {
+		               e.infoWindowHtml = '<p class="high">High Risk!</p>';
+		             } else if (risk > 33) {
+		               e.infoWindowHtml = '<p class="medium">Medium Risk</p>';
+		             } else {
+		               e.infoWindowHtml = '<p class="low">Low Risk</p>';
+		             }
+		           });
+	
+		           google.maps.event.addDomListener(document.getElementById('sector'),
+		               'change', function() {
+		                 sector = this.value;
+		                 updateLayerQuery(layer, sector);
+		                 styleLayerBySector(layer, sector);
+		                 updateLegend(sector);
+		               });
+	
+		           google.maps.event.addDomListener(document.getElementById('county'),
+		               'change', function() {
+		                 var county = this.value;
+		                 updateLayerQuery(layer, sector, county);
+		               });
+		  }
+		  else {
+			  layer.setMap(null);
+			  layer = null;
+			  document.getElementById("legend").remove();
+			  document.getElementById("hazardSelect").style.display="none";
+		  }
+	  }
 	  function tilesLoaded() {
 	    search();
 	    google.maps.event.clearListeners(map, 'tilesloaded');
@@ -872,8 +882,8 @@
 	          map: map,
 	          name: 'Styled Map'
 	        });
-	        map.mapTypes.set('map-style', styledMapType);
-	        map.setMapTypeId('map-style');
+	        //map.mapTypes.set('map-style', styledMapType);
+	        //map.setMapTypeId('map-style');
 	      }
 	      
 	      function displayMarkerInfo() {

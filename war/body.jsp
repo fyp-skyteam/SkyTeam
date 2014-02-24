@@ -83,7 +83,6 @@
   </div>
   <div id="selectedPOI"><h5>Please select a point to begin.</h5></div>
     <div id="listing">
-    
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results">
       <tr style="background-color: rgb(240, 240, 240);">
@@ -203,16 +202,18 @@
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
   
 	<h3>Hazard Map</h3>
-	<div id="legendWrapper"></div>
+	<center><button type="button" class="btn btn-primary" onclick="displayHazard()">Show / Hide Layer</button></center>
+	<div id="hazardSelect" style="display:none">
 	<form>
-      <label>Sector </label>
-      <select id="sector">
+	   <label>Sector </label>
+      <select id="sector" >
         <option value="Flood">Flood</option>
         <option value="Fire">Fire</option>
         <option value="Earthquake">Earthquake</option>
         <option value="Total">Total</option>
       </select>
-      <label>County</label>
+      <br />
+	   <label>County</label>
       <select id="county">
         <option value="Johor">Johor</option>
         <option value="Kedah">Kedah</option>
@@ -228,8 +229,11 @@
         <option value="Selangor">Selangor</option>
         <option value="Terengganu">Terengganu</option>
         <option value="Wilayah Persekutuan">Wilayah Persekutuan</option>
-      </select>
+      </select>      
     </form>
+    </div>
+	<div id="legendWrapper"></div>
+	
   </div>
   </div>
 <!-- END OF HAZARD MAP WIDGET -->
@@ -347,24 +351,4 @@
 </div>
 <!-- END OF UPLOAD MODAL CONTAINER -->
 
-<script>
-
-for (var i = 0; i < 5; i++) {	
-  var results = document.getElementById('results2');
-  var tr = document.createElement('tr');
-  tr.style.backgroundColor = (i% 2 == 0 ? '#F0F0F0' : '#FFFFFF');
-  var iconTd = document.createElement('td');
-  var nameTd = document.createElement('td');
-  var icon = document.createElement('img');
-  icon.src = 'assets/markers/blu-blank.png';
-  icon.setAttribute('class', 'placeIcon');
-  icon.setAttribute('className', 'placeIcon');
-  var name = document.createTextNode("abcd");
-  iconTd.appendChild(icon);
-  nameTd.appendChild(name);
-  tr.appendChild(iconTd);
-  tr.appendChild(nameTd);
-  results.appendChild(tr);
-}
-</script>
 <%@include file="bodyscript.jsp"%>
