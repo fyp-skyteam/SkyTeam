@@ -946,5 +946,54 @@
 	        }
 	      
 	      google.setOnLoadCallback(drawVisualization);
-
+	      
+	//SLIDER SCRIPT      
+	$("#slideBuildingHeight").slider({});
+	$("#slideBuildingHeight").on('slide', function(slideEvt) {
+		var sliderValue = document.getElementById('slideBuildingHeight').value;
+		var sepIndex = sliderValue.indexOf(",")
+		document.getElementById('minHeight').value = sliderValue.substring(0,sepIndex);
+		document.getElementById('maxHeight').value = sliderValue.substring(sepIndex+1, sliderValue.length);
+	});
+	
+	$("#slideYearBuilt").slider({});
+	$("#slideYearBuilt").on('slide', function(slideEvt) {
+		var sliderValue = document.getElementById('slideYearBuilt').value;
+		var sepIndex = sliderValue.indexOf(",")
+		document.getElementById('minYearBuilt').value = sliderValue.substring(0,sepIndex);
+		document.getElementById('maxYearBuilt').value = sliderValue.substring(sepIndex+1, sliderValue.length);
+	});
+	
+	$("#slideCapacity").slider({});
+	$("#slideCapacity").on('slide', function(slideEvt) {
+		var sliderValue = document.getElementById('slideCapacity').value;
+		var sepIndex = sliderValue.indexOf(",")
+		document.getElementById('minCapacity').value = sliderValue.substring(0,sepIndex);
+		document.getElementById('maxCapacity').value = sliderValue.substring(sepIndex+1, sliderValue.length);
+	});
+	
+	$("#slidePremium").slider({});
+	$("#slidePremium").on('slide', function(slideEvt) {
+		var sliderValue = document.getElementById('slidePremium').value;
+		var sepIndex = sliderValue.indexOf(",")
+		document.getElementById('minPremium').value = sliderValue.substring(0,sepIndex);
+		document.getElementById('maxPremium').value = sliderValue.substring(sepIndex+1, sliderValue.length);
+	});
+	
+	$("#slidePropertyCoverageLimit").slider({});
+	$("#slidePropertyCoverageLimit").on('slide', function(slideEvt) {
+		var sliderValue = document.getElementById('slidePropertyCoverageLimit').value;
+		var sepIndex = sliderValue.indexOf(",")
+		document.getElementById('minPropertyCoverageLimit').value = sliderValue.substring(0,sepIndex);
+		document.getElementById('maxPropertyCoverageLimit').value = sliderValue.substring(sepIndex+1, sliderValue.length);
+	});
+	
+	$("#slideLossCoverageLimit").slider({});
+	$("#slideLossCoverageLimit").on('slide', function(slideEvt) {
+		var sliderValue = document.getElementById('slideLossCoverageLimit').value;
+		var sepIndex = sliderValue.indexOf(",")
+		document.getElementById('minLossCoverageLimit').value = sliderValue.substring(0,sepIndex);
+		document.getElementById('maxLossCoverageLimit').value = sliderValue.substring(sepIndex+1, sliderValue.length);
+	});
+	
 </script>

@@ -38,6 +38,8 @@
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script> 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
 
+
+<script src="assets/js/bootstrap-slider.js"></script>
 <script src="assets/js/classie.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
@@ -48,6 +50,8 @@
 <link rel="shortcut icon" href="../favicon.ico">
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/default.css" />
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/component.css" />
+<link rel="stylesheet" type="text/css" href="assets/css/slider.css" />
+
 
 <style>
  #widget1 { min-width: 240px; min-height: 120px; max-height: 500px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}

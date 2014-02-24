@@ -15,226 +15,181 @@ double minLossCoverageLimit = locationDAO.getMinimumLossCoverageLimit(locations)
 ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locations);
 %>
 <form name="search_location" method="post" action="search">
-
-<table>
-<tr>
-</tr>
-    <tr>
-        <td>
+    <div class="row">
+        <div class="col-md-5">
             Building Type:
-        </td>
-        <td>
+        </div>
+        <div class="col-md-7">
            <%for (int i=0;i<buildingTypes.size();i++){%>
             <input name="buildingType" type="checkbox" value="<%=buildingTypes.get(i)%>" checked/>
             <%=buildingTypes.get(i)%>
         <%}%>
-        </td>
-    </tr>
-    <tr>
-        <td>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-5">
             Building Name (containing):
-        </td>
-        <td>
+        </div>
+		<div class="col-md-7">
             <input name="buildingName" type="text" placeholder="e.g. Shenton House">
-        </td>
-    </tr>
-    <tr>
-  		 <td>
+        </div>
+    </div>
+    <br/>
+    
+    <div class="row">
+  		 <div class="col-md-5">
             Building Height:
-        </td>
-        <td>
-            Min:
-            <select name="minHeight">
-            <% double roundMaxHeight = (int)maxHeight/10*10 + 10;
-            double roundMinHeight = (int)minHeight/10*10;
-            for(double i=roundMinHeight;i<=roundMaxHeight; i+=10){ %>
-              <option value="<%=i%>"><%=i %></option>
-            <%} %>
-            </select>   
-        </td>
-        <td>
-          Max:
-            <select name="maxHeight">
-            <%  for(double i=roundMinHeight;i<=roundMaxHeight; i+=10){ %>             
-	<%if(i==roundMaxHeight){%>
-	<option value="<%=i%>" selected><%=i %></option>
-	<%}else{%>
-	<option value="<%=i%>"><%=i %></option>
-	<%} 			
-	} %>
-            </select>  
-        </td>
-        </tr>
-    <tr>
-      <td>
+        </div>
+        <div class="col-md-7">
+        	<div class="row">
+	        	<div class="col-md-2">
+	        		<b><%=(int)minHeight/10*10%></b>
+	        	</div>
+	        	<div class="col-md-7">
+	        		 <input id="slideBuildingHeight" type="text" class="span2" value=""  style="width:180px;" data-slider-min="<%=(int)minHeight/10*10%>" data-slider-max="<%=(int)maxHeight/10*10 + 10 %>" data-slider-step="10" data-slider-value="[<%=(int)minHeight/10*10%>,<%=(int)maxHeight/10*10 + 10 %>]">
+	        	</div>
+		        <div class="col-md-3" style="text-align:right;">
+		             <b><%=(int)maxHeight/10*10 + 10 %></b>
+		        </div>
+	            <input type="hidden" id="minHeight" name="minHeight" value="<%=(int)minHeight/10*10%>">
+				<input type="hidden" id="maxHeight" name="maxHeight" value="<%=(int)maxHeight/10*10 + 10 %>">
+        	</div>
+        </div>    
+    </div>
+    <br/>
+    
+    <div class="row">
+      <div class="col-md-5">
             Year Built:
-        </td>
-        <td>
-            From:
-            <select name="minYearBuilt">
-            <% int roundMinYearBuilt = minYearBuilt/10*10;
-              int roundMaxYearBuilt = maxYearBuilt/10*10+10;
-            for(int i=roundMinYearBuilt;i<=roundMaxYearBuilt; i+=10){ %>
-              <option value="<%=i%>"><%=i %></option>
-            <%} %>
-            </select>   
-        </td>
-        <td>
-          To:
-            <select name="maxYearBuilt">
-            <%   for(int i=roundMinYearBuilt;i<=roundMaxYearBuilt; i+=10){ %>
-              <%if(i==roundMaxYearBuilt){%>
-		 <option value="<%=i%>" selected><%=i %></option>
-	<%}else{%>
-		<option value="<%=i%>"><%=i %></option>
-	<%} 
-            } %>
-            </select>  
-        </td>
-    </tr>
-    <tr>
-      <td>
+      </div>
+      <div class="col-md-7">
+        	<div class="row">
+        		<div class="col-md-2">
+        			<b><%=minYearBuilt/10*10%></b>
+        		</div>
+        		<div class="col-md-7">
+        			<input id="slideYearBuilt" type="text" class="span2" value=""  style="width:180px;" data-slider-min="<%=minYearBuilt/10*10%>" data-slider-max="<%=maxYearBuilt/10*10+10 %>" data-slider-step="10" data-slider-value="[<%=minYearBuilt/10*10%>,<%=maxYearBuilt/10*10+10 %>]">
+        		</div>
+        		<div class="col-md-3" style="text-align:right;">
+        			<b><%=maxYearBuilt/10*10+10 %></b>
+        		</div>
+        	</div>
+        	<input type="hidden" id="minYearBuilt" name="minYearBuilt" value="<%=minYearBuilt/10*10%>">
+			<input type="hidden" id="maxYearBuilt" name="maxYearBuilt" value="<%=maxYearBuilt/10*10+10 %>">
+		</div>
+    </div>
+   <br/>
+    <div class="row">
+      <div class="col-md-5">
             Capacity:
-        </td>
-        <td>
-            From:
-            <select name="minCapacity">
-            <%int roundMaxCapacity = maxCapacity/10*10+10;
-            int roundMinCapacity = minCapacity/10*10;
-            for(int i=roundMinCapacity;i<=roundMaxCapacity; i+=10){ %>
-              <option value="<%=i%>"><%=i %></option>
-            <%} %>
-            </select>   
-        </td>
-        <td>
-          To:
-            <select name="maxCapacity">
-            <%   for(int i=roundMinCapacity;i<=roundMaxCapacity; i+=10){ %>
-              <%if(i==roundMaxCapacity){%>
-		 <option value="<%=i%>" selected><%=i %></option>
-	<%}else{%>
-		<option value="<%=i%>"><%=i %></option>
-	<%} 
-            } %>
-            </select>  
-        </td>
-    </tr>
-    <tr>
-        <td>
+        </div>
+       <div class="col-md-7">
+       	<div class="row">
+       	  <div class="col-md-2">
+            <b><%=minCapacity/10*10%></b>
+          </div><div class="col-md-7">
+        	<input id="slideCapacity" type="text" class="span2" value=""  style="width:180px;" data-slider-min="<%=minCapacity/10*10%>" data-slider-max="<%=maxCapacity/10*10+10 %>" data-slider-step="10" data-slider-value="[<%=minCapacity/10*10%>,<%=maxCapacity/10*10+10 %>]">
+          </div><div class="col-md-3" style="text-align:right;">  
+            <b><%=maxCapacity/10*10+10 %></b>
+          </div>
+         </div>
+            <input type="hidden" id="minCapacity" name="minCapacity" value="<%=minCapacity/10*10%>">
+			<input type="hidden" id="maxCapacity" name="maxCapacity" value="<%=maxCapacity/10*10+10%>">
+		 </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-5">
             Premium:
-        </td>
-        <td>
-            Min:
-            <select name="minPremium">
-            <% double roundMaxPremium = (int)maxPremium/100*100 + 100;
-            double roundMinPremium = (int)minPremium/100*100;
-            for(double i=roundMinPremium;i<=roundMaxPremium; i+=100){ %>
-              <option value="<%=i%>"><%=i %></option>
-            <%} %>
-            </select>   
-        </td>
-        <td>
-          Max:
-            <select name="maxPremium">
-            <%  for(double i=roundMinPremium;i<=roundMaxPremium; i+=100){ %>
-              <%if(i==roundMaxPremium){%>
-		 <option value="<%=i%>" selected><%=i %></option>
-	<%}else{%>
-		<option value="<%=i%>"><%=i %></option>
-	<%} 
-            } %>
-            </select>  
-        
-        </td>
-    </tr>
-    <tr>
-        <td>
+       </div>
+       <div class="col-md-7">
+       		<div class="row">
+       		 <div class="col-md-2">
+	            <b><%=(int)minPremium/100*100%></b>
+	         </div><div class="col-md-7">
+	        	<input id="slidePremium" type="text" class="span2" value=""  style="width:180px;" data-slider-min="<%=(int)minPremium/100*100%>" data-slider-max="<%=(int)maxPremium/100*100 + 100 %>" data-slider-step="100" data-slider-value="[<%=(int)minPremium/100*100%>,<%=(int)maxPremium/100*100 + 100 %>]">
+	         </div><div class="col-md-3" style="text-align:right;">   
+	            <b><%=(int)maxPremium/100*100 + 100 %></b>
+	         </div>
+	        </div>
+	            <input type="hidden" id="minPremium" name="minPremium" value="<%=(int)minPremium/100*100%>">
+				<input type="hidden" id="maxPremium" name="maxPremium" value="<%=(int)maxPremium/100*100 + 100%>">
+	    </div>
+	</div>
+	<br/>
+    <div class="row">
+        <div class="col-md-5">
             Property Coverage Limit:
-        </td>
-        <td>
-            Min:
-            <select name="minPropertyCoverageLimit">
-            <% double roundMaxPropertyCoverageLimit = (int)maxPropertyCoverageLimit/100*100 + 100;
-            double roundMinPropertyCoverageLimit = (int)minPropertyCoverageLimit/100*100;
-            for(double i=roundMinPropertyCoverageLimit;i<=roundMaxPropertyCoverageLimit; i+=100){ %>
-              <option value="<%=i%>"><%=i %></option>
-            <%} %>
-            </select>   
-        </td>
-        <td>
-          Max:
-            <select name="maxPropertyCoverageLimit">
-            <%  for(double i=roundMinPropertyCoverageLimit;i<=roundMaxPropertyCoverageLimit; i+=100){ %>
-              <%if(i==roundMaxPropertyCoverageLimit){%>
-		 <option value="<%=i%>" selected><%=i %></option>
-	<%}else{%>
-		<option value="<%=i%>"><%=i %></option>
-	<%} 
-            } %>
-            </select>  
-        
-        </td>
-    </tr>
-    <tr>
-        <td>
+        </div>
+        <div class="col-md-7">
+          <div class="row">
+           <div class="col-md-2">
+            <b><%=(int)minPropertyCoverageLimit/100*100%></b>
+           </div><div class="col-md-7">
+        	<input id="slidePropertyCoverageLimit" type="text" class="span2" value=""  style="width:180px;" data-slider-min="<%=(int)minPropertyCoverageLimit/100*100%>" data-slider-max="<%=(int)maxPropertyCoverageLimit/100*100 + 100 %>" data-slider-step="100" data-slider-value="[<%=(int)minPropertyCoverageLimit/100*100%>,<%=(int)maxPropertyCoverageLimit/100*100 + 100 %>]">
+           </div><div class="col-md-3" style="text-align:right;"> 
+            <b><%=(int)maxPropertyCoverageLimit/100*100 + 100 %></b>
+           </div>
+          </div>
+            <input type="hidden" id="minPropertyCoverageLimit" name="minPropertyCoverageLimit" value="<%=(int)minPropertyCoverageLimit/100*100%>">
+			<input type="hidden" id="maxPropertyCoverageLimit" name="maxPropertyCoverageLimit" value="<%=(int)maxPropertyCoverageLimit/100*100 + 100%>">
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-5">
             Loss Coverage Limit:
-        </td>
-        <td>
-            Min:
-            <select name="minLossCoverageLimit">
-            <% double roundMaxLossCoverageLimit = (int)maxLossCoverageLimit/100*100 + 100;
-            double roundMinLossCoverageLimit = (int)minLossCoverageLimit/100*100;
-            for(double i=roundMinLossCoverageLimit;i<=roundMaxLossCoverageLimit; i+=100){ %>
-              <option value="<%=i%>"><%=i %></option>
-            <%} %>
-            </select>   
-        </td>
-        <td>
-          Max:
-            <select name="maxLossCoverageLimit">
-            <%  for(double i=roundMinLossCoverageLimit;i<=roundMaxLossCoverageLimit; i+=100){ %>
-              <%if(i==roundMaxLossCoverageLimit){%>
-		 <option value="<%=i%>" selected><%=i %></option>
-	<%}else{%>
-		<option value="<%=i%>"><%=i %></option>
-	<%} 
-            } %>
-            </select>  
-        </td>
-    </tr>
-     <tr>
-        <td>
+        </div>
+        <div class="col-md-7">
+          <div class="row">
+           <div class="col-md-2">
+            <b><%=(int)minLossCoverageLimit/100*100%></b>
+           </div><div class="col-md-7">
+        	<input id="slideLossCoverageLimit" type="text" class="span2" value=""  style="width:180px;" data-slider-min="<%=(int)minLossCoverageLimit/100*100%>" data-slider-max="<%=(int)maxLossCoverageLimit/100*100 + 100 %>" data-slider-step="100" data-slider-value="[<%=(int)minLossCoverageLimit/100*100%>,<%=(int)maxLossCoverageLimit/100*100 + 100 %>]">
+           </div><div class="col-md-3" style="text-align:right;">
+			<b><%=(int)maxLossCoverageLimit/100*100 + 100 %></b>
+		   </div>
+		  </div> 
+            <input type="hidden" id="minLossCoverageLimit" name="minLossCoverageLimit" value="<%=(int)minLossCoverageLimit/100*100%>">
+			<input type="hidden" id="maxLossCoverageLimit" name="maxLossCoverageLimit" value="<%=(int)maxLossCoverageLimit/100*100 + 100%>">
+         </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-5">
             Foundation Type:
-        </td>
-        <td>
+        </div>
+       <div class="col-md-7">
            <%for (int i=0;i<foundationTypes.size();i++){%>
             <input name="foundationType" type="checkbox" value="<%=foundationTypes.get(i)%>" checked/>
             <%=foundationTypes.get(i)%>
         <%}%>
-
-        </td>
-    </tr>
-    <tr>
-        <td>
+       </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-5">
             Dataset:
-        </td>
-        <td>
+        </div>
+        <div class="col-md-7">
            <%for (int i=0;i<userDatasetList.size();i++){%>
             <input name="datasets" type="checkbox" value="<%=userDatasetList.get(i)%>" checked/>
             <%=userDatasetList.get(i)%>
         <%}%>
 
-        </td>
-    </tr>
-     <tr>
-        <td>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-5">
             Remark (containing):
-        </td>
-        <td>
+        </div>
+        <div class="col-md-7">
             <input name="remark" type="text" placeholder="e.g. pad foundation type">
-        </td>
-    </tr>
-</table>  
+        </div>
+    </div>
+    <br/>
     <input type="hidden" name="username" value="<%=username%>"/>
     <input type="submit" class="btn btn-primary" value="Filter"/>
     <button type="reset" class="btn btn-default" value="Reset">Reset</button>
