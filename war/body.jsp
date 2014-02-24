@@ -157,7 +157,7 @@
 
 <!-- HISTORICAL ANALYSIS WIDGET (TEMPORARILY NOT DRAGGABLE)-->
   <div class="toggler">
-  <div id="widget6" class="ui-corner-all resizable">
+  <div id="widget6" class="ui-corner-all resizable" style="z-index: 10000;"">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
   
 	<h3>Historical Analysis</h3>
