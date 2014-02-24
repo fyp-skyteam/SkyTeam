@@ -317,6 +317,7 @@
      
 	var map, places, iw;
 	  var markers = [];
+	  var searchmarkers = [];
 	  var searchTimeout;
 	  var centerMarker;
 	  var autocomplete;
@@ -350,12 +351,12 @@
 	    google.maps.event.addListener(searchBox, 'places_changed', function() {
 	      var places = searchBox.getPlaces();
 
-	      for (var i = 0, marker; marker = markers[i]; i++) {
-	        marker.setMap(null);
+	      for (var i = 0, searchmarker; searchmarker = searchmarkers[i]; i++) {
+	        searchmarker.setMap(null);
 	      }
 
 	      // For each place, get the icon, place name, and location.
-	      markers = [];
+	      searchmarkers = [];
 	      var bounds = new google.maps.LatLngBounds();
 	      for (var i = 0, place; place = places[i]; i++) {
 	        var image = {
@@ -367,14 +368,14 @@
 	        };
 
 	        // Create a marker for each place.
-	        var marker = new google.maps.Marker({
+	        var searchmarker = new google.maps.Marker({
 	          map: map,
 	          icon: image,
 	          title: place.name,
 	          position: place.geometry.location
 	        });
 
-	        markers.push(marker);
+	        searchmarkers.push(marker);
 
 	        bounds.extend(place.geometry.location);
 	      }
