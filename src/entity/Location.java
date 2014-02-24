@@ -21,6 +21,9 @@ public class Location implements java.io.Serializable{
     private String currency;
     private String foundationType;
     private String remarks;
+    private String masonry;
+    private String roof;
+    private double vulnerabilityIndex;
     private String csvName;
     private String username;
     
@@ -30,7 +33,8 @@ public class Location implements java.io.Serializable{
  
 	
         public Location(double latitude, double longitude, String buildingName, String buildingType, double height, int yearBuilt, int capacity,
-                double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks, String csvName, String username){
+                double premium, double propertyCoverageLimit, double lossCoverageLimit, String currency, String foundationType, String remarks, 
+                String masonry, String roof, double vulnerabilityIndex, String csvName, String username){
             this.latitude=latitude;
             this.longitude=longitude;
             this.buildingName=buildingName;
@@ -44,6 +48,9 @@ public class Location implements java.io.Serializable{
             this.currency=currency;
             this.foundationType=foundationType;
             this.remarks=remarks;
+            this.masonry=masonry;
+            this.roof=roof;
+            this.vulnerabilityIndex=vulnerabilityIndex;
             this.csvName=csvName;
             this.username = username;
         }
@@ -104,6 +111,18 @@ public class Location implements java.io.Serializable{
         return remarks;
     }
     
+    public String getMasonry(){
+    	return masonry;
+    }
+    
+    public String getRoof(){
+    	return roof;
+    }
+    
+    public double getVulnerabilityIndex(){
+    	return vulnerabilityIndex;
+    }
+    
     public String getCSVName(){
         return csvName;
     }
@@ -130,6 +149,6 @@ public class Location implements java.io.Serializable{
         
         @Override
         public String toString(){
-            return "building name=" + buildingName + ", file=" + csvName + ", username=" + username;
+            return "building name=" + buildingName + ", dataset=" + csvName + ", username=" + username;
         }
 }

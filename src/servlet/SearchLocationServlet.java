@@ -32,6 +32,8 @@ public class SearchLocationServlet extends HttpServlet{
 		String strMinLossCovLimit = request.getParameter("minLossCoverageLimit");
 		String strMaxLossCovLimit = request.getParameter("maxLossCoverageLimit");
 		String[] foundationTypes = request.getParameterValues("foundationType");
+		String[] masonryTypes = request.getParameterValues("masonryType");
+		String[] roofTypes = request.getParameterValues("roofType");
 		String[] datasets = request.getParameterValues("datasets");
 		String remark = request.getParameter("remark");		
 		
@@ -86,6 +88,8 @@ public class SearchLocationServlet extends HttpServlet{
 		locations = locationDAO.retrieveByPropertyCoverageLimit(minProCovLimit, maxProCovLimit,locations);
 		locations = locationDAO.retrieveByLossCoverageLimit(minLossCovLimit, maxLossCovLimit,locations);
 		locations = locationDAO.retrieveByFoundationType(foundationTypes,locations);
+		locations = locationDAO.retrieveByMasonryType(masonryTypes,locations);
+		locations = locationDAO.retrieveByRoofType(roofTypes,locations);
 		locations = locationDAO.retrieveByDataset(datasets,locations);
 		locations = locationDAO.retrieveByRemark(remark,locations);
 		

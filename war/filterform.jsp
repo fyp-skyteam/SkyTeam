@@ -13,6 +13,8 @@ double minPropertyCoverageLimit = locationDAO.getMinimumPropertyCoverageLimit(lo
 double maxLossCoverageLimit = locationDAO.getMaximumLossCoverageLimit(locations);
 double minLossCoverageLimit = locationDAO.getMinimumLossCoverageLimit(locations);
 ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locations);
+ArrayList<String> masonryTypes = locationDAO.retrieveAllMasonryTypes(locations);
+ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 %>
 <form name="search_location" method="post" action="search">
     <div class="row">
@@ -166,6 +168,31 @@ ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locat
             <%=foundationTypes.get(i)%>
         <%}%>
        </div>
+    </div>
+    <br/>
+     <div class="row">
+        <div class="col-md-5">
+            Masonry Type:
+        </div>
+        <div class="col-md-7">
+           <%for (int i=0;i<masonryTypes.size();i++){%>
+            <input name="masonryType" type="checkbox" value="<%=masonryTypes.get(i)%>" checked/>
+            <%=masonryTypes.get(i)%>
+        <%}%>
+
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-md-5">
+            Roof Type:
+         </div>
+        <div class="col-md-7">
+           <%for (int i=0;i<roofTypes.size();i++){%>
+            <input name="roofType" type="checkbox" value="<%=roofTypes.get(i)%>" checked/>
+            <%=roofTypes.get(i)%>
+        <%}%>
+
+        </div>
     </div>
     <br/>
     <div class="row">

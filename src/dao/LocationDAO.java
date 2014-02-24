@@ -83,10 +83,38 @@ public class LocationDAO implements java.io.Serializable{
 				duplicateFoundationTypes.add(l.getFoundationType());
 			}
 			Set set = new HashSet(duplicateFoundationTypes);
-			ArrayList uniqueFoundationtypes = new ArrayList(set);
-			return uniqueFoundationtypes;
+			ArrayList uniqueFoundationTypes = new ArrayList(set);
+			return uniqueFoundationTypes;
 		}else{
 			return duplicateFoundationTypes;
+		}	
+	}
+	
+	public ArrayList<String> retrieveAllMasonryTypes(List<Location> locations){
+		ArrayList<String> duplicateMasonryTypes = new ArrayList<String>();
+		if(locations.size()!=0 || locations!=null){
+			for(Location l: locations){
+				duplicateMasonryTypes.add(l.getMasonry());
+			}
+			Set set = new HashSet(duplicateMasonryTypes);
+			ArrayList uniqueMasonryTypes = new ArrayList(set);
+			return uniqueMasonryTypes;
+		}else{
+			return duplicateMasonryTypes;
+		}	
+	}
+	
+	public ArrayList<String> retrieveAllRoofTypes(List<Location> locations){
+		ArrayList<String> duplicateRoofTypes = new ArrayList<String>();
+		if(locations.size()!=0 || locations!=null){
+			for(Location l: locations){
+				duplicateRoofTypes.add(l.getRoof());
+			}
+			Set set = new HashSet(duplicateRoofTypes);
+			ArrayList uniqueRoofTypes = new ArrayList(set);
+			return uniqueRoofTypes;
+		}else{
+			return duplicateRoofTypes;
 		}	
 	}
 	
@@ -275,6 +303,32 @@ public class LocationDAO implements java.io.Serializable{
 		for(Location l: locations){
 			for(String str: foundationTypes){
 				if(l.getFoundationType().equals(str)){
+					output.add(l);
+					break;
+				}
+			}	
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByMasonryType(String[] masonryTypes, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			for(String str: masonryTypes){
+				if(l.getMasonry().equals(str)){
+					output.add(l);
+					break;
+				}
+			}	
+		}
+		return output;
+	}
+	
+	public List<Location> retrieveByRoofType(String[] roofTypes, List<Location> locations){
+		List<Location> output = new ArrayList<Location>();
+		for(Location l: locations){
+			for(String str: roofTypes){
+				if(l.getRoof().equals(str)){
 					output.add(l);
 					break;
 				}
