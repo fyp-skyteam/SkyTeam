@@ -498,33 +498,43 @@
 
 	                  var selected;
 	                  var selectedIcon;
+	                  var currentMarker;
 	                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
 	                       return function() {
-	                    	   infowindow.close();
-	                         displayData(details[i]);
-	                         infowindow2.open(map, marker);
-	                         map.setCenter(marker.position);
-	                         search(marker.position);
-	                         typeSelect = document.getElementById('type');
-		                 	    typeSelect.onchange = function() {
-		                 		  map.setZoom(15);
-		                 		  map.setCenter(marker.position);
-		                 	      search(marker.position,'true');
-		                 	    };
-	                         drawTable(marker.position.lat(),marker.position.lng(),marker.vIndex,2013);
-
-	                         if (selected) {
-	                        	 selected.setIcon(selectedIcon);
-	                         }
-	                         
-	                         selectedIcon = marker.getIcon();
-	                         selected = marker;
-	                         
-	                         
-	                         var txt = new String(marker.getIcon());
-	                         marker.setIcon(txt.substring(0,txt.length-4)+"-1.png");
-	                         displaySelectedPOI(selected);
-	                         displaySelectedRisk(selected);
+	                    	infowindow.close();   
+	                    	infowindow2.open(map, marker);
+	                       	if(currentMarker!=marker){  
+		                    	 currentMarker = marker;  
+		                    	 infowindow.close();
+				       		     document.getElementById('noResultMsg').innerHTML = "";
+		                         displayData(details[i]);
+		                         
+		                         //map.setCenter(marker.position);
+		                         document.getElementById('type').value="";
+		                 	     clearResults();
+		                	     clearMarkers();
+	
+		                         typeSelect = document.getElementById('type');
+			                 	    typeSelect.onchange = function() {
+			                 		  //map.setCenter(marker.position);
+			                 	      search(marker.position,'true');
+			                 	      
+			                 	    };
+		                         drawTable(marker.position.lat(),marker.position.lng(),marker.vIndex,2013);
+	
+		                         if (selected) {
+		                        	 selected.setIcon(selectedIcon);
+		                         }
+		                         
+		                         selectedIcon = marker.getIcon();
+		                         selected = marker;
+		                         
+		                         
+		                         var txt = new String(marker.getIcon());
+		                         marker.setIcon(txt.substring(0,txt.length-4)+"-1.png");
+		                         displaySelectedPOI(selected);
+		                         displaySelectedRisk(selected);
+	                      	 }
 	                       };
 	                     })(marker, i));
 	                   }
@@ -669,6 +679,8 @@
 	    }
 	    
 	    var bounds = new google.maps.LatLngBounds();
+        bounds.extend(markerPosition);
+
 	    places.search(search, function(results, status) {
 	    	if(results.length==0 && typeIsSelected =="true"){
 	  	    	  displayNoResultMsg();
@@ -685,7 +697,6 @@
 	          google.maps.event.addListener(markers[i], 'click', getDetails(results[i], i));
 	          window.setTimeout(dropMarker(i), i * 100);
 	          
-
 		        bounds.extend(results[i].geometry.location);
 
 		        addResult(results[i], i);	          
