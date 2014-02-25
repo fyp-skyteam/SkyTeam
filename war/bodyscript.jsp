@@ -503,7 +503,7 @@
 	                         displayData(details[i]);
 	                         infowindow2.open(map, marker);
 	                         map.setCenter(marker.position);
-	                         drawTable(marker.position.lat(),marker.position.lng(),2013);
+	                         drawTable(marker.position.lat(),marker.position.lng(),marker.vIndex,2013);
 	                         clearMarkers();
 	                         clearResults();
 	                         if (selected) {
@@ -1022,8 +1022,10 @@
 	  }
 	
 	//Risk Calculation Table
-      function drawTable(latitude,longitude,year) {
+      function drawTable(latitude,longitude,vIndex,year) {
+    	  document.getElementById('dropdownRisk').innerHTML = ('<select class="selectpicker"onchange="drawTable('+latitude+','+longitude+','+vIndex+',this.value)"><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option></select>');
     	  var number = (9 - (2013 - year));
+    	  
         var query = "SELECT 'name','Risk Factor','2006','2007','2008','2009','2010','2011','2012','2013' " +
         "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
         "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
@@ -1032,7 +1034,9 @@
             'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
         
         gvizQuery.send(function(response) {
-          
+          var table = new google.visualization.Table(
+              document.getElementById('risktable'));
+          table.draw(response.getDataTable());
           new Morris.Donut({
               element: 'donut-example',
               data: [
@@ -1041,6 +1045,9 @@
                 {label: response.getDataTable().getValue(2,1), value: response.getDataTable().getValue(2,number)}
               ]
             });
+          var total = response.getDataTable().getValue(3,number)/10 * vIndex;
+          total = +total.toFixed(2);
+          document.getElementById('totalRisk').innerHTML = ('<h4>Total Risk: <b><u>' + total + '</b></u></h4>');
         }); 
         
 	        
