@@ -156,7 +156,8 @@
 			} else if ( selectedEffect === "size" ) {
 				options = { to: { width: 200, height: 60 } };
 			}
-	
+		    clearResults();
+		    clearMarkers();
 			// run the effect
 			$( "#widget1" ).hide( 'scale', options, 500 );
 	    });
@@ -667,7 +668,7 @@
 	      search.bounds = map.getBounds();
 	    }
 	    
-	    
+	    var bounds = new google.maps.LatLngBounds();
 	    places.search(search, function(results, status) {
 	    	if(results.length==0 && typeIsSelected =="true"){
 	  	    	  displayNoResultMsg();
@@ -683,8 +684,17 @@
 	          }));
 	          google.maps.event.addListener(markers[i], 'click', getDetails(results[i], i));
 	          window.setTimeout(dropMarker(i), i * 100);
-	          addResult(results[i], i);
+	          
+
+		        bounds.extend(results[i].geometry.location);
+
+		        addResult(results[i], i);	          
+
+	          
+	          
 	        }
+		    map.fitBounds(bounds);
+
 	      }
 	    });
 	  }
