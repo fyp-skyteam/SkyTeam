@@ -145,7 +145,9 @@
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
   
 	<h3>Hazard Map</h3>
+	<br />
 	<center><button type="button" class="btn btn-primary" onclick="displayHazard()">Show / Hide Layer</button></center>
+	<br />
 	<div id="hazardSelect" style="display:none">
 	<form>
 	   <label>Sector </label>

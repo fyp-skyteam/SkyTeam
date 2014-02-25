@@ -568,25 +568,29 @@
 	  var layer;
 	  function displayHazard() {
 		  if (!layer) {
-			  sector = 'Flood';
+			  var sector = 'Flood';
+			  var year = '2013';
 			  document.getElementById("hazardSelect").style.display="block";
 		         layer = new google.maps.FusionTablesLayer();
 		         updateLayerQuery(layer, sector);
 		         layer.setMap(map);
 		         createLegend(map, sector);
-		         styleLayerBySector(layer, sector);
+		         styleLayerBySector(layer, sector,year);
 		         styleMap(map);
 		         
 		         google.maps.event.addListener(layer, 'click', function(e) {
 		             var county = e.row['name'].value;
-	
-		             var risk = e.row['2013'].value;
+	 
+		             var risk = e.row[year].value;
 		             if (risk > 66) {
-		               e.infoWindowHtml = '<p class="high">High Risk!</p>';
+		               e.infoWindowHtml = '<p class="high">High Risk!</p>'
+		               + e.row['Risk Factor'].value + ": " +  e.row[year].value;
 		             } else if (risk > 33) {
-		               e.infoWindowHtml = '<p class="medium">Medium Risk</p>';
+		               e.infoWindowHtml = '<p class="medium">Medium Risk</p>'
+		            	   + e.row['Risk Factor'].value + ": " + e.row[year].value;
 		             } else {
-		               e.infoWindowHtml = '<p class="low">Low Risk</p>';
+		               e.infoWindowHtml = '<p class="low">Low Risk</p>'
+		            	   + e.row['Risk Factor'].value + ": " + e.row[year].value;
 		             }
 		           });
 	
@@ -594,9 +598,17 @@
 		               'change', function() {
 		                 sector = this.value;
 		                 updateLayerQuery(layer, sector);
-		                 styleLayerBySector(layer, sector);
+		                 styleLayerBySector(layer, sector,year);
 		                 updateLegend(sector);
 		               });
+		           
+		           google.maps.event.addDomListener(document.getElementById('year'),
+		                   'change', function() {
+		                     year = this.value;
+		                     updateLayerQuery(layer, sector);
+		                     styleLayerBySector(layer, sector,year);
+		                     updateLegend(sector);
+		                   });
 	
 		           google.maps.event.addDomListener(document.getElementById('county'),
 		               'change', function() {
@@ -847,7 +859,7 @@
 	        legendContent(legendWrapper, sector);
 	      }
 
-	      function styleLayerBySector(layer, sector) {
+	      function styleLayerBySector(layer, sector,year) {
 	        var layerStyle = LAYER_STYLES[sector];
 	        var colors = layerStyle.colors;
 	        var minNum = layerStyle.min;
@@ -858,7 +870,7 @@
 	        for (var i = 0; i < colors.length; i++) {
 	          var newMin = minNum + step * i;
 	          styles.push({
-	            where: generateWhere(newMin, sector),
+	            where: generateWhere(newMin, sector,year),
 	            polygonOptions: {
 	              fillColor: colors[i],
 	              fillOpacity: 0.5
@@ -868,11 +880,11 @@
 	        layer.set('styles', styles);
 	      }
 
-	      function generateWhere(minNum, sector) {
+	      function generateWhere(minNum, sector,year) {
 	        var whereClause = new Array();
 	        whereClause.push("'Risk Factor' = '");
 	        whereClause.push(sector);
-	        whereClause.push("' AND '2013' >= ");
+	        whereClause.push("' AND '"+year+"' >= ");
 	        whereClause.push(minNum);
 	        return whereClause.join('');
 	      }
