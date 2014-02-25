@@ -65,7 +65,7 @@
   <div id="widget1" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
 
-    <h3>POI</h3>
+    <h3>Points of Interest</h3>
     <br/>
     <div id="controls">
     
@@ -85,68 +85,8 @@
     <div id="listing">
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results">
-      <tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_1.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_2.png" class="placeIcon" classname="placeIcon">
-        </td><td></td>
-      </tr><tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_3.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_4.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_5.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr>
-      <tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_6.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr>
-      <tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_7.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr>
-      <tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_8.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr>
-      <tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_9.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr>
-      <tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_10.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr>
-      <tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_11.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_12.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_13.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_14.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_15.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_16.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(240, 240, 240);">
-        <td><img src="assets/icons/number_17.png" class="placeIcon" classname="placeIcon"></td>
-        <td></td>
-      </tr><tr style="background-color: rgb(255, 255, 255);">
-        <td><img src="assets/icons/number_18.png" class="placeIcon" classname="placeIcon"></td><td></td>
-      </tr><tr style="background-color: rgb(240, 240, 240);"><td><img src="assets/icons/number_19.png" class="placeIcon" classname="placeIcon"></td><td></td>
-      </tr><tr style="background-color: rgb(255, 255, 255);"><td><img src="assets/icons/number_20.png" class="placeIcon" classname="placeIcon"></td><td></td>
-      </tr>
+    <div id="noResultMsg"></div>
+
     </tbody>
     </table>
   </div>

@@ -453,7 +453,7 @@
 	                   // Add the markers and infowindows to the map
 	                   for (var i = 0; i < locations.length; i++) {
 	                	   var number = locations[i][4]
-	                     marker = new google.maps.Marker({
+	                       marker = new google.maps.Marker({
 	                       position: new google.maps.LatLng(locations[i][0], locations[i][1]),
 	                       map: map,
 	                       name: locations[i][2],
@@ -503,9 +503,15 @@
 	                         displayData(details[i]);
 	                         infowindow2.open(map, marker);
 	                         map.setCenter(marker.position);
+	                         search(marker.position);
+	                         typeSelect = document.getElementById('type');
+		                 	    typeSelect.onchange = function() {
+		                 		  map.setZoom(15);
+		                 		  map.setCenter(marker.position);
+		                 	      search(marker.position,'true');
+		                 	    };
 	                         drawTable(marker.position.lat(),marker.position.lng(),marker.vIndex,2013);
-	                         clearMarkers();
-	                         clearResults();
+
 	                         if (selected) {
 	                        	 selected.setIcon(selectedIcon);
 	                         }
@@ -606,24 +612,23 @@
 		  }
 	  }
 	  function tilesLoaded() {
-	    search();
 	    google.maps.event.clearListeners(map, 'tilesloaded');
 	    google.maps.event.addListener(map, 'zoom_changed', searchIfRankByProminence);
 	    google.maps.event.addListener(map, 'dragend', search);
 	  }
 	  
 
-	  function search() {
+	  function search(markerPosition, typeIsSelected) {
 	    clearResults();
 	    clearMarkers();
 
 	    if (searchTimeout) {
 	      window.clearTimeout(searchTimeout);
 	    }
-	    searchTimeout = window.setTimeout(reallyDoSearch, 500);
+	    searchTimeout = window.setTimeout(reallyDoSearch(markerPosition,typeIsSelected), 500);
 	  }
 	  
-	  function reallyDoSearch() {      
+	  function reallyDoSearch(markerPosition,typeIsSelected) {      
 	    var type = document.getElementById('type').value;
 	    var keyword = document.getElementById('keyword').value;
 	    var rankBy = 'distance';
@@ -640,7 +645,7 @@
 	    
 	    if (rankBy == 'distance' && (search.types || search.keyword)) {
 	      search.rankBy = google.maps.places.RankBy.DISTANCE;
-	      search.location = map.getCenter();
+	      search.location = markerPosition;
 	      centerMarker = new google.maps.Marker({
 	        position: search.location,
 	        map: map
@@ -650,9 +655,14 @@
 	      search.bounds = map.getBounds();
 	    }
 	    
+	    
 	    places.search(search, function(results, status) {
+	    	if(results.length==0 && typeIsSelected =="true"){
+	  	    	  displayNoResultMsg();
+	    	}
 	      if (status == google.maps.places.PlacesServiceStatus.OK) {
 	        for (var i = 0; i < results.length; i++) {
+	        	document.getElementById('noResultMsg').innerHTML = "";
 	          var icon = 'assets/icons/number_' + (i+1) + '.png';
 	          markers.push(new google.maps.Marker({
 	            position: results[i].geometry.location,
@@ -666,6 +676,11 @@
 	      }
 	    });
 	  }
+	  
+	  function displayNoResultMsg(){
+		  document.getElementById('noResultMsg').innerHTML = "No nearby POIs found in the area";
+	  }
+	  
 
 	  function clearMarkers() {
 	    for (var i = 0; i < markers.length; i++) {
