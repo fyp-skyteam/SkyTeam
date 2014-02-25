@@ -38,6 +38,9 @@
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script> 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
 
+<link rel="stylesheet" href="assets/morris/morris.css">
+<script src="assets/morris/morris.min.js"></script>
+<script src="assets/morris/raphael-min.js"></script>
 
 <script src="assets/js/bootstrap-slider.js"></script>
 <script src="assets/js/classie.js"></script>

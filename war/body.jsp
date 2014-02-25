@@ -193,6 +193,7 @@
 	<h3>Risk Calculation</h3>
 	<div id="selectedRisk"><h5>Please select a point to begin.</h5></div>
 	<div id="risktable"></div>
+	<div id="donut-example"></div>
   </div>
   </div>
 <!-- END OF RISK CALCULATION WIDGET -->

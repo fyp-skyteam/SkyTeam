@@ -1,0 +1,113 @@
+<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Google Visualization API Sample</title>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript"
+        src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<link href="https://developers.google.com/fusiontables/docs/samples/style/default.css"
+        rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+    google.load('visualization', '1', {packages: ['motionchart']});
+	
+    function drawVisualization() {
+    	var state = 'Johor';	
+         if (document.getElementById('state').value) {
+           state = document.getElementById('state').value;
+         }
+    	 var query = "SELECT 'name','2006','2007','2008','2009','2010','2011','2012','2013','Risk Factor' " +
+         "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg where 'name'='"+ state + "'";
+         var queryText = encodeURIComponent(query);
+         var gvizQuery = new google.visualization.Query(
+             'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+         gvizQuery.send(function(response) {
+             var numRows = response.getDataTable().getNumberOfRows();
+             var data = new google.visualization.DataTable();
+             data.addColumn('string', 'name');
+             data.addColumn('date', 'Date');
+             data.addColumn('number', 'Flood Risk');
+             data.addColumn('number', 'Fire Risk');
+             data.addColumn('number', 'Earthquake Risk');
+             data.addColumn('number', 'Total Risk');
+             
+             var array = new Array(4);
+			  for (var j = 0; j < 4; j++) {
+			    array[j] = new Array(8);
+			  }
+             
+       	     for (var i = 0; i < numRows; i++) {
+    			var name = response.getDataTable().getValue(i,0);	
+    			var riskType = response.getDataTable().getValue(i,9);
+    					
+    			if(riskType=="Flood"){
+    				for(var k=0;k<8;k++){
+    					array[0][k] = response.getDataTable().getValue(i,k+1);
+    				}
+    			}
+    			if(riskType=="Fire"){
+    				for(var k=0;k<8;k++){
+    					array[1][k] = response.getDataTable().getValue(i,k+1);
+    				}
+    			}
+    			if(riskType=="Earthquake"){
+    				for(var k=0;k<8;k++){
+    					array[2][k] = response.getDataTable().getValue(i,k+1);
+    				}
+    			}
+    			if(riskType=="Total"){
+    				for(var k=0;k<8;k++){
+    					array[3][k] = response.getDataTable().getValue(i,k+1);
+    				}
+    			}
+       	     }	
+   			data.addRows([
+                 [name, new Date(2006,11,31), array[0][0],array[1][0],array[2][0],array[3][0]],
+                 [name, new Date(2007,11,31), array[0][1],array[1][1],array[2][1],array[3][1]],
+                 [name, new Date(2008,11,31), array[0][2],array[1][2],array[2][2],array[3][2]],
+                 [name, new Date(2009,11,31), array[0][3],array[1][3],array[2][3],array[3][3]],
+                 [name, new Date(2010,11,31), array[0][4],array[1][4],array[2][4],array[3][4]],
+                 [name, new Date(2011,11,31), array[0][5],array[1][5],array[2][5],array[3][5]],
+                 [name, new Date(2012,11,31), array[0][6],array[1][6],array[2][6],array[3][6]],
+                 [name, new Date(2013,11,31), array[0][7],array[1][7],array[2][7],array[3][7]],
+   			 ]);	
+     
+       	  var motionchart = new google.visualization.MotionChart(
+      	          document.getElementById('visualization'));
+      	      motionchart.draw(data, {'width': 800, 'height': 400});
+           });
+         
+    }
+    
+    google.setOnLoadCallback(drawVisualization);
+  </script>
+</head>
+<body style="font-family: Arial;border: 0 none;">
+<div>
+<label>State:</label>
+      <select id="state" onchange="drawVisualization();">
+        <option value="Johor">Johor</option>
+        <option value="Kedah">Kedah</option>
+        <option value="Kelantan">Kelantan</option>
+        <option value="Melaka">Melaka</option>
+        <option value="Negeri Sembilan">Negeri Sembilan</option>
+        <option value="Pahang">Pahang</option>
+        <option value="Perak">Perak</option>
+        <option value="Perlis">Perlis</option>
+        <option value="Pulau Pinang">Pulau Pinang</option>
+        <option value="Sabah">Sabah</option>
+        <option value="Sarawak">Sarawak</option>
+        <option value="Selangor">Selangor</option>
+        <option value="Terengganu">Terengganu</option>
+        <option value="Wilayah Persekutuan">Wilayah Persekutuan</option>
+      </select>
+ </div>
+<div id="visualization" style="width: 800px; height: 400px;"></div>
+</body>
+</html>
+​
