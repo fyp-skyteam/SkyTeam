@@ -1052,17 +1052,24 @@
           /*var table = new google.visualization.Table(
               document.getElementById('risktable'));
           table.draw(response.getDataTable());*/
+          var total = response.getDataTable().getValue(0,number) + response.getDataTable().getValue(1,number) + response.getDataTable().getValue(2,number);
+          var percent1 = response.getDataTable().getValue(0,number) / total * 100;
+          percent1 = +percent1.toFixed(0);
+        	var percent2 = response.getDataTable().getValue(1,number) / total * 100;
+        	percent2 = +percent2.toFixed(0);
+          var percent3 = response.getDataTable().getValue(2,number) / total * 100;
+          percent3 = +percent3.toFixed(0);
           new Morris.Donut({
               element: 'donut-example',
               data: [
-                {label: response.getDataTable().getValue(0,1), value: response.getDataTable().getValue(0,number)},
-                {label: response.getDataTable().getValue(1,1), value: response.getDataTable().getValue(1,number)},
-                {label: response.getDataTable().getValue(2,1), value: response.getDataTable().getValue(2,number)}
+                {label: response.getDataTable().getValue(0,1)+" ("+percent1+"%)", value: response.getDataTable().getValue(0,number)},
+                {label: response.getDataTable().getValue(1,1)+" ("+percent2+"%)", value: response.getDataTable().getValue(1,number)},
+                {label: response.getDataTable().getValue(2,1)+" ("+percent3+"%)", value: response.getDataTable().getValue(2,number)}
               ]
             });
           var total = response.getDataTable().getValue(3,number)/10 * vIndex;
           total = +total.toFixed(2);
-          document.getElementById('totalRisk').innerHTML = ('<h4>Total Risk: <b><u>' + total + '</b></u></h4>');
+          document.getElementById('totalRisk').innerHTML = ('<h4>Average Risk in '+year+': <b><u>' + total + '</b></u></h4>');
         }); 
         
 	        
