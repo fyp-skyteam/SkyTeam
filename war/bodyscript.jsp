@@ -466,7 +466,7 @@
 	                             
                        document.getElementById('results2').innerHTML += 
                             '<tr style="background-color: rgb(255, 255, 255);">'+
-                            '<td>&nbsp;&nbsp;&nbsp;<input type="checkbox" checked="checked" onClick="'+ toggleData(locations[i][5])+'"/></td>'+
+                            '<td>&nbsp;&nbsp;&nbsp;</td>'+
                             '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
                             '<td>'+ locations[i][2] + '</td>'
                             '</tr>';
@@ -475,7 +475,7 @@
                         else{
                            document.getElementById('results2').innerHTML += 
                         	   '<tr style="background-color: rgb(240, 240, 240);">'+
-                               '<td>&nbsp;&nbsp;&nbsp;<input type="checkbox" checked="checked" onChange="'+ toggleData(locations[i][5])+'"/></td>'+
+                               '<td>&nbsp;&nbsp;&nbsp;</td>'+
                                '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
                                '<td>'+ locations[i][2] + '</td>'
                                '</tr>'; 

@@ -1,8 +1,8 @@
 <div style="text-align:center">
 <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4" style="margin: auto;">
+  <a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
 	<a href="#" style="text-decoration:none;" id="button1">Points of Interest</a>
-	<a href="#" style="text-decoration:none;" id="button2">Data Information</a>
-	<a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
+	<a href="#" style="text-decoration:none;" id="button2">Data & Information</a>
 	<a href="#" style="text-decoration:none;" id="button4">Hazard Map</a>
 	<a href="#" style="text-decoration:none;" id="button5">Risk Calculation</a>
 	<a href="#" style="text-decoration:none;" id="button6">Historical Analysis</a>
