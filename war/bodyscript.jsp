@@ -1034,9 +1034,9 @@
             'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
         
         gvizQuery.send(function(response) {
-          var table = new google.visualization.Table(
+          /*var table = new google.visualization.Table(
               document.getElementById('risktable'));
-          table.draw(response.getDataTable());
+          table.draw(response.getDataTable());*/
           new Morris.Donut({
               element: 'donut-example',
               data: [
