@@ -323,7 +323,6 @@
 	  var autocomplete;
 	  var hostnameRegexp = new RegExp('^https?://.+?/');
 	  
-	  
 	  function initialize() {
 		  
 	  // marker's longitude and langitude
@@ -504,7 +503,7 @@
 	                         displayData(details[i]);
 	                         infowindow2.open(map, marker);
 	                         map.setCenter(marker.position);
-	                         drawTable(marker.position.lat(),marker.position.lng());
+	                         drawTable(marker.position.lat(),marker.position.lng(),2013);
 	                         clearMarkers();
 	                         clearResults();
 	                         if (selected) {
@@ -1023,19 +1022,27 @@
 	  }
 	
 	//Risk Calculation Table
-      function drawTable(latitude,longitude) {
+      function drawTable(latitude,longitude,year) {
+    	  var number = (9 - (2013 - year));
         var query = "SELECT 'name','Risk Factor','2006','2007','2008','2009','2010','2011','2012','2013' " +
         "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
         "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
         var queryText = encodeURIComponent(query);
         var gvizQuery = new google.visualization.Query(
             'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+        
         gvizQuery.send(function(response) {
-          var table = new google.visualization.Table(
-              document.getElementById('risktable'));
-          table.draw(response.getDataTable(), {
-            showRowNumber: true
-          });
-        });
+          
+          new Morris.Donut({
+              element: 'donut-example',
+              data: [
+                {label: response.getDataTable().getValue(0,1), value: response.getDataTable().getValue(0,number)},
+                {label: response.getDataTable().getValue(1,1), value: response.getDataTable().getValue(1,number)},
+                {label: response.getDataTable().getValue(2,1), value: response.getDataTable().getValue(2,number)}
+              ]
+            });
+        }); 
+        
+	        
       }
 </script>
