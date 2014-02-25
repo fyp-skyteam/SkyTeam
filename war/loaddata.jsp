@@ -1,6 +1,5 @@
 <!-- JAVA INITIALIZATION -->
 <%
-int a = 12345;
 User user = (User) session.getAttribute("authenticated.user");
 String username = user.getUsername();
 String errorMsg=(String)request.getParameter("locationErrors");

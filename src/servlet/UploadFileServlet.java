@@ -107,6 +107,6 @@ public class UploadFileServlet extends HttpServlet{
             e.printStackTrace();
         }
         out.close();
-        out.println("end");
+        out.println("end upload");
 	}	
 }
