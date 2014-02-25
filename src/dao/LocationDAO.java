@@ -120,158 +120,207 @@ public class LocationDAO implements java.io.Serializable{
 	
 	public double getMaximumHeight(List<Location> locations){
 		double output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getBuildingHeight();
-			for(Location l: locations){
-				if(l.getBuildingHeight()>output){
-					output = l.getBuildingHeight();
+		try{
+			if(!locations.isEmpty() || locations!=null){
+				output = locations.get(0).getBuildingHeight();
+				for(Location l: locations){
+					if(l.getBuildingHeight()>output){
+						output = l.getBuildingHeight();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	public double getMinimumHeight(List<Location> locations){
 		double output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getBuildingHeight();
-			for(Location l: locations){
-				if(l.getBuildingHeight()<output){
-					output = l.getBuildingHeight();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getBuildingHeight();
+				for(Location l: locations){
+					if(l.getBuildingHeight()<output){
+						output = l.getBuildingHeight();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	public double getMaximumPremium(List<Location> locations){
 		double output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getPremium();
-			for(Location l: locations){
-				if(l.getPremium()>output){
-					output = l.getPremium();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getPremium();
+				for(Location l: locations){
+					if(l.getPremium()>output){
+						output = l.getPremium();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	public double getMinimumPremium(List<Location> locations){
 		double output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getPremium();
-			for(Location l: locations){
-				if(l.getPremium()<output){
-					output = l.getPremium();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getPremium();
+				for(Location l: locations){
+					if(l.getPremium()<output){
+						output = l.getPremium();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	public double getMaximumPropertyCoverageLimit(List<Location> locations){
 		double output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getPropertyCoverageLimit();
-			for(Location l: locations){
-				if(l.getPropertyCoverageLimit()>output){
-					output = l.getPropertyCoverageLimit();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getPropertyCoverageLimit();
+				for(Location l: locations){
+					if(l.getPropertyCoverageLimit()>output){
+						output = l.getPropertyCoverageLimit();
+					}
 				}
 			}
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
 		}
-		return output;
+		
 	}
 	
 	public double getMinimumPropertyCoverageLimit(List<Location> locations){
 		double output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getPropertyCoverageLimit();
-			for(Location l: locations){
-				if(l.getPropertyCoverageLimit()<output){
-					output = l.getPropertyCoverageLimit();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getPropertyCoverageLimit();
+				for(Location l: locations){
+					if(l.getPropertyCoverageLimit()<output){
+						output = l.getPropertyCoverageLimit();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	public double getMaximumLossCoverageLimit(List<Location> locations){
 		double output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getLossCoverageLimit();
-			for(Location l: locations){
-				if(l.getLossCoverageLimit()>output){
-					output = l.getLossCoverageLimit();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getLossCoverageLimit();
+				for(Location l: locations){
+					if(l.getLossCoverageLimit()>output){
+						output = l.getLossCoverageLimit();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}		
 	}
 	
 	public double getMinimumLossCoverageLimit(List<Location> locations){
 		double output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getLossCoverageLimit();
-			for(Location l: locations){
-				if(l.getLossCoverageLimit()<output){
-					output = l.getLossCoverageLimit();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getLossCoverageLimit();
+				for(Location l: locations){
+					if(l.getLossCoverageLimit()<output){
+						output = l.getLossCoverageLimit();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	public int getMaximumCapacity(List<Location> locations){
 		int output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getCapacity();
-			for(Location l: locations){
-				if(l.getCapacity()>output){
-					output = l.getCapacity();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getCapacity();
+				for(Location l: locations){
+					if(l.getCapacity()>output){
+						output = l.getCapacity();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	public int getMinimumCapacity(List<Location> locations){
 		int output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getCapacity();
-			for(Location l: locations){
-				if(l.getCapacity()<output){
-					output = l.getCapacity();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getCapacity();
+				for(Location l: locations){
+					if(l.getCapacity()<output){
+						output = l.getCapacity();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}		
 	}
 	
 	public int getMaximumYearBuilt(List<Location> locations){
 		int output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getYearBuilt();
-			for(Location l: locations){
-				if(l.getYearBuilt()>output){
-					output = l.getYearBuilt();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getYearBuilt();
+				for(Location l: locations){
+					if(l.getYearBuilt()>output){
+						output = l.getYearBuilt();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	public int getMinimumYearBuilt(List<Location> locations){
 		int output = 0;
-		if(locations.size()!=0 || locations!=null){
-			output = locations.get(1).getYearBuilt();
-			for(Location l: locations){
-				if(l.getYearBuilt()<output){
-					output = l.getYearBuilt();
+		try{
+			if(locations.size()!=0 || locations!=null){
+				output = locations.get(0).getYearBuilt();
+				for(Location l: locations){
+					if(l.getYearBuilt()<output){
+						output = l.getYearBuilt();
+					}
 				}
 			}
-		}
-		return output;
+			return output;
+		}catch(IndexOutOfBoundsException e){
+			return output;
+		}	
 	}
 	
 	/**
@@ -437,8 +486,10 @@ public class LocationDAO implements java.io.Serializable{
 		Objectify ofy = OfyService.getOfy();
 		Query<Location> q = ofy.query(Location.class);
 		q.filter("username ==", username);
-		for(Location location: q){
-			output.add(location);
+		if(q!=null){
+			for(Location location: q){
+				output.add(location);
+			}
 		}
 		return output;
 	}

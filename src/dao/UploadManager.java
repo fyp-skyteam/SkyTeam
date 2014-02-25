@@ -6,8 +6,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.zip.ZipInputStream;
 import java.util.Calendar;
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Query;
@@ -103,7 +105,7 @@ public class UploadManager {
             String roof = data[13].trim();
             ArrayList<String> locationErrorStr = getLocationErrorStr(locations,latitudeStr, longitudeStr, buildingName, 
                    buildingType,buildingHeightStr, yearBuiltStr,capacityStr,premiumStr, propertyCoverageLimitStr,
-                  lossCoverageLimitStr, foundationType, masonry, roof);
+                  lossCoverageLimitStr, foundationType, masonry, roof, username);
             if(locationErrorStr.isEmpty()){
                 double latitude = Double.parseDouble(latitudeStr);
                 double longitude = Double.parseDouble(longitudeStr);
@@ -180,11 +182,14 @@ public class UploadManager {
     
     public ArrayList<String> getLocationErrorStr(ArrayList<Location> locations,String latitudeStr, String longitudeStr, String buildingName, String buildingType,String buildingHeightStr,
                                String yearBuiltStr,String capacityStr, String premiumStr, String propertyCoverageLimitStr,
-                               String lossCoverageLimitStr, String foundationType, String masonry, String roof){ 
+                               String lossCoverageLimitStr, String foundationType, String masonry, String roof, String username){ 
 		ArrayList<String> locationErrorStr = new ArrayList<String>();
         if(!invalidDoubleStr(latitudeStr)&&!invalidDoubleStr(longitudeStr)){
             if(duplicateLocation(locations, latitudeStr, longitudeStr)){
-                locationErrorStr.add("duplicate latitude and longitude");
+                locationErrorStr.add("duplicate latitude and longitude in the same uploading dataset");
+            }
+            if(duplicateLocationAcrossDatasets(username, latitudeStr, longitudeStr)){
+                locationErrorStr.add("duplicate latitude and longitude across your uploaded datasets");
             }
         }
         if(latitudeStr.isEmpty()){
@@ -387,6 +392,20 @@ public class UploadManager {
     public boolean duplicateLocation(ArrayList<Location> locations, String latitudeStr, String longitudeStr){
         double latitude = Double.parseDouble(latitudeStr);
         double longitude = Double.parseDouble(longitudeStr);
+        for(int i=0;i<locations.size();i++){
+            Location l = locations.get(i);
+            if(latitude==l.getLatitude() && longitude==l.getLongitude()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean duplicateLocationAcrossDatasets(String username, String latitudeStr, String longitudeStr){
+        double latitude = Double.parseDouble(latitudeStr);
+        double longitude = Double.parseDouble(longitudeStr);
+        LocationDAO locationDAO = new LocationDAO();
+        List<Location> locations = locationDAO.retrieveByUsername(username);
         for(int i=0;i<locations.size();i++){
             Location l = locations.get(i);
             if(latitude==l.getLatitude() && longitude==l.getLongitude()){

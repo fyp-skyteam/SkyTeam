@@ -35,21 +35,24 @@ List<Location> locations = new ArrayList<Location>();
 List<Location> searchResults = (List<Location>)session.getAttribute("locationSearchResult");
 if(searchResults==null || searchResults.isEmpty()){
    //ADD ERROR THAT SAYS NO RESULTS FOUND
- // if (locationDAO.retrieveByUsername(username) != null ) {
+  if (locationDAO.retrieveByUsername(username) != null ) {
 	 locations.addAll(locationDAO.retrieveByUsername(username));
-  //}
-  //if (locationDAO.retrieveByUsername("admin") != null) {
+  }
+  if (locationDAO.retrieveByUsername("admin") != null) {
 	 locations.addAll(locationDAO.retrieveByUsername("admin"));
-	//} 
+  } 
 }
 else {
   locations = searchResults;
 }
 ArrayList<String> userDatasetList = new ArrayList<String>();
 if (locationDAO.retrieveByUsername(username) != null ) {
-userDatasetList = locationDAO.getDatasetListByUsername(username);
+	userDatasetList = locationDAO.getDatasetListByUsername(username);
 }
-userDatasetList.add("system location dataset");
+/**
+if(locationDAO.retrieveByUsername("admin")!=null || !locationDAO.retrieveByUsername("admin").isEmpty()){
+	userDatasetList.add("system location dataset");	
+}*/
 HashMap<String,Integer> datasetMap = new HashMap<String,Integer>();
 for(int i=0;i<userDatasetList.size();i++){
 	if(!datasetMap.containsKey(userDatasetList.get(i))){
