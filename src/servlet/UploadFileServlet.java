@@ -60,6 +60,7 @@ public class UploadFileServlet extends HttpServlet{
             //out.println(currency);
             //out.println(clearUserData);
             //out.println(username);
+            ArrayList<Location> allLocations = new ArrayList<Location>();
             if(clearUserData){
             	locationDAO.removeUserLocations(username);  
             } 
@@ -73,12 +74,14 @@ public class UploadFileServlet extends HttpServlet{
                     //}        
                     ArrayList<Location> locations = uploadManager.convertDataToLocations(dataset,datasetName,currency,username);
                     locationDAO.addLocations(locations);
+                    allLocations.addAll(locations);
             }           
             HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();  
             
             if(!locationErrors.isEmpty()){      
                 //out.println("test error");
-                String errorMsg="";
+                String errorMsg = "<strong>You have successuflly uploaded " + allLocations.size() + " building locations on the map</strong></br>";
+                errorMsg += "<strong>Warning! The following building locations have not been uploaded due to the following errors:</strong></br>";
                 //HashMap<String,ArrayList<String>> locationErrors = (HashMap<String,ArrayList<String>>)request.getAttribute("locationErrors");
                 //ArrayList<String> fileErrors = (ArrayList<String>)request.getAttribute("fileErrors");
                
@@ -101,7 +104,8 @@ public class UploadFileServlet extends HttpServlet{
                 RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp?locationErrors="+errorMsg);
                dispatcher.forward(request, response);
             }else{
-               response.sendRedirect("welcome.jsp");
+            	RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp?locationErrors="+"<strong>You have successuflly uploaded " + allLocations.size() + " building locations on the map</strong>");
+                dispatcher.forward(request, response);
             }                     
         }catch(Exception e){
             e.printStackTrace();

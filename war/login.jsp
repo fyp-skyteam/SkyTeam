@@ -55,10 +55,7 @@ if(username==null){
         <input type="text" name="username" value="<%=username %>" class="form-control" placeholder="Email address" autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password">
         <br/>
-        <label class="checkbox">
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        <br/>
+     
         <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
         
         
@@ -71,3 +68,4 @@ if(username==null){
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
+
