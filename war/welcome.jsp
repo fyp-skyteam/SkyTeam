@@ -1146,7 +1146,7 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 		                    	 currentMarker = marker;  
 		                    	 infowindow.close();
 				       		     document.getElementById('noResultMsg').innerHTML = "";
-		                         displayData(details[i]);
+		                         displayData(details[i],marker.position.lat(),marker.position.lng(),marker.vIndex);
 		                         
 		                         //map.setCenter(marker.position);
 		                         document.getElementById('type').value="";
@@ -1206,14 +1206,15 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 	                   }
 	                  
 	                   //function to display all available information of the point
-	                   function displayData(array) {
+	                   function displayData(array,latitude,longitude,vIndex) {
+	                	    var riskData = getRisk(latitude,longitude,vIndex,2013);
 	                      infowindow2.setContent(
 	                   "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
 	                   "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
 	                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
 	                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
 	                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-	                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"');\" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />");
+	                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+riskData[0]+"','"+riskData[1]+"','"+riskData[2]+"');\" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />");
 	       }
 	  }
 	  
@@ -1776,23 +1777,26 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 	        
       }
 	
-    //Comparison Values
+    //Comparison Functionalities
       function getRisk(latitude,longitude,vIndex,year) {
-    	  var array = [];
+    	  var array = new Array();
         var number = (9 - (2013 - year));
         
         var query = "SELECT 'name','Risk Factor','2006','2007','2008','2009','2010','2011','2012','2013' " +
         "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
         "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
         var queryText = encodeURIComponent(query);
-        var gvizQuery1 = new google.visualization.Query(
+        var gvizQuery = new google.visualization.Query(
             'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
         
-        gvizQuery1.send(function(response) {
-         array.push(response.getDataTable().getValue(0,number));
-         array.push(response.getDataTable().getValue(1,number));
-         array.push(response.getDataTable().getValue(2,number));   
+        gvizQuery.send(function(response) {
+         array[0] = response.getDataTable().getValue(0,number);
+         array[1] = response.getDataTable().getValue(1,number);
+         array[2] = response.getDataTable().getValue(2,number);   
+         
         });
+
+        return array;
     }
     
     function showCompareAdd() {
@@ -1803,7 +1807,7 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
         document.getElementById('compareAdd').style.display = "none";
     }
     
-    function addComparison(string)
+    function addComparison(name,string1,string2,string3)
     {
     	var table = document.getElementById("comparisonTable");
       {
@@ -1814,11 +1818,11 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
       var cell3 = row.insertCell(2);
       var cell4 = row.insertCell(3);
       var cell5 = row.insertCell(4);
-      cell1.innerHTML = string;
-      cell2.innerHTML = "42.39";
-      cell3.innerHTML = "20.33";
-      cell4.innerHTML = "10.44";
-      cell5.innerHTML = "16.33";
+      cell1.innerHTML = name;
+      cell2.innerHTML = string1;
+      cell3.innerHTML = string2;
+      cell4.innerHTML = string3;
+      cell5.innerHTML = "Total";
       }
     }
     
