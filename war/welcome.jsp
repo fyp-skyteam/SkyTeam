@@ -85,6 +85,7 @@ for(int i=0;i<userDatasetList.size();i++){
 	<a href="#" style="text-decoration:none;" id="button4">Hazard Map</a>
 	<a href="#" style="text-decoration:none;" id="button5">Risk Calculation</a>
 	<a href="#" style="text-decoration:none;" id="button6">Historical Analysis</a>
+  <a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#ComparisonModal">Comparison</a>
 	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:20px;">
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
@@ -117,7 +118,9 @@ for(int i=0;i<userDatasetList.size();i++){
          </li> 
       </div><!--/.nav-collapse -->
     </div>
- <%if (errorMsg != null) {%><div class="alert alert-danger alert-dismissable" style="z-index:1; position:absolute; width:100%">
+<div class="alert alert-success alert-dismissable" id="compareAdd" style="z-index:1; display:none; position:absolute; width:50%; margin-left:auto; margin-right:auto; left:0; right:0">
+<button type="button" class="close" onclick="hideCompareAdd()">&times;</button><center>Selection has been added to Comparison</center></div>
+ <%if (errorMsg != null) {%><div class="alert alert-danger alert-dismissable" style="z-index:1; position:absolute; width: 50%; margin-left:auto; margin-right:auto; left:0; right:0">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
   <%=errorMsg%>
 </div><%}%>
@@ -609,6 +612,30 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
   </div>
 </div>
 <!-- END OF UPLOAD MODAL CONTAINER -->
+
+<!-- COMPARISON MODAL CONTAINER -->
+<div class="modal fade" id="ComparisonModal" tabindex="-1" role="dialog" aria-labelledby="ComparisonModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id=ComparisonModalLabel">Comparison</h4>
+      </div>
+      <div class="modal-body">
+	      <table id="comparisonTable" border="1" style="table-layout: fixed; width:100%">
+	      <tr>
+		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Name</font></th>
+		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Earthquake</font></th>
+		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Flood</font></th>
+		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Fire</font></th>
+		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Total</font></th>
+	      </tr>
+	      </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END OF COMPARISON MODAL CONTAINER -->
 
 <script>
   var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
@@ -1186,7 +1213,7 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 	                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
 	                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
 	                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-	                   "<br />" + "<b>Dataset:</b> " + array[12] );
+	                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"');\" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />");
 	       }
 	  }
 	  
@@ -1748,6 +1775,91 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
         
 	        
       }
+	
+    //Comparison Values
+      function getRisk(latitude,longitude,vIndex,year) {
+    	  var array = [];
+        var number = (9 - (2013 - year));
+        
+        var query = "SELECT 'name','Risk Factor','2006','2007','2008','2009','2010','2011','2012','2013' " +
+        "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
+        "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+        var queryText = encodeURIComponent(query);
+        var gvizQuery1 = new google.visualization.Query(
+            'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+        
+        gvizQuery1.send(function(response) {
+         array.push(response.getDataTable().getValue(0,number));
+         array.push(response.getDataTable().getValue(1,number));
+         array.push(response.getDataTable().getValue(2,number));   
+        });
+    }
+    
+    function showCompareAdd() {
+    	  document.getElementById('compareAdd').style.display = "block";
+    }
+    
+    function hideCompareAdd() {
+        document.getElementById('compareAdd').style.display = "none";
+    }
+    
+    function addComparison(string)
+    {
+    	var table = document.getElementById("comparisonTable");
+      {
+    	var rowCount = table.rows.length;
+      var row = table.insertRow(rowCount);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      var cell5 = row.insertCell(4);
+      cell1.innerHTML = string;
+      cell2.innerHTML = "42.39";
+      cell3.innerHTML = "20.33";
+      cell4.innerHTML = "10.44";
+      cell5.innerHTML = "16.33";
+      }
+    }
+    
+    function deleteComparison(number)
+    {
+    	document.getElementById("comparisonTable").deleteRow(number);
+    }
+    
+    function identifyTable() {
+    	var tdCount = $('#comparisonTable tr:eq(1) td').length,
+        trCount = $('#comparisonTable tr').length;
+
+	    for (var i = 2; i < tdCount; i++) {
+	        var $td = $('#comparisonTable tr:eq(2) td:eq(' + i + ')'),
+	            highest = 0,
+	            lowest = 9e99;
+	
+	        for (var j = 3; j < trCount; j++) {
+	            $td = $td.add('#comparisonTable tr:eq(' + j + ') td:eq(' + i + ')');
+	        }
+	        
+	        $td.each(function(i, el){
+	            var $el = $(el);
+	            if (i > 0) {
+	                var val = $el.text();
+	                if (val > highest) {
+	                    highest = val;
+	                    $td.removeClass('high');
+	                    $el.addClass('high');
+	                }
+	                if (val < lowest) {
+	                    lowest = val;
+	                    $td.removeClass('low');
+	                    $el.addClass('low');
+	                }
+	            }
+	        });
+	    }
+    }
 </script>
+
+
 </body>
 </html>
