@@ -1,0 +1,268 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <title>Fire Risk Map</title>
+
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript"
+        src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<link href="https://developers.google.com/fusiontables/docs/samples/style/default.css"
+        rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+      #map-canvas {
+        width: 100%;
+      }
+
+      #visualization {
+        float: left;
+      }
+
+      #legend {
+        background: #FFF;
+        margin: 10px;
+        padding: 5px;
+        width: 150px;
+      }
+
+      #legend p {
+        font-weight: bold;
+        margin-top: 3px;
+      }
+
+      #legend div {
+        clear: both;
+      }
+
+      .color {
+        height: 12px;
+        width: 12px;
+        margin-right: 3px;
+        float: left;
+        display: block;
+      }
+
+      .high {
+        color: #F00;
+      }
+
+      .medium {
+        color: #0F0;
+      }
+
+      .low {
+        color: #00F;
+      }
+
+      .high, .medium, .low {
+        font-weight: bold;
+      }
+    </style>
+
+    <script type="text/javascript">
+      //google.load('visualization', '1', { packages: ['corechart'] });
+      google.load('visualization', '1', { packages: ['table'] });
+
+      /**
+       * Sector type mapped to a style rule.
+       * @type {Object}
+       * @const
+       */
+       
+       var LAYER_STYLES = {
+        'Flood': {
+          //'min': 0,
+          //'max': 100,
+          'colors': [
+             //'#d0e0e3',
+             //'#a2c4c9',
+             '#76a5af',
+             '#45818e',
+             '#134f5c'
+          ]
+        },
+        'Fire': {
+          'min': 0,
+          'max': 100,
+          'colors': [
+			'#f4cccc',
+			'#ea9999',
+			'#e06666',
+			'#cc0000',
+			'#990000'
+           
+          ]
+        },
+        'Earthquake': {
+          'min': 0,
+          'max': 100,
+          'colors': [
+            '#d9d2e9',
+            '#b4a7d6',
+            '#8e7cc3',
+            '#674ea7',
+            '#351c75'
+          ]
+        },
+        'Total': {
+            'min': 0,
+            'max': 100,
+            'colors': [
+              '#C4FEA8',
+              '#89FF89',
+              '#1FFE1E',
+              '#15BB00',
+              '#157100'
+           ]
+        }
+      }
+      
+       var myLatlng = new google.maps.LatLng(3.184171, 101.660281);
+    
+       //var myLatlng2 = new google.maps.Latlng(3.190320, 101.671310);
+       var layer = new google.maps.FusionTablesLayer();
+       var map;
+      function initialize() {    	
+        //var sector = 'flood1';
+        map = new google.maps.Map(document.getElementById('map-canvas'), {
+            center: new google.maps.LatLng(3.184171, 101.660281),
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            //zoomControlOptions: {
+              //style: google.maps.ZoomControlStyle.SMALL
+            //},
+          });
+
+    	var marker = new google.maps.Marker({
+      		position: myLatlng,
+      		map: map,
+    	  	title: 'Hello World!'
+  		});
+    	layer.setOptions({
+            query: {
+              select: 'geometry',
+              from: '1ZbQrKupikxCipsk90IkfmrJijxusLzkmvPzAdm3z',
+              //where: where
+            }
+          });
+    	
+        layer.setMap(map);
+      }
+       
+      var customCircle;
+      var markerCenter;
+      var myLatlng2;
+      function drawCircle(){
+    	  if(customCircle!=null){
+    		  customCircle.setMap(null);
+    	  }
+    	  if(markerCenter!=null){
+    		  markerCenter.setMap(null);
+    	  }
+    	  var radiusStr = document.getElementById("circleRadius").value;
+    	  var radius = parseInt(radiusStr);
+    	  if(myLatlng2==null){
+    		  myLatlng2 = new google.maps.LatLng(3.190320, 101.671310);	  
+    	  }
+    	  markerCenter = new google.maps.Marker({
+              position: myLatlng2,
+              title: 'Location',
+              map: map,
+              draggable: true
+          });
+    	 
+    	  customCircle = new google.maps.Circle({
+              map: map,
+              clickable: false,
+              // metres
+              radius: radius,
+              //fillColor: '#e06666',
+              //fillOpacity: .6,
+              //strokeColor: '#313131',
+              //strokeOpacity: .4,
+              //strokeWeight: .8
+              
+              strokeColor: '#FF0000',
+  		      strokeOpacity: 0.8,
+  		      strokeWeight: 2,
+  		      fillColor: '#FF0000',
+  		      fillOpacity: 0.35,
+          });
+         // attach circle to marker
+         customCircle.bindTo('center', markerCenter, 'position');
+
+         var bounds = customCircle.getBounds();
+         google.maps.event.addListener(markerCenter, 'dragend', function() {
+             myLatlng2 = new google.maps.LatLng(markerCenter.position.lat(), markerCenter.position.lng());
+             bounds = customCircle.getBounds();
+             alert("testing marker dragging handler");
+             //alert(bounds.contains(latLngA));
+             //alert(bounds.contains(latLngB));
+         });
+      }
+      
+	  var circle;
+      function getFireRisk() {
+    	  if(circle!=null){
+    		  circle.setMap(null);
+    	  }
+    	  var radiusStr = document.getElementById("rangeInput").value;
+    	  var radius = parseInt(radiusStr);
+    	  //alert(radius);
+    	  var options = {
+    		      strokeColor: '#FF0000',
+    		      strokeOpacity: 0.8,
+    		      strokeWeight: 2,
+    		      fillColor: '#FF0000',
+    		      fillOpacity: 0.35,
+    		      map: map,
+    		      center: myLatlng,
+    		      radius: radius
+    	};
+        // Add the circle for this city to the map.
+        circle = new google.maps.Circle(options);
+    	  
+        var query = "SELECT 'OBJECTID' " +
+        "FROM 1ZbQrKupikxCipsk90IkfmrJijxusLzkmvPzAdm3z "+
+        "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + ")," + radius + "))" +
+        "ORDER BY 'OBJECTID' ASC";
+        var queryText = encodeURIComponent(query);
+        var gvizQuery = new google.visualization.Query(
+            'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+        gvizQuery.send(function(response) {
+          var table = new google.visualization.Table(
+              document.getElementById('visualization'));
+          table.draw(response.getDataTable(), {
+            showRowNumber: true
+          });
+        });
+       }
+      
+      
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    
+    <div id="map-canvas"></div>
+    
+      <label>Search within(m) </label>
+       <form oninput="amount.value=rangeInput.value">
+        <input type="range" id="rangeInput" name="rangeInput" min="0" max="1000" onchange="getFireRisk()">
+        <output name="amount" for="rangeInput">500</output>
+    </form>
+    <form oninput="output.value=circleRadius.value">
+    	Circle Radius(m): 
+    	<input type="range" id="circleRadius" name="circleRadius" min="0" max="1000">
+        <output name="output" for="circleRadius">500</output>
+    </form>
+        <button onclick="drawCircle()">Draw Circle</button> 
+    
+   
+	<h2>Fire Risk</h2>
+    <div id="fire-risk"></div>
+    <h2>Polygon ID</h2>
+        <div id="visualization"></div>
+  </body>
+</html>
