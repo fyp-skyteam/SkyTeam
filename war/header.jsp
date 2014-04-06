@@ -113,4 +113,8 @@ $('input[type="checkbox"].style1').checkbox({
       .high, .medium, .low {
         font-weight: bold;
       }
+      
+      .highestValue {
+        background:#F0E890;
+      }
 </style>

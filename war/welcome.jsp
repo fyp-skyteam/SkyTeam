@@ -638,6 +638,10 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 <!-- END OF COMPARISON MODAL CONTAINER -->
 
 <script>
+
+//GLOBAL RISKDATA VARIABLE
+var riskData = new Array();
+
   var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
 	menuRight = document.getElementById( 'cbp-spmenu-s2' ),
 	menuTop = document.getElementById( 'cbp-spmenu-s3' ),
@@ -1061,7 +1065,7 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 	                            Location l=locations.get(i);%>
 	                            ["<%=l.getBuildingName()%>","<%=l.getBuildingType()%>",<%=l.getBuildingHeight()%>,<%=l.getYearBuilt()%>,<%=l.getCapacity()%>,
 	                            <%=l.getPropertyCoverageLimit()%>,<%=l.getLossCoverageLimit()%>,"<%=l.getFoundationType()%>",
-	                            "<%=l.getRemarks()%>",<%=l.getPremium()%> + "<%=l.getCurrency()%>","<%=l.getMasonry()%>","<%=l.getRoof()%>","<%=l.getCSVName()%>"],
+	                            "<%=l.getRemarks()%>",<%=l.getPremium()%> + "<%=l.getCurrency()%>","<%=l.getMasonry()%>","<%=l.getRoof()%>","<%=l.getCSVName()%>","<%=l.getId()%>"],
 	                    <%}%>
 	                 ];
 	         
@@ -1207,14 +1211,27 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 	                  
 	                   //function to display all available information of the point
 	                   function displayData(array,latitude,longitude,vIndex) {
-	                	    var riskData = getRisk(latitude,longitude,vIndex,2013);
-	                      infowindow2.setContent(
-	                   "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
-	                   "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
-	                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
-	                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
-	                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-	                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+riskData[0]+"','"+riskData[1]+"','"+riskData[2]+"');\" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />");
+	                	   var query = "SELECT 'name','Risk Factor','2013' " +
+	                       "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
+	                       "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+	                       var queryText = encodeURIComponent(query);
+	                       var gvizQuery = new google.visualization.Query(
+	                           'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+	                      
+	                      gvizQuery.send(function(response) {
+	                    	 var string1 = response.getDataTable().getValue(0,2);
+	                    	 var string2 = response.getDataTable().getValue(1,2);
+	                    	 var string3 = response.getDataTable().getValue(2,2);
+	                    	 var stringId = array[13].toString();
+	                    	 infowindow2.setContent(
+	                                   "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
+	                                   "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
+	                                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
+	                                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
+	                                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
+	                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest();\" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
+	                                   );
+	                      });           
 	       }
 	  }
 	  
@@ -1778,27 +1795,6 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
       }
 	
     //Comparison Functionalities
-      function getRisk(latitude,longitude,vIndex,year) {
-    	  var array = new Array();
-        var number = (9 - (2013 - year));
-        
-        var query = "SELECT 'name','Risk Factor','2006','2007','2008','2009','2010','2011','2012','2013' " +
-        "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
-        "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
-        var queryText = encodeURIComponent(query);
-        var gvizQuery = new google.visualization.Query(
-            'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
-        
-        gvizQuery.send(function(response) {
-         array[0] = response.getDataTable().getValue(0,number);
-         array[1] = response.getDataTable().getValue(1,number);
-         array[2] = response.getDataTable().getValue(2,number);   
-         
-        });
-
-        return array;
-    }
-    
     function showCompareAdd() {
     	  document.getElementById('compareAdd').style.display = "block";
     }
@@ -1807,61 +1803,77 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
         document.getElementById('compareAdd').style.display = "none";
     }
     
-    function addComparison(name,string1,string2,string3)
+    function addComparison(name,string1,string2,string3,id)
     {
     	var table = document.getElementById("comparisonTable");
-      {
+      
     	var rowCount = table.rows.length;
       var row = table.insertRow(rowCount);
+      row.id = id;
       var cell1 = row.insertCell(0);
       var cell2 = row.insertCell(1);
       var cell3 = row.insertCell(2);
       var cell4 = row.insertCell(3);
       var cell5 = row.insertCell(4);
+      var cell6 = row.insertCell(5);
       cell1.innerHTML = name;
       cell2.innerHTML = string1;
       cell3.innerHTML = string2;
       cell4.innerHTML = string3;
-      cell5.innerHTML = "Total";
+      cell5.innerHTML = ((parseFloat(string1)+parseFloat(string2)+parseFloat(string3))/3).toFixed(2);
+      cell6.innerHTML = '<center><button type="button" class="btn btn-default btn-xs" onclick="deleteRow('+id+');colorHighest()">Delete</button></center>'
+    }
+    function colorHighest() {
+        var highestCell2Value = 0;
+        var highestCell3Value = 0;
+        var highestCell4Value = 0;
+        var highestCell5Value = 0;
+        var highestCell2;
+        var highestCell3;
+        var highestCell4;
+        var highestCell5; 
+        var table = document.getElementById("comparisonTable");
+        var rowCount = table.rows.length;
+        for (var a = 1; a < rowCount; a++) {
+        	table.rows[a].cells[1].className = '';
+        	var cell2 = parseFloat(table.rows[a].cells[1].innerHTML);
+        	table.rows[a].cells[2].className = '';
+        	var cell3 = parseFloat(table.rows[a].cells[2].innerHTML);
+        	table.rows[a].cells[3].className = '';
+        	var cell4 = parseFloat(table.rows[a].cells[3].innerHTML);
+        	table.rows[a].cells[4].className = '';
+        	var cell5 = parseFloat(table.rows[a].cells[4].innerHTML);
+        	
+            if (highestCell2Value < cell2) { 
+              highestCell2Value = cell2;
+              highestCell2 = a;
+            }
+            if (highestCell3Value < cell3) { 
+              highestCell3Value = cell3;
+              highestCell3 = a;
+            }
+            if (highestCell4Value < cell4) {
+              highestCell4Value = cell4;
+              highestCell4 = a;
+            }
+            if (highestCell5Value < cell5) {
+              highestCell5Value < cell5;
+              highestCell5 = a;
+            }
+            
+        }
+          table.rows[highestCell2].cells[1].className = 'highestValue';
+          table.rows[highestCell3].cells[2].className = 'highestValue';
+          table.rows[highestCell4].cells[3].className = 'highestValue';
+          table.rows[highestCell5].cells[4].className = 'highestValue';
       }
-    }
     
-    function deleteComparison(number)
-    {
-    	document.getElementById("comparisonTable").deleteRow(number);
+    function deleteRow(rowid)  
+    {   
+        var row = document.getElementById(rowid);
+        row.parentNode.removeChild(row);
     }
-    
-    function identifyTable() {
-    	var tdCount = $('#comparisonTable tr:eq(1) td').length,
-        trCount = $('#comparisonTable tr').length;
 
-	    for (var i = 2; i < tdCount; i++) {
-	        var $td = $('#comparisonTable tr:eq(2) td:eq(' + i + ')'),
-	            highest = 0,
-	            lowest = 9e99;
-	
-	        for (var j = 3; j < trCount; j++) {
-	            $td = $td.add('#comparisonTable tr:eq(' + j + ') td:eq(' + i + ')');
-	        }
-	        
-	        $td.each(function(i, el){
-	            var $el = $(el);
-	            if (i > 0) {
-	                var val = $el.text();
-	                if (val > highest) {
-	                    highest = val;
-	                    $td.removeClass('high');
-	                    $el.addClass('high');
-	                }
-	                if (val < lowest) {
-	                    lowest = val;
-	                    $td.removeClass('low');
-	                    $el.addClass('low');
-	                }
-	            }
-	        });
-	    }
-    }
 </script>
 
 
