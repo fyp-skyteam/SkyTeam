@@ -632,6 +632,8 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 	      </tr>
 	      </table>
       </div>
+      <div id = "comparisonChart">
+      </div>
     </div>
   </div>
 </div>
@@ -1229,7 +1231,7 @@ var riskData = new Array();
 	                                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
 	                                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
 	                                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-	                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest();\" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
+	                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest(); makeChart(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
 	                                   );
 	                      });           
 	       }
@@ -1874,6 +1876,11 @@ var riskData = new Array();
         row.parentNode.removeChild(row);
     }
 
+    function makeChart(){
+    	var chart = document.getElementById("comparisonChart")
+    	chart.innerHTML = 'hello';
+    	
+    }
 </script>
 
 
