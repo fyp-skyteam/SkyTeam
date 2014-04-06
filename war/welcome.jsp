@@ -641,6 +641,8 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 <script>
 google.load("visualization", "1", {packages:["corechart"]});
 
+//GLOBAL DATATABLE VARIABLE
+var data;
 //GLOBAL RISKDATA VARIABLE
 var riskData = new Array();
 
@@ -1830,7 +1832,7 @@ var riskData = new Array();
       var chart = document.getElementById("comparisonChart");
 		if (chart.innerHTML == ""){
 			 // Create and populate the data table.
-		  	  var data = google.visualization.arrayToDataTable([
+		  	  data = google.visualization.arrayToDataTable([
 		  	    ['Building Name', 'Earthquake', 'Flood', 'Fire', 'Total'],
 		  	    [name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
 		  	  ]);
@@ -1843,9 +1845,9 @@ var riskData = new Array();
 		        );
 		}else{
 			
-			dt.addRow([name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
+			data.addRow([name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
 		  	  );
-			new google.visualization.ColumnChart(document.getElementById('comparisonChart')).draw(dt,
+			new google.visualization.ColumnChart(document.getElementById('comparisonChart')).draw(data,
 		             {width:400, height:400,
 		              vAxis: {title: "Building Name"},
 		              hAxis: {title: "Risk (%)"}}
