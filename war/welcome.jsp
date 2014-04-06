@@ -632,14 +632,14 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 	      </tr>
 	      </table>
       </div>
-      <div id = "comparisonChart">
-      </div>
+      <div id ="comparisonChart"></div>
     </div>
   </div>
 </div>
 <!-- END OF COMPARISON MODAL CONTAINER -->
 
 <script>
+google.load("visualization", "1", {packages:["corechart"]});
 
 //GLOBAL RISKDATA VARIABLE
 var riskData = new Array();
@@ -970,7 +970,8 @@ var riskData = new Array();
 	  var hostnameRegexp = new RegExp('^https?://.+?/');
 	  
 	  function initialize() {
-		  
+	  
+	  drawVisualization();
 	  // marker's longitude and langitude
       
       displayMarkerInfo();
@@ -1231,7 +1232,7 @@ var riskData = new Array();
 	                                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
 	                                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
 	                                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-	                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest(); makeChart(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
+	                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
 	                                   );
 	                      });           
 	       }
@@ -1808,7 +1809,8 @@ var riskData = new Array();
     function addComparison(name,string1,string2,string3,id)
     {
     	var table = document.getElementById("comparisonTable");
-      
+ 		
+  
     	var rowCount = table.rows.length;
       var row = table.insertRow(rowCount);
       row.id = id;
@@ -1824,6 +1826,31 @@ var riskData = new Array();
       cell4.innerHTML = string3;
       cell5.innerHTML = ((parseFloat(string1)+parseFloat(string2)+parseFloat(string3))/3).toFixed(2);
       cell6.innerHTML = '<center><button type="button" class="btn btn-default btn-xs" onclick="deleteRow('+id+');colorHighest()">Delete</button></center>'
+      var average = ((parseFloat(string1)+parseFloat(string2)+parseFloat(string3))/3).toFixed(2);
+      var chart = document.getElementById("comparisonChart");
+		if (chart.innerHTML == ""){
+			 // Create and populate the data table.
+		  	  var data = google.visualization.arrayToDataTable([
+		  	    ['Building Name', 'Earthquake', 'Flood', 'Fire', 'Total'],
+		  	    [name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
+		  	  ]);
+
+		  	  // Create and draw the visualization.
+		        new google.visualization.ColumnChart(document.getElementById('comparisonChart')).draw(data,
+		             {width:400, height:400,
+		              vAxis: {title: "Building Name"},
+		              hAxis: {title: "Risk (%)"}}
+		        );
+		}else{
+			
+			dt.addRow([name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
+		  	  );
+			new google.visualization.ColumnChart(document.getElementById('comparisonChart')).draw(dt,
+		             {width:400, height:400,
+		              vAxis: {title: "Building Name"},
+		              hAxis: {title: "Risk (%)"}}
+		        );
+		}
     }
     function colorHighest() {
         var highestCell2Value = 0;
@@ -1874,13 +1901,15 @@ var riskData = new Array();
     {   
         var row = document.getElementById(rowid);
         row.parentNode.removeChild(row);
+        // get the datatable chart here from comparisonChart
+        // delete the row with the same data as above
     }
+    
+    function drawVisualization() {
 
-    function makeChart(){
-    	var chart = document.getElementById("comparisonChart")
-    	chart.innerHTML = 'hello';
-    	
     }
+    
+
 </script>
 
 
