@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8">
 
-    <title>Fire Risk Map</title>
+    <title>New Risk Map</title>
 
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript"
@@ -21,7 +21,46 @@
       #visualization {
         float: left;
       }
-    
+
+      #legend {
+        background: #FFF;
+        margin: 10px;
+        padding: 5px;
+        width: 150px;
+      }
+
+      #legend p {
+        font-weight: bold;
+        margin-top: 3px;
+      }
+
+      #legend div {
+        clear: both;
+      }
+
+      .color {
+        height: 12px;
+        width: 12px;
+        margin-right: 3px;
+        float: left;
+        display: block;
+      }
+
+      .high {
+        color: #F00;
+      }
+
+      .medium {
+        color: #0F0;
+      }
+
+      .low {
+        color: #00F;
+      }
+
+      .high, .medium, .low {
+        font-weight: bold;
+      }
     </style>
 
     <script type="text/javascript">
@@ -33,17 +72,69 @@
        * @type {Object}
        * @const
        */
+       
+       var LAYER_STYLES = {
+        'Flood': {
+          //'min': 0,
+          //'max': 100,
+          'colors': [
+             //'#d0e0e3',
+             //'#a2c4c9',
+             '#76a5af',
+             '#45818e',
+             '#134f5c'
+          ]
+        },
+        'Fire': {
+          'min': 0,
+          'max': 100,
+          'colors': [
+			'#f4cccc',
+			'#ea9999',
+			'#e06666',
+			'#cc0000',
+			'#990000'
+           
+          ]
+        },
+        'Earthquake': {
+          'min': 0,
+          'max': 100,
+          'colors': [
+            '#d9d2e9',
+            '#b4a7d6',
+            '#8e7cc3',
+            '#674ea7',
+            '#351c75'
+          ]
+        },
+        'Total': {
+            'min': 0,
+            'max': 100,
+            'colors': [
+              '#C4FEA8',
+              '#89FF89',
+              '#1FFE1E',
+              '#15BB00',
+              '#157100'
+           ]
+        }
+      }
       
        var myLatlng = new google.maps.LatLng(3.184171, 101.660281);
        var layer = new google.maps.FusionTablesLayer();
        var map;
        var riskType;
       function initialize() {    	
+        //var sector = 'flood1';
         riskType = "flood";
         map = new google.maps.Map(document.getElementById('map-canvas'), {
             center: new google.maps.LatLng(3.184171, 101.660281),
-            zoom: 9,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            //zoomControlOptions: {
+              //style: google.maps.ZoomControlStyle.SMALL
+            //},
           });
 
     	var marker = new google.maps.Marker({
@@ -51,7 +142,15 @@
       		map: map,
     	  	title: 'Hello World!'
   		});
-
+    	/* layer.setOptions({
+            query: {
+              select: 'geometry',
+              from: '1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF',
+              //where: where
+            }
+          });
+    	
+        layer.setMap(map); */
         /////////////////////GET RISK INDEX	///////////////////////
         var query, queryText, gvizQuery;
         query = "SELECT 'gridcode' " +
@@ -100,6 +199,43 @@
     	    map: map
     	  });
     	}
+        
+        google.maps.event.addDomListener(document.getElementById('risk-type'),
+                'change', function() {
+        	      riskType = this.value;
+        	      var tableId;
+        	      if(riskType=="earthquake"){
+        	    	  tableId = "1IQqqlXHchB1e5AQaQRqpZzbSAlUSSlZRzCls3Qrl";
+        	      }else if(riskType=="flood"){
+        	    	  tableId = "1HLg38j7a9sCtQhVJAj_fq6c647XY3qgDqiPMKj-Q";
+        	      }
+				if(riskType=="earthquake"){
+					layer.setOptions({
+		                query: {
+		                  select: 'location',
+		                  from: tableId
+		                },
+						 heatmap:{
+							 enabled: true
+						 }
+		              });
+
+			    } else if(riskType=="flood"){
+			    	layer.setOptions({
+		                query: {
+		                  select: 'geometry',
+		                  from: tableId
+		                },
+						 heatmap:{
+							 enabled: true,
+							 radius: 100,
+							 dissipating: true
+						 }
+		              });
+			    }
+	            layer.setMap(map);
+
+        }); 
 
       }
        
@@ -109,7 +245,12 @@
   <body>
     
     <div id="map-canvas"></div>
-  <h1>RISK INDEX</h1>
+   Risk Type: 
+    <select id="risk-type">
+		   <option value="flood">Flood</option>
+		   <option value="earthquake">Earthquake</option>
+	</select>
+	<br/>
     Flood Risk: <span id="flood-risk"></span>
     <br/>
     Fire Risk: <span id="fire-risk"></span>

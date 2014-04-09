@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8">
 
-    <title>Fire Risk Map</title>
+    <title>Earthquake Risk Map</title>
 
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript"
@@ -21,7 +21,46 @@
       #visualization {
         float: left;
       }
-    
+
+      #legend {
+        background: #FFF;
+        margin: 10px;
+        padding: 5px;
+        width: 150px;
+      }
+
+      #legend p {
+        font-weight: bold;
+        margin-top: 3px;
+      }
+
+      #legend div {
+        clear: both;
+      }
+
+      .color {
+        height: 12px;
+        width: 12px;
+        margin-right: 3px;
+        float: left;
+        display: block;
+      }
+
+      .high {
+        color: #F00;
+      }
+
+      .medium {
+        color: #0F0;
+      }
+
+      .low {
+        color: #00F;
+      }
+
+      .high, .medium, .low {
+        font-weight: bold;
+      }
     </style>
 
     <script type="text/javascript">
@@ -33,17 +72,66 @@
        * @type {Object}
        * @const
        */
+       
+       var LAYER_STYLES = {
+        'Flood': {
+          //'min': 0,
+          //'max': 100,
+          'colors': [
+             //'#d0e0e3',
+             //'#a2c4c9',
+             '#76a5af',
+             '#45818e',
+             '#134f5c'
+          ]
+        },
+        'Fire': {
+          'min': 0,
+          'max': 100,
+          'colors': [
+			'#f4cccc',
+			'#ea9999',
+			'#e06666',
+			'#cc0000',
+			'#990000'
+           
+          ]
+        },
+        'Earthquake': {
+          'min': 0,
+          'max': 100,
+          'colors': [
+            '#d9d2e9',
+            '#b4a7d6',
+            '#8e7cc3',
+            '#674ea7',
+            '#351c75'
+          ]
+        },
+        'Total': {
+            'min': 0,
+            'max': 100,
+            'colors': [
+              '#C4FEA8',
+              '#89FF89',
+              '#1FFE1E',
+              '#15BB00',
+              '#157100'
+           ]
+        }
+      }
       
        var myLatlng = new google.maps.LatLng(3.184171, 101.660281);
        var layer = new google.maps.FusionTablesLayer();
        var map;
        var riskType;
       function initialize() {    	
+        //var sector = 'flood1';
         riskType = "flood";
         map = new google.maps.Map(document.getElementById('map-canvas'), {
             center: new google.maps.LatLng(3.184171, 101.660281),
-            zoom: 9,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom: 5,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
           });
 
     	var marker = new google.maps.Marker({
@@ -51,7 +139,19 @@
       		map: map,
     	  	title: 'Hello World!'
   		});
-
+    	layer.setOptions({
+            query: {
+              select: 'geometry',
+              from: '1IQqqlXHchB1e5AQaQRqpZzbSAlUSSlZRzCls3Qrl'
+            },
+            heatmap:{
+   			 enabled: true
+   			 //radius: 100,
+   			 //dissipating: true
+   			 }
+          });
+    	
+        layer.setMap(map); 
         /////////////////////GET RISK INDEX	///////////////////////
         var query, queryText, gvizQuery;
         query = "SELECT 'gridcode' " +
@@ -79,28 +179,7 @@
           });
         });
         
-        var script = document.createElement('script');
-        script.src = 'sample3.json';
-        document.getElementsByTagName('head')[0].appendChild(script);
         
-        window.eqfeed_callback = function(results) {
-    	  	var heatmapData = [];
-    	  	for (var i = 0; i < results.features.length; i++) {
-    	    //var coords = results.features[i].geometry.coordinates;
-	   	   	  	var earthquake = results.features[i];
-	          	var geometry = earthquake.geometry;
-	         	var coords = geometry.split(',')
-	    	    var latLng = new google.maps.LatLng(coords[1], coords[0]);
-	    	    heatmapData.push(latLng);
-    	  }
-    	  var heatmap = new google.maps.visualization.HeatmapLayer({
-    	    data: heatmapData,
-    	    dissipating: true,
-    	    radius: 40,
-    	    map: map
-    	  });
-    	}
-
       }
        
       google.maps.event.addDomListener(window, 'load', initialize);
@@ -109,7 +188,7 @@
   <body>
     
     <div id="map-canvas"></div>
-  <h1>RISK INDEX</h1>
+   <h1>RISK INDEX</h1>
     Flood Risk: <span id="flood-risk"></span>
     <br/>
     Fire Risk: <span id="fire-risk"></span>

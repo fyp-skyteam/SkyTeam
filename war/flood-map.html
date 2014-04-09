@@ -7,6 +7,9 @@
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript"
         src="http://maps.google.com/maps/api/js?sensor=false"></script>
+         <script
+      src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization">
+    </script>
 	<link href="https://developers.google.com/fusiontables/docs/samples/style/default.css"
         rel="stylesheet" type="text/css">
 
@@ -19,116 +22,23 @@
         float: left;
       }
 
-      #legend {
-        background: #FFF;
-        margin: 10px;
-        padding: 5px;
-        width: 150px;
-      }
-
-      #legend p {
-        font-weight: bold;
-        margin-top: 3px;
-      }
-
-      #legend div {
-        clear: both;
-      }
-
-      .color {
-        height: 12px;
-        width: 12px;
-        margin-right: 3px;
-        float: left;
-        display: block;
-      }
-
-      .high {
-        color: #F00;
-      }
-
-      .medium {
-        color: #0F0;
-      }
-
-      .low {
-        color: #00F;
-      }
-
-      .high, .medium, .low {
-        font-weight: bold;
-      }
     </style>
 
     <script type="text/javascript">
       //google.load('visualization', '1', { packages: ['corechart'] });
       google.load('visualization', '1', { packages: ['table'] });
 
-      /**
-       * Sector type mapped to a style rule.
-       * @type {Object}
-       * @const
-       */
-       
-       var LAYER_STYLES = {
-        'Flood': {
-          //'min': 0,
-          //'max': 100,
-          'colors': [
-             //'#d0e0e3',
-             //'#a2c4c9',
-             '#76a5af',
-             '#45818e',
-             '#134f5c'
-          ]
-        },
-        'Fire': {
-          'min': 0,
-          'max': 100,
-          'colors': [
-			'#f4cccc',
-			'#ea9999',
-			'#e06666',
-			'#cc0000',
-			'#990000'
-           
-          ]
-        },
-        'Earthquake': {
-          'min': 0,
-          'max': 100,
-          'colors': [
-            '#d9d2e9',
-            '#b4a7d6',
-            '#8e7cc3',
-            '#674ea7',
-            '#351c75'
-          ]
-        },
-        'Total': {
-            'min': 0,
-            'max': 100,
-            'colors': [
-              '#C4FEA8',
-              '#89FF89',
-              '#1FFE1E',
-              '#15BB00',
-              '#157100'
-           ]
-        }
-      }
-      
-       var myLatlng = new google.maps.LatLng(2.909611, 101.375313);
+       var myLatlng = new google.maps.LatLng(3.184171, 101.660281);
        var layer = new google.maps.FusionTablesLayer();
+       var map;
+       var riskType;
       function initialize() {    	
-        var sector = 'flood1';
-        var map = new google.maps.Map(document.getElementById('map-canvas'), {
-            center: new google.maps.LatLng(3.056868, 101.587143),
-            zoom: 10,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            zoomControlOptions: {
-              style: google.maps.ZoomControlStyle.SMALL
-            },
+        //var sector = 'flood1';
+        riskType = "flood";
+        map = new google.maps.Map(document.getElementById('map-canvas'), {
+            center: new google.maps.LatLng(3.184171, 101.660281),
+            zoom: 8,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
           });
 
     	var marker = new google.maps.Marker({
@@ -136,311 +46,59 @@
       		map: map,
     	  	title: 'Hello World!'
   		});
-        updateLayerQuery(layer, sector);
-        layer.setMap(map);
-        createLegend(map, sector);
-        styleLayerBySector(layer, sector);
-        //styleMap(map);
-        //drawVisualization('Johor');
-
-        /**google.maps.event.addListener(layer, 'click', function(e) {
-          var county = e.row['name'].value;
-          drawVisualization(county);
-
-          var risk = e.row['2013'].value;
-          if (risk > 66) {
-            e.infoWindowHtml = '<p class="high">High Risk!</p>';
-          } else if (risk > 33) {
-            e.infoWindowHtml = '<p class="medium">Medium Risk</p>';
-          } else {
-            e.infoWindowHtml = '<p class="low">Low Risk</p>';
-          }
-        });*/
-
-        google.maps.event.addDomListener(document.getElementById('sector'),
-            'change', function() {
-              sector = this.value;
-
-              updateLayerQuery(layer, sector);   	  
-
-              styleLayerBySector(layer, sector);
-              //updateLegend(sector);
-            });
-
-        /**google.maps.event.addDomListener(document.getElementById('county'),
-            'change', function() {
-              var county = this.value;
-              updateLayerQuery(layer, sector, county);
-              drawVisualization(county);
-            });*/
-      }
-       
-      function updateLayerQuery(layer, sector) {
-        var where = "";
-        if (sector=='flood1'||sector=='flood3'||sector=='flood5') {
-          where += "'description' = '" + sector + "'";
-        }
-        /**var floodMapID;
-        if(sector=='flood1'){
-        	floodMapID='1VEsbA6GPv9GqFcjHMRQQGl2P3cbaXsQnKUambEXA';
-        }else if(sector=="flood3"){
-        	floodMapID='12HwkLOe2u8kMBBVSXdv9fM0xPmzRIaYvKLzpi8Is';
-        }else if(sector=='flood5'){
-        	floodMapID='1AFMrJrL3Wjvd0KmF0uPCd-TVG0FUeV0gs2gW8qsP';
-        }*/
-        layer.setOptions({
-          query: {
-            select: 'geometry',
-            from: '1GjL0559NH8_7SveRNCuqJbhb10yw4BaDh2XrHTcS',
-            where: where
-          }
-        });
-      }
-
-      function createLegend(map, sector) {
-        var legendWrapper = document.createElement('div');
-        legendWrapper.id = 'legendWrapper';
-        legendWrapper.index = 1;
-        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(
-            legendWrapper);
-        legendContent(legendWrapper, sector);
-      }
-
-      function legendContent(legendWrapper, sector) {
-        var legend = document.createElement('div');
-        legend.id = 'legend';
-
-        var title = document.createElement('p');
-        title.innerHTML = 'Flood Risk by water body';
-        legend.appendChild(title);
-
-        var layerStyle = LAYER_STYLES['Flood'];
-        var colors = layerStyle.colors;
-        //var minNum = layerStyle.min;
-        //var maxNum = layerStyle.max;
-        //var step = (maxNum - minNum) / colors.length;
-        for (var i = 0; i < colors.length; i++) {
-          var legendItem = document.createElement('div');
-
-          var color = document.createElement('div');
-          color.setAttribute('class', 'color');
-          color.style.backgroundColor = colors[i];
-          legendItem.appendChild(color);
-
-          //var newMin = minNum + step * i;
-          //var newMax = newMin + step;
-          //var minMax = document.createElement('span');
-          //minMax.innerHTML = newMin + ' - ' + newMax;
-          //legendItem.appendChild(minMax);
-          var legendTxt = document.createElement('span');
-          if(i==0){
-        	  legendTxt.innerHTML = "5km surround water body";
-          }else if(i==1){
-        	  legendTxt.innerHTML = "3km surround water body";
-          }else{
-        	  legendTxt.innerHTML = "1km surround water body";
-          }
-          
-          legendItem.appendChild(legendTxt);
-          legend.appendChild(legendItem);
-        }
-
-        legendWrapper.appendChild(legend);
-      }
-
-      /**function updateLegend(sector) {
-        var legendWrapper = document.getElementById('legendWrapper');
-        var legend = document.getElementById('legend');
-        legendWrapper.removeChild(legend);
-        legendContent(legendWrapper, sector);
-      }*/
-
-      function styleLayerBySector(layer, sector) {
-        var layerStyle = LAYER_STYLES['Flood'];
-        var colors = layerStyle.colors;
-        //var minNum = layerStyle.min;
-        //var maxNum = layerStyle.max;
-        //var step = (maxNum - minNum) / colors.length;
-
-        var styles = new Array();
-        var i=-1;
-        if(sector=='flood1'){
-        	i=2;
-        }else if(sector=='flood3'){
-        	i=1;
-        }else if(sector=='flood5'){
-        	i=0;
-        }
-        if(sector!='all'){
-        	 //for (var i = 0; i < colors.length; i++) {
-            //var newMin = minNum + step * i;
-            styles.push({
-              //where: generateWhere(sector),
-              polygonOptions: {
-                fillColor: colors[i],
-                fillOpacity: 0.5
-              }
-            });
-          //}
-        }else{
-        	 styles.push({
-                 //where: generateWhere('flood1'),
-                 polygonOptions: {
-                   fillColor: colors[2],
-                   fillOpacity: 0.5
-                 }
-             });
-        	 
-        	 /**styles.push({
-                 where: generateWhere('flood3'),
-                 polygonOptions: {
-                   fillColor: colors[2],
-                   fillOpacity: 0.5
-                 }
-             });
-        	 
-        	 styles.push({
-                 where: generateWhere('flood5'),
-                 polygonOptions: {
-                   fillColor: colors[2],
-                   fillOpacity: 0.5
-                 }
-             });*/
-        }
-       
-        layer.set('styles', styles);
-      }
-
-      function generateWhere(sector) {
-        var whereClause = new Array();
-        whereClause.push("'description' = '");
-        whereClause.push(sector + "'");
-        //whereClause.push("' AND '2013' >= ");
-        //whereClause.push(minNum);
-        return whereClause.join('');
-      }
-       
-
-      function drawTable() {
-          var query = "SELECT 'description','name' " +
-          "FROM 1GjL0559NH8_7SveRNCuqJbhb10yw4BaDh2XrHTcS "+
-          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + "),1))"+
-          "ORDER BY 'description' ASC";
-          var queryText = encodeURIComponent(query);
-          var gvizQuery = new google.visualization.Query(
-              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
-          gvizQuery.send(function(response) {
-              var table = response.getDataTable();
-              var flood1 = 0;
-              var flood3 = 0;
-              var flood5 = 0;
-              var flood1PolygonID = [];
-              var flood3PolygonID = [];
-              var flood5PolygonID = [];
-              for(var i=0;i< table.getNumberOfRows();i++){
-            	  if(table.getValue(i,0)=="flood1"){
-            		  flood1PolygonID.push(table.getValue(i,1));
-            		  flood1 ++;
-            	  }
-            	  if(table.getValue(i,0)=="flood3"){
-            		  if(flood1PolygonID.indexOf(table.getValue(i,1))==-1){
-            			  flood3PolygonID.push(table.getValue(i,1));
-            			  flood3 ++;  
-            		  }
-            	  }
-            	  if(table.getValue(i,0)=="flood5"){
-            		  if(flood1PolygonID.indexOf(table.getValue(i,1))==-1
-            				  && flood3PolygonID.indexOf(table.getValue(i,1))==-1){
-            			  flood5PolygonID.push(table.getValue(i,1));
-            			  flood5 ++;  
-            		  }
-            	  }
-              }
-            	 
-              var floodRisk = flood1*3 + flood3*2 + flood5*1;
-              document.getElementById("flood-risk").innerHTML = "The point is within <br/>" + 
-              "1km from " + flood1 + " water body(s) (High Risk)<br/>" + 
-              "3km from " + flood3 + " water body(s) (Moderate Risk)<br/>" + 
-              "5km from " + flood5 + " water body(s) (Low Risk)<br/>" + 
-              "The total flood risk point is " +
-              "(" + flood1 + "*3) + (" + flood3 + "*2) + (" + flood5 + "*1) = " + floodRisk; 
-        	  
-              var styles = new Array();
-              var layerStyle = LAYER_STYLES['Flood'];
-              
-              var colors = layerStyle.colors;
-              for(var i=0;i<flood1PolygonID.length;i++){
-            	  styles.push({
-                      where:
-                      "'description'='flood1' and 'name'=" + flood1PolygonID[i],
-                      polygonOptions: {
-                        fillColor:  colors[2],
-                        fillOpacity: 0.5
-                      }
-                   });
-              }
-              for(var i=0;i<flood3PolygonID.length;i++){
-            	  styles.push({
-                      where: "ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + "),1)) "+
-                      "and 'description'='flood3' and 'name'=" + flood3PolygonID[i],
-                      polygonOptions: {
-                        fillColor:  colors[1],
-                        fillOpacity: 0.5
-                      }
-                   });
-              }
-              for(var i=0;i<flood5PolygonID.length;i++){
-            	  styles.push({
-                      where: "ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + "),1)) "+
-                      "and 'description'='flood5' and 'name'=" + flood5PolygonID[i],
-                      polygonOptions: {
-                        fillColor:  colors[0],
-                        fillOpacity: 0.5
-                      }
-                   });
-              }
-              
-              layer.set('styles', styles);
-              /**layer.setOptions({
-                  query: {
-                    select: 'geometry',
-                    from: '1GjL0559NH8_7SveRNCuqJbhb10yw4BaDh2XrHTcS',
-                    where: "ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + "),1)) "+
-                    "and 'description'='flood1'",
-                    polygonOptions: {
-                        fillColor: '#0000FF'
-                      }
-                  }
-                });*/
-              
-              var table1 = new google.visualization.Table(
-                document.getElementById('visualization'));
-            table1.draw(response.getDataTable(), {
-              showRowNumber: true
-            });
+    	layer.setOptions({
+            query: {
+              select: 'geometry',
+              from: '1HLg38j7a9sCtQhVJAj_fq6c647XY3qgDqiPMKj-Q'
+            },
+    	   heatmap:{
+			 enabled: true
+			 //radius: 100,
+			 //dissipating: true
+			 }
           });
-       }
-      
-      
+    	
+        layer.setMap(map); 
+        /////////////////////GET RISK INDEX	///////////////////////
+        var query, queryText, gvizQuery;
+        query = "SELECT 'gridcode' " +
+        "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
+        "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + "),1))";
+        queryText = encodeURIComponent(query);
+        gvizQuery = new google.visualization.Query(
+            'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+        gvizQuery.send(function(response) {	
+          var table = response.getDataTable();
+          var floodRisk = (1 - table.getValue(0,0)/500) * 100;
+          document.getElementById("flood-risk").innerHTML = floodRisk.toFixed(2) + "%";
+          
+          var query1, queryText1, gvizQuery1;
+          query1 = "SELECT 'gridcode' " +
+          "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
+          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + "),1))";
+          queryText1 = encodeURIComponent(query1);
+          gvizQuery1 = new google.visualization.Query(
+              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+          gvizQuery1.send(function(response) {	
+            var table1 = response.getDataTable();
+            var fireRisk = (1 - table1.getValue(0,0)/20000) * 100;
+            document.getElementById("fire-risk").innerHTML = fireRisk.toFixed(2) + "%";
+          });
+        });
+       
+      }
+       
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
   <body>
     
     <div id="map-canvas"></div>
-    <form>
-      <label>Sector </label>
-      <select id="sector">
-        <option value="flood1" selected>Flood Risk 1km</option>
-        <option value="flood3">Flood Risk 3km</option>
-        <option value="flood5">Flood Risk 5km</option>
-        <option value="all">Show All</option>
-      </select>
-    </form>
-    <button type="submit" onclick="drawTable()">Get Flood Risk</button>
-		<h2>Flood Risk</h2>
-    <div id="flood-risk"></div>
-    <h2>Polygon ID</h2>
-        <div id="visualization"></div>
-  </body>
+   <h1>RISK INDEX</h1>
+    Flood Risk: <span id="flood-risk"></span>
+    <br/>
+    Fire Risk: <span id="fire-risk"></span>
+    <br/>
+  	Earthquake Risk: 0
+  	</body>
 </html>
