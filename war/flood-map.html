@@ -70,20 +70,20 @@
         gvizQuery.send(function(response) {	
           var table = response.getDataTable();
           var floodRisk = (1 - table.getValue(0,0)/500) * 100;
-          document.getElementById("flood-risk").innerHTML = floodRisk.toFixed(2) + "%";
-          
-          var query1, queryText1, gvizQuery1;
-          query1 = "SELECT 'gridcode' " +
-          "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
-          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + "),1))";
-          queryText1 = encodeURIComponent(query1);
-          gvizQuery1 = new google.visualization.Query(
-              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
-          gvizQuery1.send(function(response) {	
-            var table1 = response.getDataTable();
-            var fireRisk = (1 - table1.getValue(0,0)/20000) * 100;
-            document.getElementById("fire-risk").innerHTML = fireRisk.toFixed(2) + "%";
-          });
+          document.getElementById("flood-risk").innerHTML = floodRisk.toFixed(2) + "%";        
+        });
+        
+        var query1, queryText1, gvizQuery1;
+        query1 = "SELECT 'gridcode' " +
+        "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
+        "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng.lat() + ', ' + myLatlng.lng() + "),1))";
+        queryText1 = encodeURIComponent(query1);
+        gvizQuery1 = new google.visualization.Query(
+            'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+        gvizQuery1.send(function(response) {	
+          var table1 = response.getDataTable();
+          var fireRisk = (1 - table1.getValue(0,0)/20000) * 100;
+          document.getElementById("fire-risk").innerHTML = fireRisk.toFixed(2) + "%";
         });
        
       }
