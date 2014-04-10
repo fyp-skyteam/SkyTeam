@@ -141,7 +141,10 @@
 				mouseenter: $.proxy(this.showTooltip, this),
 				mouseleave: $.proxy(this.hideTooltip, this)
 			});
-		} else {
+		} else if(tooltip === 'always') {
+			this.showTooltip();
+			this.alwaysShowTooltip = true
+		}else {
 			this.tooltip.addClass('hide');
 		}
 	};

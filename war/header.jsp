@@ -57,7 +57,7 @@
 
 
 <style>
- #widget1 { min-width: 240px; min-height: 120px; max-height: 500px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
+ #widget1 { min-width: 240px; min-height: 120px; max-height: 800px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  #widget2 { min-width: 350px; min-height: 140px; left:850px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }

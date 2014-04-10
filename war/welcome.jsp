@@ -150,7 +150,15 @@ for(int i=0;i<userDatasetList.size();i++){
     <h3>Points of Interest</h3>
     <br/>
     <div id="controls">
-    
+   <input type="hidden" id="wid1IsSelected" value="false">
+   <input type="hidden" id="markerSelected" value="false">
+    <input type="hidden" id="markerPosition"/>
+    <table style="width:100%"><tr style="width:100%">
+    	<td style="padding-right:10px">Radius (km)</td>
+    	<td>
+    		<input id="poiSlide" type="text" value="500" width="100%" data-slider-min="500" data-slider-max="2000" data-slider-step="10" data-slider-value="500">  
+    	</td>
+    </tr></table>
     <select id="type" class="form form-control">
       <option value="">Select a type</option>
 
@@ -163,6 +171,7 @@ for(int i=0;i<userDatasetList.size();i++){
     </select>
     
   </div>
+  <td><button id="updatePoiRadBtn" class="btn btn-primary">Search</button></td>
   <div id="selectedPOI"><h5>Please select a point to begin.</h5></div>
     <div id="listing">
     <table id="resultsTable" style="background-color:none;">
@@ -645,6 +654,8 @@ google.load("visualization", "1", {packages:["corechart"]});
 var data;
 //GLOBAL RISKDATA VARIABLE
 var riskData = new Array();
+//POI VARIABLE
+var currentMarker;
 
   var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
 	menuRight = document.getElementById( 'cbp-spmenu-s2' ),
@@ -713,7 +724,26 @@ var riskData = new Array();
 	    $( ".resizable" ).resizable();
 
 		        // set effect from select menu value
-	    $( "#button1" ).click(function() {
+	   $( "#button1" ).click(function() {
+	    	//to indicate that poi is chosen and display radius
+	    	
+	    	$("#wid1IsSelected").val("true");
+	    	$markerSelected = $("#markerSelected").val();
+	    	if($markerSelected == "true"){
+		    	circle = new google.maps.Circle({
+	 	 			  center:currentMarker.position,
+	 	 			  radius: 500,
+	 	 			  strokeColor:"#0000FF",
+	 	 			  strokeOpacity:0.8,
+	 	 			  strokeWeight:2,
+	 	 			  fillColor:"#0000FF",
+	 	 			  fillOpacity:0.1
+	 	 			  });
+	
+	 	 			circle.setMap(map);
+	 	 		map.setZoom(14);
+	 	 		map.setCenter(currentMarker.position);
+	   }
 	      // get effect type from
 	      var selectedEffect = $( "#effectTypes" ).val();
 	 
@@ -722,7 +752,10 @@ var riskData = new Array();
 	      // some effects have required parameters
 	 
 	      // run the effect
+	      
 	      $( "#widget1" ).show( 'clip', options, 500 );
+
+	      
 	      return false;
 	    });
 	    
@@ -792,9 +825,13 @@ var riskData = new Array();
 	    
 
 	    $( "#close1" ).click(function() {
+	    	//to hide radius
+	    	$("#wid1IsSelected").val("false");
+	    	$("#poiSlide").slider('setValue', 500);
+	    	circle.setMap(null);
+	    	
 			// get effect type from
 			var selectedEffect = $( "#effectTypes" ).val();
-	
 			// most effect types need no options passed by default
 			var options = {};
 			// some effects have required parameters
@@ -971,6 +1008,30 @@ var riskData = new Array();
 	  var autocomplete;
 	  var hostnameRegexp = new RegExp('^https?://.+?/');
 	  
+	  //POI VARIABLES
+	  var markerPos;
+	  var curMarker;
+	  var circle;
+	  //DATA INFORMATION CHECKBOX VARIABLES
+	  var marker2;
+      var markers2 = new Array();
+      function updateVisibility(id) {
+  	  	var marker = markers2[id]; // find the marker by given id
+  	  	if (document.getElementById('markerCheckBox'+id).checked) {
+  	  		marker.setMap(map);
+  	  	}else{
+  	  	   	marker.setMap(null);
+  	  	}
+  	  }
+	  
+      function updateRadius(circle, rad){
+		  
+	  }
+      
+     
+	 	
+	  
+	  
 	  function initialize() {
 	  
 	  drawVisualization();
@@ -1039,6 +1100,11 @@ var riskData = new Array();
 	      var bounds = map.getBounds();
 	      searchBox.setBounds(bounds);
 	    });
+	    $("#poiSlide").slider({tooltip: 'always'});
+   	 	$("#poiSlide").on('slide', function(slideEvt) {
+   	 		newPoiRad = document.getElementById('poiSlide').value;
+   	 		circle.setRadius(slideEvt.value);
+   	 	});
 	    
 	    
 	    document.getElementById('keyword').onkeyup = function(e) {
@@ -1096,8 +1162,7 @@ var riskData = new Array();
 	                     maxWidth: 160
 	                   });
 
-	                   var marker;
-	                   var markers = new Array();
+	                   
 
 	                   // Add the markers and infowindows to the map
 	                   for (var i = 0; i < locations.length; i++) {
@@ -1112,23 +1177,23 @@ var riskData = new Array();
 	                     });
 	                	   if(i%2==0){
 	                             
-                       document.getElementById('results2').innerHTML += 
-                            '<tr style="background-color: rgb(255, 255, 255);">'+
-                            '<td>&nbsp;&nbsp;&nbsp;</td>'+
-                            '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
-                            '<td>'+ locations[i][2] + '</td>'
-                            '</tr>';
-                            
-                        }
-                        else{
-                           document.getElementById('results2').innerHTML += 
-                        	   '<tr style="background-color: rgb(240, 240, 240);">'+
-                               '<td>&nbsp;&nbsp;&nbsp;</td>'+
-                               '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
-                               '<td>'+ locations[i][2] + '</td>'
-                               '</tr>'; 
-                       }
-	                     markers.push(marker);
+	                		   document.getElementById('results2').innerHTML += 
+	                               '<tr style="background-color: rgb(255, 255, 255);">'+
+	                               '<td>&nbsp;&nbsp;<input type="checkbox" onchange="updateVisibility('+i+')" id="markerCheckBox'+i+'" checked></td>'+
+	                               '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
+	                               '<td>'+ locations[i][2] + '</td>'
+	                               '</tr>';
+	                               
+	                           }
+	                           else{
+	                              document.getElementById('results2').innerHTML += 
+	                           	   '<tr style="background-color: rgb(240, 240, 240);">'+
+	                           	   '<td>&nbsp;&nbsp;<input type="checkbox" onchange="updateVisibility('+i+')" id="markerCheckBox'+i+'" checked></td>'+
+	                                  '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
+	                                  '<td>'+ locations[i][2] + '</td>'
+	                                  '</tr>'; 
+	                          }
+	                     markers2.push(marker);
 	                 
 	                     //Hover Function for info window
 	                     google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
@@ -1144,48 +1209,85 @@ var riskData = new Array();
 	                     })(marker, i));
 	                     
 
-	                  var selected;
-	                  var selectedIcon;
-	                  var currentMarker;
-	                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
-	                       return function() {
-	                    	infowindow.close();   
-	                    	infowindow2.open(map, marker);
-	                       	if(currentMarker!=marker){  
-		                    	 currentMarker = marker;  
-		                    	 infowindow.close();
-				       		     document.getElementById('noResultMsg').innerHTML = "";
-		                         displayData(details[i],marker.position.lat(),marker.position.lng(),marker.vIndex);
-		                         
-		                         //map.setCenter(marker.position);
-		                         document.getElementById('type').value="";
-		                 	     clearResults();
-		                	     clearMarkers();
-	
-		                         typeSelect = document.getElementById('type');
-			                 	    typeSelect.onchange = function() {
-			                 		  //map.setCenter(marker.position);
-			                 	      search(marker.position,'true');
-			                 	      
-			                 	    };
-		                         drawTable(marker.position.lat(),marker.position.lng(),marker.vIndex,2013);
-	
-		                         if (selected) {
-		                        	 selected.setIcon(selectedIcon);
-		                         }
-		                         
-		                         selectedIcon = marker.getIcon();
-		                         selected = marker;
-		                         
-		                         
-		                         var txt = new String(marker.getIcon());
-		                         marker.setIcon(txt.substring(0,txt.length-4)+"-1.png");
-		                         displaySelectedPOI(selected);
-		                         displaySelectedRisk(selected);
-	                      	 }
-	                       };
-	                     })(marker, i));
-	                   }
+	                     var selected;
+		                  var selectedIcon;
+		                  
+		                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
+		                    	currentMarker = marker;
+		                    	
+		                       return function() {
+		                    	   $("#poiSlide").slider('setValue', 500);
+		                    	   $("#markerSelected").val("true");
+
+		                    	 if(circle!=null){
+		                    		 circle.setMap(null);
+		                    	 }
+		                    	 if(document.getElementById("wid1IsSelected").value=="true"){
+			               	 		 circle = new google.maps.Circle({
+			               	 			  center:marker.position,
+			               	 			  radius: 500,
+			               	 			  strokeColor:"#0000FF",
+			               	 			  strokeOpacity:0.8,
+			               	 			  strokeWeight:2,
+			               	 			  fillColor:"#0000FF",
+			               	 			  fillOpacity:0.1
+			               	 			  });
+		
+			               	 			circle.setMap(map);
+			               	 		map.setZoom(14);
+			               	 		map.setCenter(marker.position);
+		                    	 }
+		               	 			
+		                    	infowindow.close();   
+		                    	infowindow2.open(map, marker);
+		                       	if(currentMarker!=marker){  
+			                    	 currentMarker = marker;
+			                    	 curMarker = marker;
+			                    	 infowindow.close();
+					       		     document.getElementById('noResultMsg').innerHTML = "";
+			                         displayData(details[i],marker.position.lat(),marker.position.lng(),marker.vIndex);
+			                         
+			                         //map.setCenter(marker.position);
+			                         document.getElementById('type').value="";
+			                 	     clearResults();
+			                	     clearMarkers();
+											                	    
+			                         /*typeSelect = document.getElementById('type');
+				                 	    typeSelect.onchange = function() {
+				                 		  //map.setCenter(marker.position);
+				                 	      search(marker.position,'true');
+				                 	      document.getElementByID("markerPosition").value = marker.position;
+				                 	      
+				                 	    };*/
+				                 	    
+				                 	 var  updatePoiRadBtn = document.getElementById('updatePoiRadBtn');
+				                 	   
+				                 	    updatePoiRadBtn.onclick = function() {
+				                 		  //map.setCenter(marker.position);
+				                 	      search(marker.position,'true',newPoiRad);
+				                 	      markerPos = marker.position;
+				                 	    };
+				                 	    
+				                 	    
+				                 	  
+			                         drawTable(marker.position.lat(),marker.position.lng(),marker.vIndex,2013);
+		
+			                         if (selected) {
+			                        	 selected.setIcon(selectedIcon);
+			                         }
+			                         
+			                         selectedIcon = marker.getIcon();
+			                         selected = marker;
+			                         
+			                         
+			                         var txt = new String(marker.getIcon());
+			                         marker.setIcon(txt.substring(0,txt.length-4)+"-1.png");
+			                         displaySelectedPOI(selected);
+			                         displaySelectedRisk(selected);
+		                      	 }
+		                       };
+		                     })(marker, i));
+		                   }
 	                   
 	                  
 	                   //Centers the map where the furthest points are
@@ -1236,9 +1338,14 @@ var riskData = new Array();
 	                                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
 	                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
 	                                   );
-	                      });           
+	                      });  
+	             
 	       }
+	                   
 	  }
+
+
+	 
 	  
 	  var layer;
 	  function displayHazard() {
@@ -1323,74 +1430,91 @@ var riskData = new Array();
 	  }
 	  
 
-	  function search(markerPosition, typeIsSelected) {
-	    clearResults();
-	    clearMarkers();
+	  function search(markerPosition, typeIsSelected, radius) {
+		    clearResults();
+		    clearMarkers();
 
-	    if (searchTimeout) {
-	      window.clearTimeout(searchTimeout);
-	    }
-	    searchTimeout = window.setTimeout(reallyDoSearch(markerPosition,typeIsSelected), 500);
-	  }
+		    if (searchTimeout) {
+		      window.clearTimeout(searchTimeout);
+		    }
+		    searchTimeout = window.setTimeout(reallyDoSearch(markerPosition,typeIsSelected,radius), 500);
+		  }
 	  
-	  function reallyDoSearch(markerPosition,typeIsSelected) {      
-	    var type = document.getElementById('type').value;
-	    var keyword = document.getElementById('keyword').value;
-	    var rankBy = 'distance';
-	  
-	    var search = {};
-	    
-	    if (keyword) {
-	      search.keyword = keyword;
-	    }
-	    
-	    if (type != 'establishment') {
-	      search.types = [type];
-	    }
-	    
-	    if (rankBy == 'distance' && (search.types || search.keyword)) {
-	      search.rankBy = google.maps.places.RankBy.DISTANCE;
-	      search.location = markerPosition;
-	      centerMarker = new google.maps.Marker({
-	        position: search.location,
-	        map: map
-	      });
-	      centerMarker.setVisible(false);
-	    } else {
-	      search.bounds = map.getBounds();
-	    }
-	    
-	    var bounds = new google.maps.LatLngBounds();
-        bounds.extend(markerPosition);
+	  function reallyDoSearch(markerPosition,typeIsSelected,rad) {      
+		    var type = document.getElementById('type').value;
+		    var keyword = document.getElementById('keyword').value;
+		    var rankBy = 'distance';
+		    var radString = rad-300;
+		    var request = {
+		    	    location: markerPosition,
+		    	    radius: radString,
+		    	    types: [type]
+		    	  };
 
-	    places.search(search, function(results, status) {
-	    	if(results.length==0 && typeIsSelected =="true"){
-	  	    	  displayNoResultMsg();
-	    	}
-	      if (status == google.maps.places.PlacesServiceStatus.OK) {
-	        for (var i = 0; i < results.length; i++) {
-	        	document.getElementById('noResultMsg').innerHTML = "";
-	          var icon = 'assets/icons/number_' + (i+1) + '.png';
-	          markers.push(new google.maps.Marker({
-	            position: results[i].geometry.location,
-	            animation: google.maps.Animation.DROP,
-	            icon: icon
-	          }));
-	          google.maps.event.addListener(markers[i], 'click', getDetails(results[i], i));
-	          window.setTimeout(dropMarker(i), i * 100);
-	          
-		        bounds.extend(results[i].geometry.location);
+		    service = new google.maps.places.PlacesService(map);
+		    
+		    var bounds = new google.maps.LatLngBounds();
+	        bounds.extend(markerPosition);
 
-		        addResult(results[i], i);	          
+	        service.nearbySearch(request, function(results, status) {
+		    	if(results.length==0 && typeIsSelected =="true"){
+		  	    	  displayNoResultMsg();
+		    	}
+		    	 var distanceList = new Array();
+		    	 var temp = 0;
+		    	 var tempMarker = 0;
+		      if (status == google.maps.places.PlacesServiceStatus.OK) {
+		    	  for(var k = 0; k<20; k++){
+		    	  	for (var i = 0; i < results.length; i++){
+			        	var poiPosition = results[i].geometry.location;
+				        var distance = google.maps.geometry.spherical.computeDistanceBetween(markerPosition,poiPosition);
+		                distanceList.push(distance);
+					        for (var j = 0; j < i; j++)
+			                {
+					        	var poiPosition = results[j].geometry.location;
+						        var distance = google.maps.geometry.spherical.computeDistanceBetween(markerPosition,poiPosition);
+				               
+						        var poiPosition2 = results[j+1].geometry.location;
+						        var distance2 = google.maps.geometry.spherical.computeDistanceBetween(markerPosition,poiPosition2);
+				               
+						        
+			                    if (distance > distance2){
+			                        temp = results[j];
+			                        results[j] = results[j+1];
+			                        results[j+1] = temp;
+			                        
 
-	          
-	          
-	        }
-		    map.fitBounds(bounds);
+			                    }
+			        	}
+		    	  	  }
+		            } 
 
-	      }
-	    });
-	  }
+		        for (var i = 0; i < results.length; i++) {
+		          var icon = 'assets/icons/number_' + (i+1) + '.png';
+		          var poiPosition = results[i].geometry.location;
+		          var distance = google.maps.geometry.spherical.computeDistanceBetween(markerPosition,poiPosition);
+		    	  document.getElementById('noResultMsg').innerHTML = "";
+		          
+		          markers.push(new google.maps.Marker({
+		            position: results[i].geometry.location,
+		            animation: google.maps.Animation.DROP,
+		            icon: icon
+		          }));
+		          google.maps.event.addListener(markers[i], 'click', getDetails(results[i], i));
+		          window.setTimeout(dropMarker(i), i * 100);
+		          
+			        bounds.extend(results[i].geometry.location);
+			        addResult(results[i], i,distance);	          
+		        }
+			    map.fitBounds(bounds);
+			    /*if(pagination.hasNextPage){
+			    	  pagination.nextPage();
+			    	}*/
+
+		      }
+		      
+		    });
+		  }
 	  
 	  function displayNoResultMsg(){
 		  document.getElementById('noResultMsg').innerHTML = "No nearby POIs found in the area";
@@ -1415,27 +1539,31 @@ var riskData = new Array();
 	    }
 	  }
 
-	  function addResult(result, i) {
-	    var results = document.getElementById('results');
-	    var tr = document.createElement('tr');
-	    tr.style.backgroundColor = (i% 2 == 0 ? '#F0F0F0' : '#FFFFFF');
-	    tr.onclick = function() {
-	      google.maps.event.trigger(markers[i], 'click');
-	    };
+	  function addResult(result, i,distanceInput) {
+		    var results = document.getElementById('results');
+		    var tr = document.createElement('tr');
+		    tr.style.backgroundColor = (i% 2 == 0 ? '#F0F0F0' : '#FFFFFF');
+		    tr.onclick = function() {
+		      google.maps.event.trigger(markers[i], 'click');
+		    };
 
-	    var iconTd = document.createElement('td');
-	    var nameTd = document.createElement('td');
-	    var icon = document.createElement('img');
-	    icon.src = 'assets/icons/number_' + (i+1) + '.png';
-	    icon.setAttribute('class', 'placeIcon');
-	    icon.setAttribute('className', 'placeIcon');
-	    var name = document.createTextNode(result.name);
-	    iconTd.appendChild(icon);
-	    nameTd.appendChild(name);
-	    tr.appendChild(iconTd);
-	    tr.appendChild(nameTd);
-	    results.appendChild(tr);
-	  }
+		    var iconTd = document.createElement('td');
+		    var nameTd = document.createElement('td');
+		    var distanceTd = document.createElement('td');
+		    var icon = document.createElement('img');
+		    icon.src = 'assets/icons/number_' + (i+1) + '.png';
+		    icon.setAttribute('class', 'placeIcon');
+		    icon.setAttribute('className', 'placeIcon');
+		    var name = document.createTextNode(result.name);
+		    var distance = document.createTextNode(distanceInput.toFixed(0)+"km");
+		    iconTd.appendChild(icon);
+		    nameTd.appendChild(name);
+		    distanceTd.appendChild(distance);
+		    tr.appendChild(iconTd);
+		    tr.appendChild(nameTd);
+		    tr.appendChild(distanceTd);
+		    results.appendChild(tr);
+		  }
 
 	  function clearResults() {
 	    var results = document.getElementById('results');
@@ -1726,6 +1854,7 @@ var riskData = new Array();
 		document.getElementById('minPremium').value = sliderValue.substring(0,sepIndex);
 		document.getElementById('maxPremium').value = sliderValue.substring(sepIndex+1, sliderValue.length);
 	});
+	 
 	
 	$("#slidePropertyCoverageLimit").slider({});
 	$("#slidePropertyCoverageLimit").on('slide', function(slideEvt) {
@@ -1803,6 +1932,8 @@ var riskData = new Array();
     function showCompareAdd() {
     	  document.getElementById('compareAdd').style.display = "block";
     }
+    
+  
     
     function hideCompareAdd() {
         document.getElementById('compareAdd').style.display = "none";
@@ -1910,6 +2041,7 @@ var riskData = new Array();
     function drawVisualization() {
 
     }
+    
     
 
 </script>
