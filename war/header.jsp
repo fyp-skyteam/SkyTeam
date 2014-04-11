@@ -67,6 +67,9 @@
  #widget5 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  #widget6 { min-width: 800px; min-height: 500px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget6 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
+ #widget8 { min-width: 800px; min-height: 500px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
+ #widget8 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
+ 
  html { height: 100% }
  body { height: 100%; margin: 0; padding: 0 }
 $('input[type="checkbox"].style1').checkbox({

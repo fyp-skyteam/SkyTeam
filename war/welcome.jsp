@@ -86,6 +86,7 @@ for(int i=0;i<userDatasetList.size();i++){
 	<a href="#" style="text-decoration:none;" id="button5">Risk Calculation</a>
 	<a href="#" style="text-decoration:none;" id="button6">Historical Analysis</a>
   <a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#ComparisonModal">Comparison</a>
+	<a href="#" style="text-decoration:none;" id="button8">Simulation</a>
 	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:20px;">
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
@@ -142,8 +143,17 @@ for(int i=0;i<userDatasetList.size();i++){
 <!-- END OF LOCATION SEARCH BAR -->
 
 <div id="dragZone">
-<!-- POINT OF INTEREST WIDGET-->
-	<div class="toggler draggable">
+<div class="toggler draggable">
+
+<!-- SIMULATION WIDGET-->	
+<div id="widget8" class="ui-corner-all resizable">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" id="close8" class="closeBtn">x</a>
+
+	<h3> Simulation </h3>
+</div>
+	
+	
+<!-- POINT OF INTEREST WIDGET-->	
   <div id="widget1" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
 
@@ -326,6 +336,9 @@ for(int i=0;i<userDatasetList.size();i++){
   
 </div>
 <!-- END OF DATA AND INFORMATION WIDGET -->
+
+
+
 </div>
 
 
@@ -823,7 +836,18 @@ var currentMarker;
 		      return false;
 		    });
 	    
-
+	    $( "#button8" ).click(function() {
+		      // get effect type from
+		      var selectedEffect = $( "#effectTypes" ).val();
+		 
+		      // most effect types need no options passed by default
+		      var options = {};
+		      // some effects have required parameters
+		 
+		      // run the effect
+		      $( "#widget8" ).show( 'clip', options, 500 );
+		      return false;
+		    });
 	    $( "#close1" ).click(function() {
 	    	//to hide radius
 	    	$("#wid1IsSelected").val("false");
@@ -930,7 +954,22 @@ var currentMarker;
 			// run the effect
 			$( "#widget7" ).hide( 'scale', options, 500 );
 	    });
-
+	    $( "#close8" ).click(function() {
+	    	// get effect type from
+			var selectedEffect = $( "#effectTypes" ).val();
+	
+			// most effect types need no options passed by default
+			var options = {};
+			// some effects have required parameters
+			if ( selectedEffect === "scale" ) {
+				options = { percent: 0 };
+			} else if ( selectedEffect === "size" ) {
+				options = { to: { width: 200, height: 60 } };
+			}
+	
+			// run the effect
+			$( "#widget8" ).hide( 'scale', options, 500 );
+		});
 
 
 	    
@@ -941,6 +980,7 @@ var currentMarker;
 	    $( "#widget5" ).hide();
 	    $( "#widget6" ).hide();
 	    $( "#widget7" ).hide();
+	    $( "#widget8" ).hide();
 		
 	
 	});
