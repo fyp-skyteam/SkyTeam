@@ -94,7 +94,6 @@ for(int i=0;i<userDatasetList.size();i++){
 	</section>
 </nav>
 </div>
-<!-- test test -->
 
 <!-- NAVIGATION BAR -->
 <div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;">
@@ -150,7 +149,10 @@ for(int i=0;i<userDatasetList.size();i++){
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close8" class="closeBtn">x</a>
 
 	<h3> Simulation </h3>
-    <input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input>
+    <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
+    <b id="buildingsAffected"></b>
+    <p id="averageFlood"></p>
+    <p id="averageFire"></p>
 </div>
 	
 	
@@ -2059,7 +2061,7 @@ var currentMarker;
     }
     
     
-    
+   //Simulation Functionalities
     function startSimulation()  {
         var myLatlng2;
         var mapCenter = map.getCenter();
@@ -2108,16 +2110,16 @@ var currentMarker;
          	 	}
              }	 
 			 
-             var alertStr = "";
+             var buildingStr = "";
              
              if(count1==0){
-            	 alertStr += "There are no buildings affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "There are no buildings affected in this area. ";
              }else if(count1==1){
-            	 alertStr += "There is 1 building affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "There is 1 building affected in this area. ";
              }else{
-            	 alertStr += "There are " + count1 + " buildings affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "There are " + count1 + " buildings affected in this area. ";
              }
-             
+                          
              var query, queryText, gvizQuery;
              query = "SELECT 'gridcode' " +
              "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
@@ -2134,7 +2136,7 @@ var currentMarker;
                riskIndex = riskIndex/table.getNumberOfRows();
                riskIndex = (1 - riskIndex/500)*100;
                if (riskIndex > 0) {
-               	alertStr += "Average Flood Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+            	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(2) + "%. ";
                }
                
                //var floodRisk = (1 - table.getValue(0,0)/500) * 100;
@@ -2155,9 +2157,8 @@ var currentMarker;
                  riskIndex = riskIndex/table1.getNumberOfRows();
                  riskIndex = (1 - riskIndex/20000)*100;
                  if (riskIndex > 0) {
-                 alertStr += "Average Fire Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+                	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(2) + "%. ";
                  }
-                 alert(alertStr);
                });
              
              });
@@ -2178,6 +2179,9 @@ var currentMarker;
     		simButton.className = "btn btn-success";
     		dragMarker.setMap(null);
     		customCircle.setMap(null);
+    		document.getElementById("averageFire").innerHTML = ""
+    		document.getElementById("averageFlood").innerHTML = ""
+    		document.getElementById("buildingsAffected").innerHTML = ""
     	}
     }
     
