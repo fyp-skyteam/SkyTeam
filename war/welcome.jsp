@@ -150,6 +150,7 @@ for(int i=0;i<userDatasetList.size();i++){
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close8" class="closeBtn">x</a>
 
 	<h3> Simulation </h3>
+    <input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input>
 </div>
 	
 	
@@ -843,7 +844,6 @@ var currentMarker;
 		      // most effect types need no options passed by default
 		      var options = {};
 		      // some effects have required parameters
-		 
 		      // run the effect
 		      $( "#widget8" ).show( 'clip', options, 500 );
 		      return false;
@@ -865,7 +865,7 @@ var currentMarker;
 				options = { to: { width: 200, height: 60 } };
 			}
 		    clearResults();
-		    clearMarkers();
+		    clearPOImarkers();
 			// run the effect
 			$( "#widget1" ).hide( 'scale', options, 500 );
 	    });
@@ -1041,7 +1041,8 @@ var currentMarker;
     }
      
 	var map, places, iw;
-	  var markers = [];
+	  var poiMarkers = [];
+	  var mapMarkers = [];
 	  var searchmarkers = [];
 	  var searchTimeout;
 	  var centerMarker;
@@ -1052,11 +1053,11 @@ var currentMarker;
 	  var markerPos;
 	  var curMarker;
 	  var circle;
+	  var newPoiRad = 500;
+	  
 	  //DATA INFORMATION CHECKBOX VARIABLES
-	  var marker2;
-      var markers2 = new Array();
       function updateVisibility(id) {
-  	  	var marker = markers2[id]; // find the marker by given id
+  	  	var marker = mapMarkers[id]; // find the marker by given id
   	  	if (document.getElementById('markerCheckBox'+id).checked) {
   	  		marker.setMap(map);
   	  	}else{
@@ -1064,21 +1065,17 @@ var currentMarker;
   	  	}
   	  }
 	  
-      function updateRadius(circle, rad){
-		  
-	  }
+	  //SIMULATION VARIABLES
+	  var customCircle;
+	  var dragMarker;
       
-     
-	 	
-	  
-	  
+      
+
 	  function initialize() {
-	  
+	  //intitialize Historical Analysis
 	  drawVisualization();
 	  // marker's longitude and langitude
-      
-      displayMarkerInfo();
-	    var myOptions = {
+      	    var myOptions = {
 	      zoom: 15,
 	      mapTypeId: google.maps.MapTypeId.ROADMAP
 	    }
@@ -1233,7 +1230,7 @@ var currentMarker;
 	                                  '<td>'+ locations[i][2] + '</td>'
 	                                  '</tr>'; 
 	                          }
-	                     markers2.push(marker);
+	                     mapMarkers.push(marker);
 	                 
 	                     //Hover Function for info window
 	                     google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
@@ -1247,8 +1244,7 @@ var currentMarker;
 	                         });
 	                       };
 	                     })(marker, i));
-	                     
-
+             
 	                     var selected;
 		                  var selectedIcon;
 		                  
@@ -1287,10 +1283,10 @@ var currentMarker;
 					       		     document.getElementById('noResultMsg').innerHTML = "";
 			                         displayData(details[i],marker.position.lat(),marker.position.lng(),marker.vIndex);
 			                         
-			                         //map.setCenter(marker.position);
+			                         map.setCenter(marker.position);
 			                         document.getElementById('type').value="";
 			                 	     clearResults();
-			                	     clearMarkers();
+			                 	    clearPOImarkers();
 											                	    
 			                         /*typeSelect = document.getElementById('type');
 				                 	    typeSelect.onchange = function() {
@@ -1329,22 +1325,11 @@ var currentMarker;
 		                     })(marker, i));
 		                   }
 	                   
-	                  
-	                   //Centers the map where the furthest points are
-	                   function AutoCenter() {
-	                       var bounds = new google.maps.LatLngBounds();
-	                       $.each(markers, function (index, marker) {
-	                         bounds.extend(marker.position);
-	                       });
-	                       map.fitBounds(bounds);
-	                     }
-	                     
-	                     //runs the autocenter
-	                     AutoCenter();
+
 	                     
 	                     // shows / hides the markers based on the ID
 	                     function toggleData(id) {
-	                    	 $.each(markers, function (index, marker) {
+	                    	 $.each(mapMarkers, function (index, marker) {
 	                    		 if (marker.id === id) {
 	                    			  if (marker.getVisible()) {
 	                                 marker.setVisible(false);
@@ -1381,12 +1366,13 @@ var currentMarker;
 	                      });  
 	             
 	       }
-	                   
+	                   //center map
+	                   AutoCenter();
 	  }
 
 
 	 
-	  
+	  //Hazard Map Functionalities
 	  var layer;
 	  function displayHazard() {
 		  if (!layer) {
@@ -1463,16 +1449,17 @@ var currentMarker;
 			  document.getElementById("hazardSelect").style.display="none";
 		  }
 	  }
+	  
+	  //POI Functionalities
 	  function tilesLoaded() {
 	    google.maps.event.clearListeners(map, 'tilesloaded');
-	    google.maps.event.addListener(map, 'zoom_changed', searchIfRankByProminence);
 	    google.maps.event.addListener(map, 'dragend', search);
 	  }
 	  
 
 	  function search(markerPosition, typeIsSelected, radius) {
 		    clearResults();
-		    clearMarkers();
+		    clearPOImarkers();
 
 		    if (searchTimeout) {
 		      window.clearTimeout(searchTimeout);
@@ -1535,12 +1522,12 @@ var currentMarker;
 		          var distance = google.maps.geometry.spherical.computeDistanceBetween(markerPosition,poiPosition);
 		    	  document.getElementById('noResultMsg').innerHTML = "";
 		          
-		          markers.push(new google.maps.Marker({
+		          poiMarkers.push(new google.maps.Marker({
 		            position: results[i].geometry.location,
 		            animation: google.maps.Animation.DROP,
 		            icon: icon
 		          }));
-		          google.maps.event.addListener(markers[i], 'click', getDetails(results[i], i));
+		          google.maps.event.addListener(poiMarkers[i], 'click', getDetails(results[i], i));
 		          window.setTimeout(dropMarker(i), i * 100);
 		          
 			        bounds.extend(results[i].geometry.location);
@@ -1560,12 +1547,11 @@ var currentMarker;
 		  document.getElementById('noResultMsg').innerHTML = "No nearby POIs found in the area";
 	  }
 	  
-
-	  function clearMarkers() {
-	    for (var i = 0; i < markers.length; i++) {
-	      markers[i].setMap(null);
+	  function clearPOImarkers() {
+	    for (var i = 0; i < poiMarkers.length; i++) {
+	      poiMarkers[i].setMap(null);
 	    }
-	    markers = [];
+	    poiMarkers = [];
 	    if (centerMarker) {
 	      centerMarker.setMap(null);
 	    }
@@ -1573,8 +1559,8 @@ var currentMarker;
 
 	  function dropMarker(i) {
 	    return function() {
-	      if (markers[i]) {
-	        markers[i].setMap(map);
+	      if (poiMarkers[i]) {
+	        poiMarkers[i].setMap(map);
 	      }
 	    }
 	  }
@@ -1584,7 +1570,7 @@ var currentMarker;
 		    var tr = document.createElement('tr');
 		    tr.style.backgroundColor = (i% 2 == 0 ? '#F0F0F0' : '#FFFFFF');
 		    tr.onclick = function() {
-		      google.maps.event.trigger(markers[i], 'click');
+		      google.maps.event.trigger(poiMarkers[i], 'click');
 		    };
 
 		    var iconTd = document.createElement('td');
@@ -1631,7 +1617,7 @@ var currentMarker;
 	        iw = new google.maps.InfoWindow({
 	          content: getIWContent(place)
 	        });
-	        iw.open(map, markers[i]);        
+	        iw.open(map, poiMarkers[i]);        
 	      }
 	    }
 	  }
@@ -1786,9 +1772,7 @@ var currentMarker;
 	        //map.setMapTypeId('map-style');
 	      }
 	      
-	      function displayMarkerInfo() {
-	    	  
-	      }
+	      //Historical Analysis Functionality
 	      google.load('visualization', '1', {packages: ['motionchart']});
 	      google.load('visualization', '1', { packages: ['table'] });
 	      
@@ -1972,9 +1956,7 @@ var currentMarker;
     function showCompareAdd() {
     	  document.getElementById('compareAdd').style.display = "block";
     }
-    
-  
-    
+
     function hideCompareAdd() {
         document.getElementById('compareAdd').style.display = "none";
     }
@@ -2074,15 +2056,138 @@ var currentMarker;
     {   
         var row = document.getElementById(rowid);
         row.parentNode.removeChild(row);
-        // get the datatable chart here from comparisonChart
-        // delete the row with the same data as above
     }
     
-    function drawVisualization() {
+    
+    
+    function startSimulation()  {
+        var myLatlng2;
+        var mapCenter = map.getCenter();
+        map.setZoom(10);
+    	  if(customCircle!=null){
+    		  customCircle.setMap(null);
+    	  }
+    	  if(dragMarker!=null){
+    		  dragMarker.setMap(null);
+    	  }
+    	  var radiusStr = 5000
+    	  var radius = parseInt(radiusStr);
+    	  //ICON NEEDS TO BE CHANGED FOR DRAG MARKER
+    	  dragMarker = new google.maps.Marker({
+              position: mapCenter,
+              title: 'Location',
+              map: map,
+              draggable: true
+          });
+    	 
+    	  customCircle = new google.maps.Circle({
+              map: map,
+              clickable: false,
+              // metres
+              radius: radius,              
+              strokeColor: '#FF0000',
+  		      strokeOpacity: 0.8,
+  		      strokeWeight: 2,
+  		      fillColor: '#FF0000',
+  		      fillOpacity: 0.35,
+          });
+         // attach circle to marker
+         customCircle.bindTo('center', dragMarker, 'position');
 
+         var bounds = customCircle.getBounds();
+         
+         google.maps.event.addListener(dragMarker, 'dragend', function() {
+        	
+        	 myLatlng2 = new google.maps.LatLng(dragMarker.position.lat(), dragMarker.position.lng());
+             var count1=0;
+             for(var i=0;i<mapMarkers.length;i++){
+            	 var distance1 = google.maps.geometry.spherical.computeDistanceBetween(myLatlng2, mapMarkers[i]);
+            	 console.log(distance1);
+         	 	if(distance1<=radius){
+         	 		count1++;
+         	 	}
+             }	 
+			 
+             var alertStr = "";
+             
+             if(count1==0){
+            	 alertStr += "There are no buildings affected in this area. ";
+             }else if(count1==1){
+            	 alertStr += "There is 1 building affected in this area. ";
+             }else{
+            	 alertStr += "There are " + count1 + " buildings affected in this area. ";
+             }
+             
+             var query, queryText, gvizQuery;
+             query = "SELECT 'gridcode' " +
+             "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
+             "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng2.lat() + ', ' + myLatlng2.lng() + ")," + radius + "))";
+             queryText = encodeURIComponent(query);
+             gvizQuery = new google.visualization.Query(
+                 'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+             gvizQuery.send(function(response) {	
+               var table = response.getDataTable();
+               var riskIndex = 0;
+               for(var i=0;i<table.getNumberOfRows();i++){
+            	   riskIndex += table.getValue(i,0);
+               }
+               riskIndex = riskIndex/table.getNumberOfRows();
+               riskIndex = (1 - riskIndex/500)*100;
+               if (riskIndex > 0) {
+               	alertStr += "Average Flood Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+               }
+               
+               //var floodRisk = (1 - table.getValue(0,0)/500) * 100;
+               //document.getElementById("flood-risk").innerHTML = floodRisk.toFixed(2) + "%";  
+               var query1, queryText1, gvizQuery1;
+               query1 = "SELECT 'gridcode' " +
+               "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
+               "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + myLatlng2.lat() + ", " + myLatlng2.lng() + ")," + radius + "))";
+               queryText1 = encodeURIComponent(query1);
+               gvizQuery1 = new google.visualization.Query(
+                   'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+               gvizQuery1.send(function(response) {	
+                 var table1 = response.getDataTable();
+                 var riskIndex = 0;
+                 for(var i=0;i<table1.getNumberOfRows();i++){
+              	   riskIndex += table1.getValue(i,0);
+                 }
+                 riskIndex = riskIndex/table1.getNumberOfRows();
+                 riskIndex = (1 - riskIndex/20000)*100;
+                 if (riskIndex > 0) {
+                 alertStr += "Average Fire Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+                 }
+                 alert(alertStr);
+               });
+             
+             });
+
+  
+         });
+      }
+    
+    function changeSimulationState() {
+    	var simButton = document.getElementById("simulationButton");
+    	if (simButton.value == "Start Simulation") {
+    		simButton.value = "End Simulation";
+    		simButton.className = "btn btn-danger";
+    		startSimulation();
+    	}
+    	else {
+    		simButton.value = "Start Simulation";
+    		simButton.className = "btn btn-success";
+    		dragMarker.setMap(null);
+    		customCircle.setMap(null);
+    	}
     }
     
-    
+    function AutoCenter() {
+        var bounds = new google.maps.LatLngBounds();
+        $.each(mapMarkers, function (index, marker) {
+          bounds.extend(marker.position);
+        });
+        map.fitBounds(bounds);
+      }
 
 </script>
 
