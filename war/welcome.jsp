@@ -854,8 +854,9 @@ var currentMarker;
 	    	//to hide radius
 	    	$("#wid1IsSelected").val("false");
 	    	$("#poiSlide").slider('setValue', 500);
-	    	circle.setMap(null);
-	    	
+	    	if($("#markerSelected").val() =="true"){
+	    		circle.setMap(null);
+	    	}
 			// get effect type from
 			var selectedEffect = $( "#effectTypes" ).val();
 			// most effect types need no options passed by default
@@ -1056,6 +1057,11 @@ var currentMarker;
 	  var curMarker;
 	  var circle;
 	  var newPoiRad = 500;
+	  $("#poiSlide").slider({tooltip: 'always'});
+ 	 	$("#poiSlide").on('slide', function(slideEvt) {
+ 	 		newPoiRad = document.getElementById('poiSlide').value;
+ 	 		circle.setRadius(slideEvt.value);
+ 	 	});
 	  
 	  //DATA INFORMATION CHECKBOX VARIABLES
       function updateVisibility(id) {
@@ -1139,11 +1145,7 @@ var currentMarker;
 	      var bounds = map.getBounds();
 	      searchBox.setBounds(bounds);
 	    });
-	    $("#poiSlide").slider({tooltip: 'always'});
-   	 	$("#poiSlide").on('slide', function(slideEvt) {
-   	 		newPoiRad = document.getElementById('poiSlide').value;
-   	 		circle.setRadius(slideEvt.value);
-   	 	});
+	   
 	    
 	    
 	    document.getElementById('keyword').onkeyup = function(e) {
