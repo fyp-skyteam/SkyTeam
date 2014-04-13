@@ -1877,41 +1877,63 @@ var currentMarker;
 		      document.getElementById("floodRisk").style.visibility="visible";
 		      document.getElementById("earthquakeRisk").style.visibility="visible";
 		      getRiskCalculation(selected.position.lat(),selected.position.lng());
-		      
 		  }
   
       function getRiskCalculation(latitude,longitude) {
+    	  document.getElementById("floodRiskValue").innerHTML = "";
+    		document.getElementById("fireRiskValue").innerHTML = "";
+    		document.getElementById("earthquakeRiskValue").innerHTML = "";
+    		var fireRisk = "";
+    		var floodRisk = "";
+    		var earthquakeRisk = ""
     	  var query, queryText, gvizQuery;
           query = "SELECT 'gridcode' " +
           "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
           "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
           queryText = encodeURIComponent(query);
-          gvizQuery = new google.visualization.Query(
-              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+          gvizQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
           gvizQuery.send(function(response) { 
             var table = response.getDataTable();
-            var floodRisk = (1 - table.getValue(0,0)/500) * 100;
-            document.getElementById("floodRiskValue").innerHTML = floodRisk.toFixed(2) + "%";
+            if (table.getNumberOfRows() != 0) {
+            	  floodRisk = ((1 - table.getValue(0,0)/500) * 100).toFixed(2);
+            }
+            if (floodRisk != "") {
+                document.getElementById("floodRiskValue").innerHTML = floodRisk + "%";
+            }
+            else {
+            	  document.getElementById("floodRiskValue").innerHTML = "No data available";
+                floodRisk = 0;
+            }
+            var query1, queryText1, gvizQuery1;
+            query1 = "SELECT 'gridcode' " +
+            "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
+            "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+            queryText1 = encodeURIComponent(query1);
+            gvizQuery1 = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+            gvizQuery1.send(function(response) {  
+	              var table1 = response.getDataTable();
+	              if (table1.getNumberOfRows() != 0) {
+	               fireRisk = ((1 - table1.getValue(0,0)/20000) * 100).toFixed(2);
+	              }
+	              if (fireRisk != "") {
+	            	  document.getElementById("fireRiskValue").innerHTML = fireRisk + "%";
+	              }
+	              else {
+	            	  document.getElementById("fireRiskValue").innerHTML = "No data available";
+	            	  fireRisk = 0;
+	              }
+	              earthquakeRisk = 0;
+	              document.getElementById("earthquakeRiskValue").innerHTML = 0 + "%";
+	              
+	              displayChart(floodRisk,fireRisk,earthquakeRisk);
+            });
           });
-        var query1, queryText1, gvizQuery1;
-          query1 = "SELECT 'gridcode' " +
-          "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
-          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
-          queryText1 = encodeURIComponent(query1);
-          gvizQuery1 = new google.visualization.Query(
-              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
-          gvizQuery1.send(function(response) {  
-            var table1 = response.getDataTable();
-            var fireRisk = (1 - table1.getValue(0,0)/20000) * 100;
-            document.getElementById("fireRiskValue").innerHTML = fireRisk.toFixed(2) + "%";
-          });
-          
-          document.getElementById("earthquakeRiskValue").innerHTML = 0 + "%";
       }
       
-      function displayChart() {
-    	  var number = document.getElementById("earthquakeRiskValue").innerHTML
-    	  console.log(number);
+      function displayChart(flood,fire,earthquake) {
+    	  console.log(flood);
+    	  console.log(fire);
+    	  console.log(earthquake);
     	  var data = google.visualization.arrayToDataTable([
 	        ['Risk', 'Percentage'],
 	        ['Flood',     3],
