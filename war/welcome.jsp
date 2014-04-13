@@ -239,7 +239,7 @@ for(int i=0;i<userDatasetList.size();i++){
 		<div id="floodRisk" style="visibility:hidden"><h4><font color="Black">Flood Risk: </font><u><b id="floodRiskValue"></b></u></h4></div>
 		<div id="fireRisk" style="visibility:hidden"><h4><font color="Black">Fire Risk: </font><u><b id="fireRiskValue"></b></u></h4></div>
 		<div id="earthquakeRisk" style="visibility:hidden"><h4><font color="Black">Earthquake Risk: </font><u><b id="earthquakeRiskValue"></b></u></h4></div>
-		<div id="donut-chart" style="height:200px"></div>
+		<div id="donut-chart"></div>
   </div>
   </div>
 <!-- END OF RISK CALCULATION WIDGET -->
@@ -1744,6 +1744,8 @@ var currentMarker;
 	      //Historical Analysis Functionality
 	      google.load('visualization', '1', {packages: ['motionchart']});
 	      google.load('visualization', '1', { packages: ['table'] });
+	      google.load("visualization", "1", {packages:["corechart"]});
+
 	      
 	      function drawVisualization() {
 	          var state = 'Johor';  
@@ -1931,15 +1933,21 @@ var currentMarker;
       }
       
       function displayChart(flood,fire,earthquake) {
-    	  console.log(flood);
-    	  console.log(fire);
-    	  console.log(earthquake);
+    	  
+    	  flood = parseFloat(flood);
+    	  fire = parseFloat(fire);
+    	  earthquake = parseFloat(earthquake);
     	  var data = google.visualization.arrayToDataTable([
-	        ['Risk', 'Percentage'],
-	        ['Flood',     3],
-	        ['Fire',      2],
-	        ['Earthquake',    7]
+	        ['Risk', 'Value'],
+	        ['Flood',     flood],
+	        ['Fire',      fire],
+	        ['Earthquake',    earthquake]
     	  ]);
+    	  var options = {
+    			  pieSliceText: 'label',
+    	        };
+    	  var chart = new google.visualization.PieChart(document.getElementById('donut-chart'));
+          chart.draw(data, options);
       }
 	
     //Comparison Functionalities
