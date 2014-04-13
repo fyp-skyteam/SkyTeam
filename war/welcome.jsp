@@ -1370,8 +1370,16 @@ var currentMarker;
 	                      });  
 	             
 	       }
-	                   //center map
-	                   AutoCenter();
+	                   //center map or center Malaysia
+	                   if (mapMarkers.length > 0) {
+	                	   AutoCenter();
+	                   }
+	                   
+	                   else {
+	                	  //Malaysia Coordinates
+	                	  map.setCenter(new google.maps.LatLng(4.210484,101.97576600000002));
+	                	  map.setZoom(8);
+	                  }
 	  }
 
 
@@ -2105,7 +2113,7 @@ var currentMarker;
         	 myLatlng2 = new google.maps.LatLng(dragMarker.position.lat(), dragMarker.position.lng());
              var count1=0;
              for(var i=0;i<mapMarkers.length;i++){
-            	 var distance1 = google.maps.geometry.spherical.computeDistanceBetween(myLatlng2, mapMarkers[i]);
+            	 var distance1 = google.maps.geometry.spherical.computeDistanceBetween(myLatlng2, mapMarkers[i].position);
             	 console.log(distance1);
          	 	if(distance1<=radius){
          	 		count1++;
