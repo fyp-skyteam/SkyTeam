@@ -249,52 +249,17 @@ for(int i=0;i<userDatasetList.size();i++){
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
   
 	<h3>Hazard Map</h3>
+	<h4 style="color:Black">Select Country:</h4>
+	<select class="selectpicker" data-width="100%">
+	 <option value="malaysia" >Malaysia</option>
+	</select>
 	<br />
-	<center><button type="button" class="btn btn-primary" onclick="displayHazard()">Show / Hide Layer</button></center>
+	<h4 style="color:Black">Maps Available:</h4>
+	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map
 	<br />
-	<div id="hazardSelect" style="display:none">
-	<form>
-	   <label>Sector </label>
-      <select id="sector" >
-        <option value="Flood">Flood</option>
-        <option value="Fire">Fire</option>
-        <option value="Earthquake">Earthquake</option>
-        <option value="Total">Total</option>
-      </select>
-      <br />
-	   <label>County</label>
-      <select id="county">
-        <option value="">Show All</option>
-        <option value="Johor">Johor</option>
-        <option value="Kedah">Kedah</option>
-        <option value="Kelantan">Kelantan</option>
-        <option value="Melaka">Melaka</option>
-        <option value="Negeri Sembilan">Negeri Sembilan</option>
-        <option value="Pahang">Pahang</option>
-        <option value="Perak">Perak</option>
-        <option value="Perlis">Perlis</option>
-        <option value="Pulau Pinang">Pulau Pinang</option>
-        <option value="Sabah">Sabah</option>
-        <option value="Sarawak">Sarawak</option>
-        <option value="Selangor">Selangor</option>
-        <option value="Terengganu">Terengganu</option>
-        <option value="Wilayah Persekutuan">Wilayah Persekutuan</option>
-      </select>
-      <label>Year</label>
-      <select id="year">
-        <option value="2006">2006</option>
-        <option value="2007">2007</option>
-        <option value="2008">2008</option>
-        <option value="2009">2009</option>
-        <option value="2010">2010</option>
-        <option value="2011">2011</option>
-        <option value="2012">2012</option>
-        <option value="2013" selected>2013</option>
-      </select>        
-    </form>
-    </div>
-	<div id="legendWrapper"></div>
-	
+	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map
+	<br />
+	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map
   </div>
   </div>
 <!-- END OF HAZARD MAP WIDGET -->
@@ -1077,7 +1042,10 @@ var currentMarker;
 	  var customCircle;
 	  var dragMarker;
       
-      
+    //HAZARD MAP VARIABLES
+    var earthquakeLayer;
+    var floodLayer;
+    var fireLayer;
 
 	  function initialize() {
 	  //intitialize Historical Analysis
@@ -1385,80 +1353,71 @@ var currentMarker;
 
 	 
 	  //Hazard Map Functionalities
-	  var layer;
-	  function displayHazard() {
-		  if (!layer) {
-			  var sector = 'Flood';
-			  var year = '2013';
-			  document.getElementById("hazardSelect").style.display="block";
-		         layer = new google.maps.FusionTablesLayer();
-		         updateLayerQuery(layer, sector);
-		         layer.setMap(map);
-		         createLegend(map, sector);
-		         styleLayerBySector(layer, sector,year);
-		         styleMap(map);
-		         
-		         google.maps.event.addListener(layer, 'click', function(e) {
-		             var county = e.row['name'].value;
-	 
-		             var risk = e.row[year].value;
-		             if (risk <= 20 && risk>=0) {
-		               e.infoWindowHtml =
-		               "Region: " + e.row['name'].value  + "</br>"
-		               + e.row['Risk Factor'].value + " risk ("+ year + "): " +  e.row[year].value + "</br>"
-		               +  '<strong>Very Low Risk!</strong>' + "</br>";
-		             } else if (risk <=40) {
-		               e.infoWindowHtml = 
-		            	   "Region: " + e.row['name'].value  + "</br>"
-			               + e.row['Risk Factor'].value + " risk ("+ year + "): " +  e.row[year].value + "</br>"
-			               +  '<strong>Low Risk!</strong>' + "</br>";
-		             } else if (risk <=60){
-		               e.infoWindowHtml = 
-		            	   "Region: " + e.row['name'].value  + "</br>"
-			               + e.row['Risk Factor'].value + " risk ("+ year + "): " +  e.row[year].value + "</br>"
-			               +  '<strong>Medium Risk!</strong>' + "</br>";
-		             }
-		             else if (risk <=80){
-			               e.infoWindowHtml = 
-			            	   "Region: " + e.row['name'].value  + "</br>"
-				               + e.row['Risk Factor'].value + " risk ("+ year + "): " +  e.row[year].value + "</br>"
-				               +  '<strong>High Risk!</strong>' + "</br>";
-			         }else if(risk <=100) {
-			               e.infoWindowHtml = 
-			            	   "Region: " + e.row['name'].value  + "</br>"
-				               + e.row['Risk Factor'].value + " risk ("+ year + "): " +  e.row[year].value + "</br>"
-				               +  '<strong>Very High Risk!</strong>' + "</br>";
-			             }
-		             
-		           });
-	
-		           google.maps.event.addDomListener(document.getElementById('sector'),
-		               'change', function() {
-		                 sector = this.value;
-		                 updateLayerQuery(layer, sector);
-		                 styleLayerBySector(layer, sector,year);
-		                 updateLegend(sector);
-		               });
-		           
-		           google.maps.event.addDomListener(document.getElementById('year'),
-		                   'change', function() {
-		                     year = this.value;
-		                     updateLayerQuery(layer, sector);
-		                     styleLayerBySector(layer, sector,year);
-		                     updateLegend(sector);
-		                   });
-	
-		           google.maps.event.addDomListener(document.getElementById('county'),
-		               'change', function() {
-		                 var county = this.value;
-		                 updateLayerQuery(layer, sector, county);
-		               });
+	  function displayFire(country) {
+		  if (fireLayer != null) {
+			  fireLayer.setMap(null);
+	            fireLayer = null;
 		  }
 		  else {
-			  layer.setMap(null);
-			  layer = null;
-			  document.getElementById("legend").remove();
-			  document.getElementById("hazardSelect").style.display="none";
+			  var script = document.createElement('script');
+        script.src = 'sample3.json';
+        document.getElementsByTagName('head')[0].appendChild(script);
+        window.eqfeed_callback = function(results) {
+	        var heatmapData = [];
+	        for (var i = 0; i < results.features.length; i++) {
+	          var fire = results.features[i];
+	          var geometry = fire.geometry;
+	          var coords = geometry.split(',')
+	          var latLng = new google.maps.LatLng(coords[1], coords[0]);
+	          heatmapData.push(latLng);
+	        }
+	        fireLayer = new google.maps.visualization.HeatmapLayer({
+	          data: heatmapData,
+	          dissipating: true,
+	          radius: 40,
+	          map: map
+	        });
+        }
+		  }
+	  }
+	  
+	  function displayFlood(country) {
+		  if (floodLayer != null) {
+		        floodLayer.setMap(null);
+		        floodLayer = null;
+      }
+      else {
+        floodLayer = new google.maps.FusionTablesLayer();
+        floodLayer.setOptions({
+           query: {
+              select: 'geometry',
+              from: '1HLg38j7a9sCtQhVJAj_fq6c647XY3qgDqiPMKj-Q'
+           },
+           heatmap:{
+              enabled: true
+           }
+        });
+        floodLayer.setMap(map);
+      }
+	  }
+	  
+	  function displayEarthquake(country) {
+		  if (earthquakeLayer != null) {
+			  earthquakeLayer.setMap(null);
+			  earthquakeLayer = null;
+		  }
+		  else {
+			  earthquakeLayer = new google.maps.FusionTablesLayer();
+			  earthquakeLayer.setOptions({
+			     query: {
+			    	  select: 'geometry',
+			        from: '1IQqqlXHchB1e5AQaQRqpZzbSAlUSSlZRzCls3Qrl'
+			     },
+			     heatmap:{
+			    	  enabled: true
+			     }
+		    });
+			  earthquakeLayer.setMap(map);
 		  }
 	  }
 	  

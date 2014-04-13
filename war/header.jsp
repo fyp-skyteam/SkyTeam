@@ -8,6 +8,7 @@
 <meta name="author" content="Codrops" />
 
 <!-- Initialize custom drag-able elements for widgets -->	
+
 <script src="assets/js/jquery.nouislider.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
@@ -45,6 +46,7 @@
 <script src="assets/js/bootstrap-slider.js"></script>
 <script src="assets/js/classie.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization"></script>
 
 <link rel="stylesheet" href="assets/css/global.css">
 <link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
