@@ -235,10 +235,11 @@ for(int i=0;i<userDatasetList.size();i++){
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
   
 	<h3>Risk Calculation</h3>
-	  <div id="risktable"></div>
 		<div id="selectedRisk"><h5>Please select a point to begin.</h5></div>
-		<div id="dropdownRisk"></div><div id="totalRisk"></div>
-		<div id="donut-example" style="height:200px"></div>
+		<div id="floodRisk" style="visibility:hidden"><h4><font color="Black">Flood Risk: </font><u><b id="floodRiskValue"></b></u></h4></div>
+		<div id="fireRisk" style="visibility:hidden"><h4><font color="Black">Fire Risk: </font><u><b id="fireRiskValue"></b></u></h4></div>
+		<div id="earthquakeRisk" style="visibility:hidden"><h4><font color="Black">Earthquake Risk: </font><u><b id="earthquakeRiskValue"></b></u></h4></div>
+		<div id="donut-chart" style="height:200px"></div>
   </div>
   </div>
 <!-- END OF RISK CALCULATION WIDGET -->
@@ -1109,10 +1110,11 @@ var currentMarker;
 
 	    // Bias the SearchBox results towards places that are within the bounds of the
 	    // current map's viewport.
+	    /*
 	    google.maps.event.addListener(map, 'bounds_changed', function() {
 	      var bounds = map.getBounds();
 	      searchBox.setBounds(bounds);
-	    });
+	    });*/
 	   
 	    
 	    
@@ -1275,11 +1277,7 @@ var currentMarker;
 				                 	      search(marker.position,'true',newPoiRad);
 				                 	      markerPos = marker.position;
 				                 	    };
-				                 	    
-				                 	    
-				                 	  
-			                         drawTable(marker.position.lat(),marker.position.lng(),marker.vIndex,2013);
-		
+				                 	   		
 			                         if (selected) {
 			                        	 selected.setIcon(selectedIcon);
 			                         }
@@ -1867,60 +1865,59 @@ var currentMarker;
 		document.getElementById('maxLossCoverageLimit').value = sliderValue.substring(sepIndex+1, sliderValue.length);
 	});
 	
-	function displaySelectedRisk(selected) {
-    	document.getElementById('selectedRisk').innerHTML = ('<h4>Selected point: <b><u>' + selected.name + '</b></u></h4>' + '<h4>Vulnerability Index: <b><u>' + selected.vIndex + '</b></u></h4>' );
-	}
-	
+
 	function displaySelectedPOI(selected) {
 	      document.getElementById('selectedPOI').innerHTML = ('<h5>Selected point: <b><u>' + selected.name + '</b></u></h5>');
 	  }
 	
-	//Risk Calculation Table
-      function drawTable(latitude,longitude,vIndex,year) {
-    	  document.getElementById('dropdownRisk').innerHTML = ('<select class="selectpicker"onchange="drawTable('+latitude+','+longitude+','+vIndex+',this.value)"><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option></select>');
-    	  var number = (9 - (2013 - year));
-    	  
-        var query = "SELECT 'name','Risk Factor','2006','2007','2008','2009','2010','2011','2012','2013' " +
-        "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
-        "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
-        var queryText = encodeURIComponent(query);
-        var gvizQuery = new google.visualization.Query(
-            'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
-        
-        gvizQuery.send(function(response) {
-          /*var table = new google.visualization.Table(
-              document.getElementById('risktable'));
-          table.draw(response.getDataTable());*/
-          for (var i=0;i<4;i++){
-        	  if(response.getDataTable().getValue(i,1)=="Total"){
-        		  total = response.getDataTable().getValue(i,number) *3;
-        		  break;
-        	  }
-          }
-          //var total = response.getDataTable().getValue(0,number) + response.getDataTable().getValue(1,number) + response.getDataTable().getValue(2,number);
-         
-    	  
-          var percent1 = response.getDataTable().getValue(0,number) / total * 100;
-          percent1 = +percent1.toFixed(0);
-        	var percent2 = response.getDataTable().getValue(1,number) / total * 100;
-        	percent2 = +percent2.toFixed(0);
-          var percent3 = response.getDataTable().getValue(2,number) / total * 100;
-          percent3 = +percent3.toFixed(0);
-          new Morris.Donut({
-              element: 'donut-example',
-              data: [
-                  
-                {label: response.getDataTable().getValue(0,1)+" ("+percent1+"%)", value: response.getDataTable().getValue(0,number)},
-                {label: response.getDataTable().getValue(1,1)+" ("+percent2+"%)", value: response.getDataTable().getValue(1,number)},
-                {label: response.getDataTable().getValue(2,1)+" ("+percent3+"%)", value: response.getDataTable().getValue(2,number)}
-              ]
-            });
-          var total = response.getDataTable().getValue(3,number)/10 * vIndex;
-          total = +total.toFixed(2);
-          document.getElementById('totalRisk').innerHTML = ('<h4>Average Risk in '+year+': <b><u>' + total + '</b></u></h4>');
-        }); 
-        
-	        
+	//Risk Calculation Functionalities
+			 function displaySelectedRisk(selected) {
+		      document.getElementById('selectedRisk').innerHTML = ('<h4><font color="black"> Selected point: </font><b><u>' + selected.name + '</b></u></h4>' + '<h4><font color="black">Vulnerability Index: </font><b><u>' + selected.vIndex + '</b></u></h4>' );
+		      document.getElementById("fireRisk").style.visibility="visible";
+		      document.getElementById("floodRisk").style.visibility="visible";
+		      document.getElementById("earthquakeRisk").style.visibility="visible";
+		      getRiskCalculation(selected.position.lat(),selected.position.lng());
+		      
+		  }
+  
+      function getRiskCalculation(latitude,longitude) {
+    	  var query, queryText, gvizQuery;
+          query = "SELECT 'gridcode' " +
+          "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
+          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+          queryText = encodeURIComponent(query);
+          gvizQuery = new google.visualization.Query(
+              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+          gvizQuery.send(function(response) { 
+            var table = response.getDataTable();
+            var floodRisk = (1 - table.getValue(0,0)/500) * 100;
+            document.getElementById("floodRiskValue").innerHTML = floodRisk.toFixed(2) + "%";
+          });
+        var query1, queryText1, gvizQuery1;
+          query1 = "SELECT 'gridcode' " +
+          "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
+          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+          queryText1 = encodeURIComponent(query1);
+          gvizQuery1 = new google.visualization.Query(
+              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+          gvizQuery1.send(function(response) {  
+            var table1 = response.getDataTable();
+            var fireRisk = (1 - table1.getValue(0,0)/20000) * 100;
+            document.getElementById("fireRiskValue").innerHTML = fireRisk.toFixed(2) + "%";
+          });
+          
+          document.getElementById("earthquakeRiskValue").innerHTML = 0 + "%";
+      }
+      
+      function displayChart() {
+    	  var number = document.getElementById("earthquakeRiskValue").innerHTML
+    	  console.log(number);
+    	  var data = google.visualization.arrayToDataTable([
+	        ['Risk', 'Percentage'],
+	        ['Flood',     3],
+	        ['Fire',      2],
+	        ['Earthquake',    7]
+    	  ]);
       }
 	
     //Comparison Functionalities
