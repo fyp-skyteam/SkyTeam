@@ -33,11 +33,8 @@
 <script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.effect-shake.js"></script>
 <script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.effect-slide.js"></script>
 <!-- INITIALIZE GOOGLE MAPS -->
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;libraries=places" style=""></script>
 <script src="http://maps.gstatic.com/cat_js/intl/en_us/mapfiles/api-3/15/8/%7Bmain,places%7D.js" type="text/javascript"></script>
-<!--to calculate distance-->
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script> 
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization,geometry,places"></script>
 
 <link rel="stylesheet" href="assets/morris/morris.css">
 <script src="assets/morris/morris.min.js"></script>
@@ -46,7 +43,6 @@
 <script src="assets/js/bootstrap-slider.js"></script>
 <script src="assets/js/classie.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization"></script>
 
 <link rel="stylesheet" href="assets/css/global.css">
 <link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
