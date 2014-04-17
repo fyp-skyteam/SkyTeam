@@ -79,14 +79,14 @@ for(int i=0;i<userDatasetList.size();i++){
 <body class="cbp-spmenu-push" style="overflow: hidden">
   <div style="text-align:center">
 <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4" style="margin: auto;">
-  <a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
-	<a href="#" style="text-decoration:none;" id="button1">Points of Interest</a>
-	<a href="#" style="text-decoration:none;" id="button2">Data & Information</a>
-	<a href="#" style="text-decoration:none;" id="button4">Hazard Map</a>
-	<a href="#" style="text-decoration:none;" id="button5">Risk Calculation</a>
-	<a href="#" style="text-decoration:none;" id="button6">Historical Analysis</a>
-  <a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#ComparisonModal">Comparison</a>
-	<a href="#" style="text-decoration:none;" id="button8">Simulation</a>
+  <a href="#" style="text-decoration:none;" class="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
+	<a href="#" style="text-decoration:none;" class="button1">Points of Interest</a>
+	<a href="#" style="text-decoration:none;" class="button2">Data & Information</a>
+	<a href="#" style="text-decoration:none;" class="button4">Hazard Map</a>
+	<a href="#" style="text-decoration:none;" class="button5">Risk Calculation</a>
+  	<a href="#" style="text-decoration:none;" class="button3" data-toggle="modal" data-target="#ComparisonModal">Comparison</a>
+	<a href="#" style="text-decoration:none;" class="button8">Simulation</a>
+	<a href="#" style="text-decoration:none;" class="button9" data-toggle="modal" data-target="#widgetModal"><b>Show All</b></a>
 	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:20px;">
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
@@ -94,7 +94,66 @@ for(int i=0;i<userDatasetList.size();i++){
 	</section>
 </nav>
 </div>
-
+<!-- WIDGET MODAL CONTAINER -->
+<div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id=UploadModalLabel">All Widgets</h4>
+      </div>
+      <div class="modal-body">
+      	<style>
+      		.widget-btn{
+      			margin: 20px;
+      			padding:10px;
+      			background: #00baff;
+      			border:0;
+      			color:white;
+      			height:70px;
+      			width:110px;
+      		}
+      	</style>
+      	<div class="row">
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button3 widget-btn" data-toggle="modal" data-target="#UploadModal">Upload New File</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button1 widget-btn">Points of Interest</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button2 widget-btn">Data & Information</button>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-md-4">
+				<button href="#" style="text-decoration:none;" class="button4 widget-btn">Hazard Map</button>      		</div>
+      		<div class="col-md-4">
+				<button href="#" style="text-decoration:none;" class="button5 widget-btn">Risk Calculation</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button3 widget-btn" data-toggle="modal" data-target="#ComparisonModal">Comparison</button>
+      			
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-md-4">
+ 				<button href="#" style="text-decoration:none;" class="button8 widget-btn">Simulation</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button6 widget-btn">Historical Analysis</button>
+      			
+      		</div>
+      		<div class="col-md-4">
+      			
+      		</div>
+      	</div>
+		
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END OF WIDGET MODAL CONTAINER -->
 <!-- NAVIGATION BAR -->
 <div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;">
     <div class="container">
@@ -226,7 +285,10 @@ for(int i=0;i<userDatasetList.size();i++){
 
 	<h3> Simulation </h3>
     <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
-    Radius(m)<input id="simulationSlide" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
+    <br/><br/><div id="simulationSlider">
+    Radius(m)
+    <input id="simulationSlide" style="visibility:hidden;" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
+    </div>
     <br/>
     <b id="buildingsAffected"></b>
     <p id="averageFlood"></p>
@@ -694,6 +756,7 @@ var currentMarker;
 	$(document).ready(function() {
 	    $('.selectpicker').selectpicker();
 	    $( "#draggable" ).draggable();
+	    $( "#simulationSlider" ).hide();
 	  });
 	
 	$(function() {
@@ -711,7 +774,7 @@ var currentMarker;
 	    $( ".resizable" ).resizable();
 
 		        // set effect from select menu value
-	   $( "#button1" ).click(function() {
+	   $( ".button1" ).click(function() {
 	    	//to indicate that poi is chosen and display radius
 	    	
 	    	$("#wid1IsSelected").val("true");
@@ -746,7 +809,7 @@ var currentMarker;
 	      return false;
 	    });
 	    
-	    $( "#button2" ).click(function() {
+	    $( ".button2" ).click(function() {
 	      // get effect type from
 	      var selectedEffect = $( "#effectTypes" ).val();
 	 
@@ -759,7 +822,7 @@ var currentMarker;
 	      return false;
 	    });
 	    
-	    $( "#button4" ).click(function() {
+	    $( ".button4" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -772,7 +835,7 @@ var currentMarker;
 		      return false;
 		    });
 	    
-	    $( "#button5" ).click(function() {
+	    $( ".button5" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -784,7 +847,7 @@ var currentMarker;
 		      $( "#widget5" ).show( 'clip', options, 500 );
 		      return false;
 		    });
-	    $( "#button6" ).click(function() {
+	    $( ".button6" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -797,7 +860,7 @@ var currentMarker;
 		      return false;
 		    });
 	   
-	    $( "#button7" ).click(function() {
+	    $( ".button7" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -810,7 +873,7 @@ var currentMarker;
 		      return false;
 		    });
 	    
-	    $( "#button8" ).click(function() {
+	    $( ".button8" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -1054,7 +1117,6 @@ var currentMarker;
 	  var simulationRadius;
 	  var dragged = false;
 	  
-	  $("#simulationSlide").slider({tooltip: 'always'});
 	  $("#simulationSlide").on('slide', function(slideEvt) {	 		
 	 		simulationRadius = slideEvt.value;
 	 		startSimulation();
@@ -2286,18 +2348,23 @@ var currentMarker;
     function changeSimulationState() {
     	var simButton = document.getElementById("simulationButton");
     	if (simButton.value == "Start Simulation") {
+    		$( "#simulationText" ).show();
+    		$( "#simulationSlider" ).show();
+    		$( "#simulationSlide" ).show();
+    		$("#simulationSlide").slider({tooltip: 'always'});
     		simButton.value = "End Simulation";
     		simButton.className = "btn btn-danger";
-    		startSimulation();
+   		startSimulation();
     	}
     	else {
+    		$( "#simulationSlider" ).hide();
     		simButton.value = "Start Simulation";
     		simButton.className = "btn btn-success";
     		dragMarker.setMap(null);
     		customCircle.setMap(null);
-    		document.getElementById("averageFire").innerHTML = ""
-    		document.getElementById("averageFlood").innerHTML = ""
-    		document.getElementById("buildingsAffected").innerHTML = ""
+    		document.getElementById("averageFire").innerHTML = "";
+    		document.getElementById("averageFlood").innerHTML = "";
+    		document.getElementById("buildingsAffected").innerHTML = "";
     	}
     }
     
