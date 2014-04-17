@@ -143,19 +143,6 @@ for(int i=0;i<userDatasetList.size();i++){
 
 <div id="dragZone">
 <div class="toggler draggable">
-
-<!-- SIMULATION WIDGET-->	
-<div id="widget8" class="ui-corner-all resizable">
-  <a style="color: #00b3ff; text-decoration:none;" href="#" id="close8" class="closeBtn">x</a>
-
-	<h3> Simulation </h3>
-    <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
-    <b id="buildingsAffected"></b>
-    <p id="averageFlood"></p>
-    <p id="averageFire"></p>
-</div>
-	
-	
 <!-- POINT OF INTEREST WIDGET-->	
   <div id="widget1" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
@@ -167,7 +154,7 @@ for(int i=0;i<userDatasetList.size();i++){
    <input type="hidden" id="markerSelected" value="false">
     <input type="hidden" id="markerPosition"/>
     <table style="width:100%"><tr style="width:100%">
-    	<td style="padding-right:10px">Radius (km)</td>
+    	<td style="padding-right:10px">Radius (m)</td>
     	<td>
     		<input id="poiSlide" type="text" value="500" width="100%" data-slider-min="500" data-slider-max="2000" data-slider-step="10" data-slider-value="500">  
     	</td>
@@ -228,6 +215,21 @@ for(int i=0;i<userDatasetList.size();i++){
   </div>
   </div>
 <!-- END OF HISTORICAL ANALYSIS WIDGET -->
+ 
+ <!-- SIMULATION WIDGET-->	
+<div class="toggler draggable"> 
+<div id="widget8" class="ui-corner-all resizable">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" id="close8" class="closeBtn">x</a>
+
+	<h3> Simulation </h3>
+    <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
+    Radius(m)<input id="simulationSlide" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
+    <br/>
+    <b id="buildingsAffected"></b>
+    <p id="averageFlood"></p>
+    <p id="averageFire"></p>
+</div>
+</div>
  
 <!-- RISK CALCULATION WIDGET -->
   <div class="toggler draggable">
@@ -938,6 +940,8 @@ var currentMarker;
 	
 			// run the effect
 			$( "#widget8" ).hide( 'scale', options, 500 );
+			dragMarker.setMap(null);
+    		customCircle.setMap(null);
 		});
 
 
@@ -1029,6 +1033,8 @@ var currentMarker;
  	 		circle.setRadius(slideEvt.value);
  	 	});
 	  
+ 	  
+ 	 
 	  //DATA INFORMATION CHECKBOX VARIABLES
       function updateVisibility(id) {
   	  	var marker = mapMarkers[id]; // find the marker by given id
@@ -1042,6 +1048,15 @@ var currentMarker;
 	  //SIMULATION VARIABLES
 	  var customCircle;
 	  var dragMarker;
+	  var simulationRadius;
+	  var dragged = false;
+	  
+	  $("#simulationSlide").slider({tooltip: 'always'});
+	  $("#simulationSlide").on('slide', function(slideEvt) {	 		
+	 		simulationRadius = slideEvt.value;
+	 		startSimulation();
+	 		
+	  });
       
     //HAZARD MAP VARIABLES
     var earthquakeLayer;
@@ -1550,7 +1565,7 @@ var currentMarker;
 		    icon.setAttribute('class', 'placeIcon');
 		    icon.setAttribute('className', 'placeIcon');
 		    var name = document.createTextNode(result.name);
-		    var distance = document.createTextNode(distanceInput.toFixed(0)+"km");
+		    var distance = document.createTextNode(distanceInput.toFixed(0)+"m");
 		    iconTd.appendChild(icon);
 		    nameTd.appendChild(name);
 		    distanceTd.appendChild(distance);
@@ -2061,6 +2076,13 @@ var currentMarker;
     function startSimulation()  {
         var myLatlng2;
         var mapCenter = map.getCenter();
+        
+        
+        
+        if(dragged == true){
+        	mapCenter = dragMarker.position;
+        }
+        
         map.setZoom(10);
     	  if(customCircle!=null){
     		  customCircle.setMap(null);
@@ -2068,8 +2090,7 @@ var currentMarker;
     	  if(dragMarker!=null){
     		  dragMarker.setMap(null);
     	  }
-    	  var radiusStr = 5000
-    	  var radius = parseInt(radiusStr);
+    	  var radius = simulationRadius;
     	  //ICON NEEDS TO BE CHANGED FOR DRAG MARKER
     	  dragMarker = new google.maps.Marker({
               position: mapCenter,
@@ -2077,7 +2098,69 @@ var currentMarker;
               map: map,
               draggable: true
           });
-    	 
+    	  myLatlng2 = new google.maps.LatLng(dragMarker.position.lat(), dragMarker.position.lng());
+          var count1=0;
+          for(var i=0;i<mapMarkers.length;i++){
+         	 var distance1 = google.maps.geometry.spherical.computeDistanceBetween(myLatlng2, mapMarkers[i].position);
+         	 console.log(distance1);
+      	 	if(distance1<=radius){
+      	 		count1++;
+      	 	}
+          }	 
+			 
+          var buildingStr = "";
+          
+          if(count1==0){
+         	 document.getElementById("buildingsAffected").innerHTML = "There are no buildings affected in this area. ";
+          }else if(count1==1){
+         	 document.getElementById("buildingsAffected").innerHTML = "There is 1 building affected in this area. ";
+          }else{
+         	 document.getElementById("buildingsAffected").innerHTML = "There are " + count1 + " buildings affected in this area. ";
+          }
+                       
+          var query, queryText, gvizQuery;
+          query = "SELECT 'gridcode' " +
+          "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
+          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng2.lat() + ', ' + myLatlng2.lng() + ")," + radius + "))";
+          queryText = encodeURIComponent(query);
+          gvizQuery = new google.visualization.Query(
+              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+          gvizQuery.send(function(response) {	
+            var table = response.getDataTable();
+            var riskIndex = 0;
+            for(var i=0;i<table.getNumberOfRows();i++){
+         	   riskIndex += table.getValue(i,0);
+            }
+            riskIndex = riskIndex/table.getNumberOfRows();
+            riskIndex = (1 - riskIndex/500)*100;
+            if (riskIndex > 0) {
+         	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+            }
+            
+            //var floodRisk = (1 - table.getValue(0,0)/500) * 100;
+            //document.getElementById("flood-risk").innerHTML = floodRisk.toFixed(2) + "%";  
+            var query1, queryText1, gvizQuery1;
+            query1 = "SELECT 'gridcode' " +
+            "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
+            "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + myLatlng2.lat() + ", " + myLatlng2.lng() + ")," + radius + "))";
+            queryText1 = encodeURIComponent(query1);
+            gvizQuery1 = new google.visualization.Query(
+                'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+            gvizQuery1.send(function(response) {	
+              var table1 = response.getDataTable();
+              var riskIndex = 0;
+              for(var i=0;i<table1.getNumberOfRows();i++){
+           	   riskIndex += table1.getValue(i,0);
+              }
+              riskIndex = riskIndex/table1.getNumberOfRows();
+              riskIndex = (1 - riskIndex/20000)*100;
+              if (riskIndex > 0) {
+             	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+              }
+            });
+          
+          });
+
     	  customCircle = new google.maps.Circle({
               map: map,
               clickable: false,
@@ -2161,6 +2244,8 @@ var currentMarker;
 
   
          });
+         
+         dragged = true;
       }
     
     function changeSimulationState() {
