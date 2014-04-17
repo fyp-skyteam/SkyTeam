@@ -209,6 +209,9 @@ for(int i=0;i<userDatasetList.size();i++){
 		        <option value="Selangor">Selangor</option>
 		        <option value="Terengganu">Terengganu</option>
 		        <option value="Wilayah Persekutuan">Wilayah Persekutuan</option>
+		        <option value="Federal Territory of Kuala Lumpur">Federal Territory of Kuala Lumpur</option>
+		        <option value="Federal Territory of Labuan">Federal Territory of Labuan</option>
+		        <option value="Federal Territory of Putrajaya">Federal Territory of Putrajaya</option>
 		      </select>
 		 </div>
 		 <div id="visualization" style="width: 800px; height: 400px;"></div>
@@ -1839,10 +1842,24 @@ var currentMarker;
 	                     [name, new Date(2012,11,31), array[0][6],array[1][6],array[2][6],array[3][6]],
 	                     [name, new Date(2013,11,31), array[0][7],array[1][7],array[2][7],array[3][7]],
 	             ]);  
-	         
+	              var options = {};
+	              options['state'] =
+	              '{"yZoomedIn":false,"xLambda":1,"colorOption":"2","xZoomedIn":false,' +
+	            	  '"xZoomedDataMax":1388448000000,"showTrails":true,"sizeOption":"2",' +
+	            	  '"yAxisOption":"2","uniColorForNonSelected":false,' +
+	            	  '"yZoomedDataMax":93.29,"orderedByX":false,"iconType":"BUBBLE",' +
+	            	  '"xAxisOption":"_TIME","nonSelectedAlpha":0.4,"yZoomedDataMin":6.45,' +
+	            	  '"dimensions":{"iconDimensions":["dim0"]},"yLambda":1,' +
+	            	  '"iconKeySettings":[],"xZoomedDataMin":1167523200000,' +
+	            	  '"playDuration":15000,"time":"2006-12-31","orderedByY":false,' +
+	            	  '"duration":{"timeUnit":"D","multiplier":1}}';
+
+      	          options['width'] = 800;
+	              options['height'] = 400;
+	              //chart.draw(data, options);	
 	              var motionchart = new google.visualization.MotionChart(
 	                      document.getElementById('visualization'));
-	                  motionchart.draw(data, {'width': 800, 'height': 400});
+	                  motionchart.draw(data,options );
 	               });
 	             
 	        }
