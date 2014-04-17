@@ -226,7 +226,10 @@ for(int i=0;i<userDatasetList.size();i++){
 
 	<h3> Simulation </h3>
     <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
-    Radius(m)<input id="simulationSlide" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
+    <br/><br/><div id="simulationSlider">
+    Radius(m)
+    <input id="simulationSlide" style="visibility:hidden;" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
+    </div>
     <br/>
     <b id="buildingsAffected"></b>
     <p id="averageFlood"></p>
@@ -694,6 +697,7 @@ var currentMarker;
 	$(document).ready(function() {
 	    $('.selectpicker').selectpicker();
 	    $( "#draggable" ).draggable();
+	    $( "#simulationSlider" ).hide();
 	  });
 	
 	$(function() {
@@ -1054,7 +1058,6 @@ var currentMarker;
 	  var simulationRadius;
 	  var dragged = false;
 	  
-	  $("#simulationSlide").slider({tooltip: 'always'});
 	  $("#simulationSlide").on('slide', function(slideEvt) {	 		
 	 		simulationRadius = slideEvt.value;
 	 		startSimulation();
@@ -2286,18 +2289,23 @@ var currentMarker;
     function changeSimulationState() {
     	var simButton = document.getElementById("simulationButton");
     	if (simButton.value == "Start Simulation") {
+    		$( "#simulationText" ).show();
+    		$( "#simulationSlider" ).show();
+    		$( "#simulationSlide" ).show();
+    		$("#simulationSlide").slider({tooltip: 'always'});
     		simButton.value = "End Simulation";
     		simButton.className = "btn btn-danger";
-    		startSimulation();
+   		startSimulation();
     	}
     	else {
+    		$( "#simulationSlider" ).hide();
     		simButton.value = "Start Simulation";
     		simButton.className = "btn btn-success";
     		dragMarker.setMap(null);
     		customCircle.setMap(null);
-    		document.getElementById("averageFire").innerHTML = ""
-    		document.getElementById("averageFlood").innerHTML = ""
-    		document.getElementById("buildingsAffected").innerHTML = ""
+    		document.getElementById("averageFire").innerHTML = "";
+    		document.getElementById("averageFlood").innerHTML = "";
+    		document.getElementById("buildingsAffected").innerHTML = "";
     	}
     }
     
