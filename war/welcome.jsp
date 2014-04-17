@@ -1062,6 +1062,9 @@ var currentMarker;
     var earthquakeLayer;
     var floodLayer;
     var fireLayer;
+    
+    //COMPARISON VARIABLES
+    var comparisonAdded = new Array();
 
 	  function initialize() {
 	  //intitialize Historical Analysis
@@ -1269,6 +1272,7 @@ var currentMarker;
 			                    	 currentMarker = marker;
 			                    	 curMarker = marker;
 			                    	 infowindow.close();
+			                    	 infowindow2.setContent("Loading data...");
 					       		     document.getElementById('noResultMsg').innerHTML = "";
 			                         displayData(details[i],marker.position.lat(),marker.position.lng(),marker.vIndex);
 			                         
@@ -1335,20 +1339,33 @@ var currentMarker;
 	                       var gvizQuery = new google.visualization.Query(
 	                           'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
 	                      
-	                      gvizQuery.send(function(response) {
-	                    	 var string1 = response.getDataTable().getValue(0,2);
-	                    	 var string2 = response.getDataTable().getValue(1,2);
-	                    	 var string3 = response.getDataTable().getValue(2,2);
-	                    	 var stringId = array[13].toString();
-	                    	 infowindow2.setContent(
-	                                   "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
-	                                   "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
-	                                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
-	                                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
-	                                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-	                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; showCompareAdd(); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
-	                                   );
-	                      });  
+	                       gvizQuery.send(function(response) {
+		                    	 var string1 = response.getDataTable().getValue(0,2);
+		                    	 var string2 = response.getDataTable().getValue(1,2);
+		                    	 var string3 = response.getDataTable().getValue(2,2);
+		                    	 var stringId = array[13].toString();
+		                    	 var number = comparisonAdded.indexOf(array[0]);
+		                    	 if (number >= 0) {
+		                    		 infowindow2.setContent(
+		                                     "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
+		                                     "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
+		                                     "<br />" + "<b>Foundation Type:</b> " + array[7] + 
+		                                     "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
+		                                     "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
+		                                     "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" value=\"Added\" style=\"width:150px\" disabled></input></center><br />"
+		                                     );
+		                    	 }
+		                    	 else {
+			                    	 infowindow2.setContent(
+			                                   "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
+			                                   "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
+			                                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
+			                                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
+			                                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
+			                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; this.disabled = true; showCompareAdd('"+array[0]+"'); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
+			                                   );
+		                    	 }
+		                      });  
 	             
 	       }
 	                   //center map or center Malaysia
@@ -1966,8 +1983,9 @@ var currentMarker;
       }
 	
     //Comparison Functionalities
-    function showCompareAdd() {
+    function showCompareAdd(name) {
     	  document.getElementById('compareAdd').style.display = "block";
+    	  comparisonAdded.push(name);
     }
 
     function hideCompareAdd() {
