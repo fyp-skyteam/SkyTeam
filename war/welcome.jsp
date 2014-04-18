@@ -680,7 +680,7 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
         <h4 class="modal-title" id=ComparisonModalLabel">Comparison</h4>
       </div>
       <div class="modal-body">
-	      <table id="comparisonTable" border="1" style="table-layout: fixed; width:100%">
+	      <table id="comparisonTable" border="1" style="table-layout: fixed; width:100%; text-align:center">
 	      <tr>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Name</font></th>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Earthquake</font></th>
@@ -1397,42 +1397,66 @@ var currentMarker;
 	                  
 	                   //function to display all available information of the point
 	                   function displayData(array,latitude,longitude,vIndex) {
-	                	   var query = "SELECT 'name','Risk Factor','2013' " +
-	                       "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
-	                       "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
-	                       var queryText = encodeURIComponent(query);
-	                       var gvizQuery = new google.visualization.Query(
-	                           'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
-	                      
-	                       gvizQuery.send(function(response) {
-		                    	 var string1 = response.getDataTable().getValue(0,2);
-		                    	 var string2 = response.getDataTable().getValue(1,2);
-		                    	 var string3 = response.getDataTable().getValue(2,2);
-		                    	 var stringId = array[13].toString();
-		                    	 var number = comparisonAdded.indexOf(array[0]);
-		                    	 if (number >= 0) {
-		                    		 infowindow2.setContent(
-		                                     "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
-		                                     "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
-		                                     "<br />" + "<b>Foundation Type:</b> " + array[7] + 
-		                                     "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
-		                                     "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-		                                     "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" value=\"Added\" style=\"width:150px\" disabled></input></center><br />"
-		                                     );
-		                    	 }
-		                    	 else {
-			                    	 infowindow2.setContent(
-			                                   "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
-			                                   "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
-			                                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
-			                                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
-			                                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-			                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; this.disabled = true; showCompareAdd('"+array[0]+"'); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
-			                                   );
-		                    	 }
-		                      });  
-	             
-	       }
+	                	   var floodValue;
+	                	   var fireValue;
+	                	   var earthquakeValue;
+	                	   //Flood Query Table
+	                	   var query, queryText, gvizQuery;
+                       query = "SELECT 'gridcode' " +
+                       "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
+                       "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+                       queryText = encodeURIComponent(query);
+                       gvizQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+                       gvizQuery.send(function(response) { 
+	                       var table = response.getDataTable();
+	                       if (table.getNumberOfRows() != 0) {
+	                           floodValue = parseFloat(((1 - table.getValue(0,0)/500) * 100).toFixed(1));
+	                       }
+	                       else {
+	                           floodValue = 0;
+	                       }
+                         //Fire Query Table
+                         var query1, queryText1, gvizQuery1;
+                         query1 = "SELECT 'gridcode' " +
+                         "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
+                         "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+                         queryText1 = encodeURIComponent(query1);
+                         gvizQuery1 = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+                         gvizQuery1.send(function(response) {  
+	                         var table1 = response.getDataTable();
+	                         if (table1.getNumberOfRows() != 0) {
+	                          fireValue = parseFloat(((1 - table1.getValue(0,0)/20000) * 100).toFixed(1));
+	                         }
+	                         else {
+	                           fireValue = 0;
+	                         }
+	                         //ADD QUERY TO EARTHQUAKE HERE
+	                         earthquakeValue = 0;
+	                         var stringId = array[13].toString();
+	                         var number = comparisonAdded.indexOf(stringId);
+                           if (number >= 0) {
+                             infowindow2.setContent(
+                                         "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
+                                         "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
+                                         "<br />" + "<b>Foundation Type:</b> " + array[7] + 
+                                         "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
+                                         "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
+                                         "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" value=\"Added\" style=\"width:150px\" disabled></input></center><br />"
+                                         );
+                           }
+                           else {
+                             infowindow2.setContent(
+                                         "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
+                                         "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
+                                         "<br />" + "<b>Foundation Type:</b> " + array[7] + 
+                                         "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
+                                         "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
+                                         "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; this.disabled = true; showCompareAdd('"+stringId+"'); addComparison('"+array[0]+"','"+earthquakeValue+"','"+floodValue+"','"+fireValue+"','"+stringId+"'); colorHighest(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
+                                         );
+                           }
+                         });
+                       });             
+                     }
 	                   //center map or center Malaysia
 	                   if (mapMarkers.length > 0) {
 	                	   AutoCenter();
@@ -1999,6 +2023,7 @@ var currentMarker;
     		var fireRisk = "";
     		var floodRisk = "";
     		var earthquakeRisk = ""
+    		//Flood Query Table
     	  var query, queryText, gvizQuery;
           query = "SELECT 'gridcode' " +
           "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
@@ -2008,15 +2033,16 @@ var currentMarker;
           gvizQuery.send(function(response) { 
             var table = response.getDataTable();
             if (table.getNumberOfRows() != 0) {
-            	  floodRisk = ((1 - table.getValue(0,0)/500) * 100).toFixed(2);
+            	  floodRisk = ((1 - table.getValue(0,0)/500) * 100).toFixed(1);
             }
             if (floodRisk != "") {
                 document.getElementById("floodRiskValue").innerHTML = floodRisk + "%";
             }
             else {
-            	  document.getElementById("floodRiskValue").innerHTML = "No data available";
+            	  document.getElementById("floodRiskValue").innerHTML = 0;
                 floodRisk = 0;
             }
+            //Fire Query Table
             var query1, queryText1, gvizQuery1;
             query1 = "SELECT 'gridcode' " +
             "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
@@ -2026,13 +2052,13 @@ var currentMarker;
             gvizQuery1.send(function(response) {  
 	              var table1 = response.getDataTable();
 	              if (table1.getNumberOfRows() != 0) {
-	               fireRisk = ((1 - table1.getValue(0,0)/20000) * 100).toFixed(2);
+	               fireRisk = ((1 - table1.getValue(0,0)/20000) * 100).toFixed(1);
 	              }
 	              if (fireRisk != "") {
 	            	  document.getElementById("fireRiskValue").innerHTML = fireRisk + "%";
 	              }
 	              else {
-	            	  document.getElementById("fireRiskValue").innerHTML = "No data available";
+	            	  document.getElementById("fireRiskValue").innerHTML = 0;
 	            	  fireRisk = 0;
 	              }
 	              earthquakeRisk = 0;
@@ -2062,20 +2088,17 @@ var currentMarker;
       }
 	
     //Comparison Functionalities
-    function showCompareAdd(name) {
+    function showCompareAdd(id) {
     	  document.getElementById('compareAdd').style.display = "block";
-    	  comparisonAdded.push(name);
+    	  comparisonAdded.push(id);
     }
 
     function hideCompareAdd() {
         document.getElementById('compareAdd').style.display = "none";
     }
     
-    function addComparison(name,string1,string2,string3,id)
-    {
+    function addComparison(name,earthquakeValue,floodValue,fireValue,id) {
     	var table = document.getElementById("comparisonTable");
- 		
-  
     	var rowCount = table.rows.length;
       var row = table.insertRow(rowCount);
       row.id = id;
@@ -2086,36 +2109,47 @@ var currentMarker;
       var cell5 = row.insertCell(4);
       var cell6 = row.insertCell(5);
       cell1.innerHTML = name;
-      cell2.innerHTML = string1;
-      cell3.innerHTML = string2;
-      cell4.innerHTML = string3;
-      cell5.innerHTML = ((parseFloat(string1)+parseFloat(string2)+parseFloat(string3))/3).toFixed(2);
-      cell6.innerHTML = '<center><button type="button" class="btn btn-default btn-xs" onclick="deleteRow('+id+');colorHighest()">Delete</button></center>'
-      var average = ((parseFloat(string1)+parseFloat(string2)+parseFloat(string3))/3).toFixed(2);
+      cell2.innerHTML = earthquakeValue;
+      cell3.innerHTML = floodValue;
+      cell4.innerHTML = fireValue;
+      cell5.innerHTML = ((parseFloat(earthquakeValue)+parseFloat(floodValue)+parseFloat(fireValue))/3).toFixed(1);
+      cell6.innerHTML = '<center><button type="button" class="btn btn-default btn-xs" onclick="deleteRow('+id+','+rowCount+');colorHighest()">Delete</button></center>'
+      var average = ((parseFloat(earthquakeValue)+parseFloat(floodValue)+parseFloat(fireValue))/3).toFixed(1);
       var chart = document.getElementById("comparisonChart");
-		if (chart.innerHTML == ""){
-			 // Create and populate the data table.
-		  	  data = google.visualization.arrayToDataTable([
-		  	    ['Building Name', 'Earthquake', 'Flood', 'Fire', 'Total'],
-		  	    [name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
-		  	  ]);
-
-		  	  // Create and draw the visualization.
-		        new google.visualization.ColumnChart(document.getElementById('comparisonChart')).draw(data,
-		             {width:400, height:400,
-		              vAxis: {title: "Building Name"},
-		              hAxis: {title: "Risk (%)"}}
-		        );
-		}else{
-			
-			data.addRow([name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
-		  	  );
-			new google.visualization.ColumnChart(document.getElementById('comparisonChart')).draw(data,
-		             {width:400, height:400,
-		              vAxis: {title: "Building Name"},
-		              hAxis: {title: "Risk (%)"}}
-		        );
-		}
+			if (chart.innerHTML == ""){
+				 // Create and populate the data table.
+			  	  data = google.visualization.arrayToDataTable([
+			  	    ['Building Name', 'Flood', 'Fire', 'Earthquake', 'Total Average','ID'],
+			  	    [name,  parseFloat(floodValue),    parseFloat(fireValue),    parseFloat(earthquakeValue), parseFloat(average), parseFloat(id)]
+			  	  ]);
+			  	var view = new google.visualization.DataView(data);
+			  	view.setColumns([0,1,2,3,4])
+	
+			  	  // Create and draw the visualization.
+			        new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
+			        		{width:600,height: 500,
+	                    hAxis: {title: "Risk(%)"},
+	                    vAxis: {textStyle: {fontSize: 10}},
+	                      legend: { position: 'right', alignment: 'start' }
+		                      }
+			        );
+			}
+			else{
+				
+				data.addRow([name,  parseFloat(floodValue),    parseFloat(fireValue),    parseFloat(earthquakeValue), parseFloat(average), parseFloat(id)]
+			  	  );
+				var view = new google.visualization.DataView(data);
+		        view.setColumns([0,1,2,3,4])
+	
+		          // Create and draw the visualization.
+		            new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
+		                 {width:600,height: 500,
+		                  hAxis: {title: "Risk(%)"},
+		                  vAxis: {textStyle: {fontSize: 10}},
+		                  legend: { position: 'right', alignment: 'start' }
+		                  }
+		            );
+			}
     }
     function colorHighest() {
         var highestCell2Value = 0;
@@ -2151,23 +2185,59 @@ var currentMarker;
               highestCell4 = a;
             }
             if (highestCell5Value < cell5) {
-              highestCell5Value < cell5;
+              highestCell5Value = cell5;
               highestCell5 = a;
             }
             
         }
-          table.rows[highestCell2].cells[1].className = 'highestValue';
-          table.rows[highestCell3].cells[2].className = 'highestValue';
-          table.rows[highestCell4].cells[3].className = 'highestValue';
-          table.rows[highestCell5].cells[4].className = 'highestValue';
+        for (var a = 1; a < rowCount; a++) {
+        	table.rows[a].cells[1].className = '';
+            var cell2 = parseFloat(table.rows[a].cells[1].innerHTML);
+            table.rows[a].cells[2].className = '';
+            var cell3 = parseFloat(table.rows[a].cells[2].innerHTML);
+            table.rows[a].cells[3].className = '';
+            var cell4 = parseFloat(table.rows[a].cells[3].innerHTML);
+            table.rows[a].cells[4].className = '';
+            var cell5 = parseFloat(table.rows[a].cells[4].innerHTML);
+            
+              if (highestCell2Value == cell2) { 
+            	  table.rows[a].cells[1].className = 'highestValue';
+              }
+              if (highestCell3Value == cell3) { 
+            	  table.rows[a].cells[2].className = 'highestValue';
+              }
+              if (highestCell4Value == cell4) {
+            	  table.rows[a].cells[3].className = 'highestValue';
+              }
+              if (highestCell5Value == cell5) {
+                table.rows[a].cells[4].className = 'highestValue';
+              }
+        }
       }
     
     function deleteRow(rowid)  
     {   
         var row = document.getElementById(rowid);
         row.parentNode.removeChild(row);
+        var remove = comparisonAdded.indexOf(rowid);
+        comparisonAdded.splice(remove,1);
+        var dtRows = data.getNumberOfRows();
+        for (var a = 0; a < dtRows; a++) {
+        	var dtId = data.getValue(a,5);
+        	if (rowid == dtId) {
+        		data.removeRow(a);
+        		break;
+        	}
+        }
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0,1,2,3,4])
+
+        // Create and draw the visualization.
+          new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
+               {width:600,height: 500,
+                hAxis: {title: "Risk(%)"}}
+          );
     }
-    
     
    //Simulation Functionalities
     function startSimulation()  {
@@ -2231,11 +2301,8 @@ var currentMarker;
             riskIndex = riskIndex/table.getNumberOfRows();
             riskIndex = (1 - riskIndex/500)*100;
             if (riskIndex > 0) {
-         	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+         	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(1) + "%. ";
             }
-            
-            //var floodRisk = (1 - table.getValue(0,0)/500) * 100;
-            //document.getElementById("flood-risk").innerHTML = floodRisk.toFixed(2) + "%";  
             var query1, queryText1, gvizQuery1;
             query1 = "SELECT 'gridcode' " +
             "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
@@ -2252,7 +2319,7 @@ var currentMarker;
               riskIndex = riskIndex/table1.getNumberOfRows();
               riskIndex = (1 - riskIndex/20000)*100;
               if (riskIndex > 0) {
-             	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+             	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(1) + "%. ";
               }
             });
           
@@ -2312,7 +2379,7 @@ var currentMarker;
                riskIndex = riskIndex/table.getNumberOfRows();
                riskIndex = (1 - riskIndex/500)*100;
                if (riskIndex > 0) {
-            	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+            	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(1) + "%. ";
                }
                
                //var floodRisk = (1 - table.getValue(0,0)/500) * 100;
@@ -2333,7 +2400,7 @@ var currentMarker;
                  riskIndex = riskIndex/table1.getNumberOfRows();
                  riskIndex = (1 - riskIndex/20000)*100;
                  if (riskIndex > 0) {
-                	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+                	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(1) + "%. ";
                  }
                });
              
