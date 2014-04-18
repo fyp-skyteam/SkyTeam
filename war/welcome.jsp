@@ -81,7 +81,7 @@ for(int i=0;i<userDatasetList.size();i++){
 <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4" style="margin: auto;">
   <a href="#" style="text-decoration:none;" class="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
 	<a href="#" style="text-decoration:none;" class="button1">Points of Interest</a>
-	<a href="#" style="text-decoration:none;" class="button2">Data & Information</a>
+	<a href="#" style="text-decoration:none;" class="button2">Filter Data</a>
 	<a href="#" style="text-decoration:none;" class="button4">Hazard Map</a>
 	<a href="#" style="text-decoration:none;" class="button5">Risk Calculation</a>
   	<a href="#" style="text-decoration:none;" class="button3" data-toggle="modal" data-target="#ComparisonModal">Comparison</a>
@@ -94,6 +94,24 @@ for(int i=0;i<userDatasetList.size();i++){
 	</section>
 </nav>
 </div>
+
+<!-- WELCOME MODAL CONTAINER -->
+<div class="modal hide fade" id="welcomeModal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Modal header</h3>
+  </div>
+  <div class="modal-body">
+    <p>TEST</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn">Close</a>
+    <a href="#" class="btn btn-primary">Save changes</a>
+  </div>
+</div>
+
+<!-- END OF WELCOME MODAL CONTAINER -->
+
 <!-- WIDGET MODAL CONTAINER -->
 <div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -122,7 +140,7 @@ for(int i=0;i<userDatasetList.size();i++){
       			<button href="#" style="text-decoration:none;" class="button1 widget-btn">Points of Interest</button>
       		</div>
       		<div class="col-md-4">
-      			<button href="#" style="text-decoration:none;" class="button2 widget-btn">Data & Information</button>
+      			<button href="#" style="text-decoration:none;" class="button2 widget-btn">Filter Data</button>
       		</div>
       	</div>
       	<div class="row">
@@ -207,19 +225,23 @@ for(int i=0;i<userDatasetList.size();i++){
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
 
     <h3>Points of Interest</h3>
-    <br/>
+    <div id="selectedPOI" style="text-align: center"><h5><b>Please select a point to begin.</b></h5></div>
     <div id="controls">
    <input type="hidden" id="wid1IsSelected" value="false">
    <input type="hidden" id="markerSelected" value="false">
     <input type="hidden" id="markerPosition"/>
     <table style="width:100%"><tr style="width:100%">
-    	<td style="padding-right:10px">Radius (m)</td>
+    <h5 style="color:Black">Radius (m):</h5>
+    <tr>
     	<td>
     		<input id="poiSlide" type="text" value="500" width="100%" data-slider-min="500" data-slider-max="2000" data-slider-step="10" data-slider-value="500">  
     	</td>
-    </tr></table>
+    </tr>
+    </table>
+    <hr />
+    <h5 style="color:Black">Location:</h5>
     <select id="type" class="form form-control">
-      <option value="">Select a type</option>
+      <option value="">Select a location</option>
 
       <option value="convenience_store">Convenience Store</option>
       <option value="fire_station">Fire Station</option>
@@ -230,8 +252,9 @@ for(int i=0;i<userDatasetList.size();i++){
     </select>
     
   </div>
-  <td><button id="updatePoiRadBtn" class="btn btn-primary">Search</button></td>
-  <div id="selectedPOI"><h5>Please select a point to begin.</h5></div>
+  <hr />
+  <div style="text-align:center"><input type="button" id="updatePoiRadBtn" class="btn btn-primary"  value="Search" /></div>
+  <br />
     <div id="listing">
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results">
@@ -285,14 +308,19 @@ for(int i=0;i<userDatasetList.size();i++){
 
 	<h3> Simulation </h3>
     <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
-    <br/><br/><div id="simulationSlider">
-    Radius(m)
-    <input id="simulationSlide" style="visibility:hidden;" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
+    <h5 id="simulationInstructions" style="text-align:center"></h5>
+    <div id="simulationSlider"  style="text-align:center"><hr />
+	    <h5 style="color:Black">Radius (m):</h5>
+	    <input id="simulationSlide" style="visibility:hidden;" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
     </div>
-    <br/>
-    <b id="buildingsAffected"></b>
-    <p id="averageFlood"></p>
-    <p id="averageFire"></p>
+    <div style="text-align:center">
+	    <h5 style="color:Black" id="buildingLabel"></h5>
+	    <b id="buildingsAffected"></b>
+	    <h5 style="color:Black" id="riskLabel"></h5>
+	    <b><p id="averageFlood"></p>
+	    <p id="averageFire"></p>
+	    <p id="averageEarthquake"></p></b>
+    </div>
 </div>
 </div>
  
@@ -302,11 +330,12 @@ for(int i=0;i<userDatasetList.size();i++){
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
   
 	<h3>Risk Calculation</h3>
-		<div id="selectedRisk"><h5>Please select a point to begin.</h5></div>
-		<div id="floodRisk" style="visibility:hidden"><h4><font color="Black">Flood Risk: </font><u><b id="floodRiskValue"></b></u></h4></div>
-		<div id="fireRisk" style="visibility:hidden"><h4><font color="Black">Fire Risk: </font><u><b id="fireRiskValue"></b></u></h4></div>
-		<div id="earthquakeRisk" style="visibility:hidden"><h4><font color="Black">Earthquake Risk: </font><u><b id="earthquakeRiskValue"></b></u></h4></div>
-		<div id="donut-chart"></div>
+		<div id="selectedRisk" style="text-align:center"><h5><b>Please select a point to begin.</b></h5></div>
+		<div id="floodRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Flood Risk: </font><b id="floodRiskValue"></b></h5></div>
+		<div id="fireRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Fire Risk: </font><b id="fireRiskValue"></b></h5></div>
+		<div id="earthquakeRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Earthquake Risk: </font><b id="earthquakeRiskValue"></b></h5></div>
+		<hr />
+		<div id="donut-chart" style="text-align:center"></div>
   </div>
   </div>
 <!-- END OF RISK CALCULATION WIDGET -->
@@ -317,17 +346,17 @@ for(int i=0;i<userDatasetList.size();i++){
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
   
 	<h3>Hazard Map</h3>
-	<h4 style="color:Black">Select Country:</h4>
+	<h5 style="color:Black">Select Country:</h5>
 	<select class="selectpicker" data-width="100%">
 	 <option value="malaysia" >Malaysia</option>
 	</select>
 	<br />
-	<h4 style="color:Black">Maps Available:</h4>
-	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map
+	<h5 style="color:Black">Maps Available:</h5>
+	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map <font color="black">(Source)</font>
 	<br />
-	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map
+	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map <font color="black">(Source)</font>
 	<br />
-	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map
+	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map <font color="black">(Source)</font>
   </div>
   </div>
 <!-- END OF HAZARD MAP WIDGET -->
@@ -337,8 +366,8 @@ for(int i=0;i<userDatasetList.size();i++){
   <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
 
-    <h3>Data & Information</h3>
-    <br/>
+    <h3>Filter Data</h3>
+    <h5><font color="Black">Current View:</font></h5>
     <div class="row">
       <div class="col-sm-7">
 	      <form name="view_data" method="post" action="view">
@@ -350,7 +379,7 @@ for(int i=0;i<userDatasetList.size();i++){
 	         <%if (chosenData.equals("filter")){%>
 	         <option selected>Custom</option>
 	         <%}%>
-	         <option value="all"<%if (chosenData.equals("all")) {%>selected<%}%>>Show All</option>
+	         <option value="all"<%if (chosenData.equals("all")) {%>selected<%}%>>Show All Datasets</option>
 	         <%for(String dataset: userDatasetList){%>
             <option value="<%=dataset%>"<%if(chosenData.equals(dataset)){%>selected<%}%>><%=dataset%></option>
            <%}%>
@@ -359,9 +388,10 @@ for(int i=0;i<userDatasetList.size();i++){
 	       </form>
 	      </div>
 	      <div class="col-sm-5">
-	       <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Custom View</a>   
+	       <a class="btn btn btn-primary" data-toggle="modal" data-target="#SearchModal">Custom Filter</a>   
 	     </div>
 	  </div>   
+	  <h5><font color="Black">Map Markers Displayed:</font></h5>
 	<div id="listing">
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results2">
@@ -637,15 +667,13 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
         <h4 class="modal-title" id=UploadModalLabel">Upload File</h4>
       </div>
       <div class="modal-body">
+      <h4 style="color:Black">Upload map data (.zip):</h4>
         <form name="upload-file" action="upload" method="post" enctype="multipart/form-data"  role="form">
           <div class="form-group">
             <input type="file" name="data">
           </div>
-          
-         <!-- Initialize Bootstrap Select -->
-			  <link href="assets/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
-			  <script src="assets/bootstrap-select/bootstrap-select.js" type="text/javascript"></script>
-  
+         <hr /> 
+      <h4 style="color:Black">Select currency of map markers to be uploaded:</h4>    
           <select class="selectpicker" name="currency" data-size="11">
 			      <option value="SGD" data-subtext="Singapore Dollar" selected>SGD</option>
 			      <option value="AUD" data-subtext="Australian Dollar">AUD</option>
@@ -659,9 +687,11 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 			      <option value="JPY" data-subtext="Japanese Yen">JPY</option>
 			      <option value="USD" data-subtext="United States Dollar">USD</option>
           </select>
-			    <br/><input type="checkbox" name="clear data" class="style1" value="clear-data"/> Clear all the previously stored data by you	    
+          <hr />
+			 <input type="checkbox" name="clear data" class="style1" value="clear-data"/> Clear all the previously stored data by you	    
 			   <input type="hidden" name="username" value="<%=username%>">   
 			    <div class="form-group">
+			    <hr />
             <p align="right"><button type="submit" value="Upload" class="btn btn btn-primary">Submit</button></p>
           </div>
         </form>
@@ -680,6 +710,8 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
         <h4 class="modal-title" id=ComparisonModalLabel">Comparison</h4>
       </div>
       <div class="modal-body">
+        <div id="noComparisonLabel" style="text-align:center">No points have been added for comparison. <br />Please select a marker and click 'Add to Comparison' to begin.</div>
+	      <div id="comparisonTableContainer" style="display:none">
 	      <table id="comparisonTable" border="1" style="table-layout: fixed; width:100%; text-align:center">
 	      <tr>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Name</font></th>
@@ -689,8 +721,10 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Total</font></th>
 	      </tr>
 	      </table>
+	      </div>
+	      <div id ="comparisonChart"></div>
       </div>
-      <div id ="comparisonChart"></div>
+      
     </div>
   </div>
 </div>
@@ -992,9 +1026,22 @@ var currentMarker;
 			$( "#widget7" ).hide( 'scale', options, 500 );
 	    });
 	    $( "#close8" ).click(function() {
+	    	
+	    	$( "#simulationSlider" ).hide();
+	    	document.getElementById("simulationButton").value = "Start Simulation";
+	    	document.getElementById("simulationButton").className = "btn btn-success";
+        dragMarker.setMap(null);
+        customCircle.setMap(null);
+        document.getElementById("averageFire").innerHTML = "";
+        document.getElementById("averageFlood").innerHTML = "";
+        document.getElementById("buildingsAffected").innerHTML = "";
+        document.getElementById("buildingLabel").innerHTML = "";
+        document.getElementById("riskLabel").innerHTML = "";
+        document.getElementById("simulationInstructions").innerHTML = "";
+        document.getElementById("averageEarthquake").innerHTML = "";
 	    	// get effect type from
 			var selectedEffect = $( "#effectTypes" ).val();
-	
+			  
 			// most effect types need no options passed by default
 			var options = {};
 			// some effects have required parameters
@@ -1008,6 +1055,7 @@ var currentMarker;
 			$( "#widget8" ).hide( 'scale', options, 500 );
 			dragMarker.setMap(null);
     		customCircle.setMap(null);
+    		
 		});
 
 
@@ -1114,7 +1162,7 @@ var currentMarker;
 	  //SIMULATION VARIABLES
 	  var customCircle;
 	  var dragMarker;
-	  var simulationRadius;
+	  var simulationRadius = 5000;
 	  var dragged = false;
 	  
 	  $("#simulationSlide").on('slide', function(slideEvt) {	 		
@@ -1466,6 +1514,7 @@ var currentMarker;
 	                	  //Malaysia Coordinates
 	                	  map.setCenter(new google.maps.LatLng(4.210484,101.97576600000002));
 	                	  map.setZoom(8);
+	                	  $('#welcomeModal').modal('show');
 	                  }
 	  }
 
@@ -2004,12 +2053,12 @@ var currentMarker;
 	
 
 	function displaySelectedPOI(selected) {
-	      document.getElementById('selectedPOI').innerHTML = ('<h5>Selected point: <b><u>' + selected.name + '</b></u></h5>');
+	      document.getElementById('selectedPOI').innerHTML = ('<h5><font color="black">Selected point: </font><br /><b><u>' + selected.name + '</b></u></h5>');
 	  }
 	
 	//Risk Calculation Functionalities
 			 function displaySelectedRisk(selected) {
-		      document.getElementById('selectedRisk').innerHTML = ('<h4><font color="black"> Selected point: </font><b><u>' + selected.name + '</b></u></h4>' + '<h4><font color="black">Vulnerability Index: </font><b><u>' + selected.vIndex + '</b></u></h4>' );
+		      document.getElementById('selectedRisk').innerHTML = ('<h5><font color="black"> Selected point: </font><b><u>' + selected.name + '</b></u></h5><hr />' + '<h5><font color="black">Vulnerability Index: </font><b><u>' + selected.vIndex + '</b></u></h4>' );
 		      document.getElementById("fireRisk").style.visibility="visible";
 		      document.getElementById("floodRisk").style.visibility="visible";
 		      document.getElementById("earthquakeRisk").style.visibility="visible";
@@ -2081,7 +2130,9 @@ var currentMarker;
 	        ['Earthquake',    earthquake]
     	  ]);
     	  var options = {
+    			  chartArea:{width:"90%",height:"90%"},
     			  pieSliceText: 'label',
+    			  backgroundColor: "transparent"
     	        };
     	  var chart = new google.visualization.PieChart(document.getElementById('donut-chart'));
           chart.draw(data, options);
@@ -2089,6 +2140,9 @@ var currentMarker;
 	
     //Comparison Functionalities
     function showCompareAdd(id) {
+    	  document.getElementById('comparisonTableContainer').style.display = "block";
+    	  document.getElementById('noComparisonLabel').style.display= "none";
+    	  document.getElementById('comparisonChart').style.display = "block";
     	  document.getElementById('compareAdd').style.display = "block";
     	  comparisonAdded.push(id);
     }
@@ -2127,10 +2181,11 @@ var currentMarker;
 	
 			  	  // Create and draw the visualization.
 			        new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
-			        		{width:600,height: 500,
+			        		{width:550,height: 500,
+			        	  chartArea: {top: 20},
 	                    hAxis: {title: "Risk(%)"},
-	                    vAxis: {textStyle: {fontSize: 10}},
-	                      legend: { position: 'right', alignment: 'start' }
+	                    vAxis: {textStyle: {fontSize: 11}},
+	                      legend: { position: 'right', alignment: 'start',textStyle: {fontSize: 10} }
 		                      }
 			        );
 			}
@@ -2142,13 +2197,14 @@ var currentMarker;
 		        view.setColumns([0,1,2,3,4])
 	
 		          // Create and draw the visualization.
-		            new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
-		                 {width:600,height: 500,
-		                  hAxis: {title: "Risk(%)"},
-		                  vAxis: {textStyle: {fontSize: 10}},
-		                  legend: { position: 'right', alignment: 'start' }
-		                  }
-		            );
+		        new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
+		                  {width:550,height: 500,
+		                  chartArea: {top: 20},
+		                      hAxis: {title: "Risk(%)"},
+		                      vAxis: {textStyle: {fontSize: 10}},
+		                        legend: { position: 'right', alignment: 'start',textStyle: {fontSize: 10} }
+		                          }
+		              );
 			}
     }
     function colorHighest() {
@@ -2234,18 +2290,26 @@ var currentMarker;
 
         // Create and draw the visualization.
           new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
-               {width:600,height: 500,
-                hAxis: {title: "Risk(%)"}}
-          );
+                      {width:550,height: 500,
+                      chartArea: {top: 20},
+                          hAxis: {title: "Risk(%)"},
+                          vAxis: {textStyle: {fontSize: 10}},
+                            legend: { position: 'right', alignment: 'start',textStyle: {fontSize: 10} }
+                              }
+                  );
+        if (comparisonAdded.length == 0) {
+        	document.getElementById('comparisonTableContainer').style.display = "none";
+            document.getElementById('noComparisonLabel').style.display= "block";
+            document.getElementById('comparisonChart').style.display = "none";
+        }
     }
     
    //Simulation Functionalities
     function startSimulation()  {
+    	  
         var myLatlng2;
         var mapCenter = map.getCenter();
-        
-        
-        
+
         if(dragged == true){
         	mapCenter = dragMarker.position;
         }
@@ -2265,65 +2329,7 @@ var currentMarker;
               map: map,
               draggable: true
           });
-    	  myLatlng2 = new google.maps.LatLng(dragMarker.position.lat(), dragMarker.position.lng());
-          var count1=0;
-          for(var i=0;i<mapMarkers.length;i++){
-         	 var distance1 = google.maps.geometry.spherical.computeDistanceBetween(myLatlng2, mapMarkers[i].position);
-         	 console.log(distance1);
-      	 	if(distance1<=radius){
-      	 		count1++;
-      	 	}
-          }	 
-			 
-          var buildingStr = "";
           
-          if(count1==0){
-         	 document.getElementById("buildingsAffected").innerHTML = "There are no buildings affected in this area. ";
-          }else if(count1==1){
-         	 document.getElementById("buildingsAffected").innerHTML = "There is 1 building affected in this area. ";
-          }else{
-         	 document.getElementById("buildingsAffected").innerHTML = "There are " + count1 + " buildings affected in this area. ";
-          }
-                       
-          var query, queryText, gvizQuery;
-          query = "SELECT 'gridcode' " +
-          "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
-          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng2.lat() + ', ' + myLatlng2.lng() + ")," + radius + "))";
-          queryText = encodeURIComponent(query);
-          gvizQuery = new google.visualization.Query(
-              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
-          gvizQuery.send(function(response) {	
-            var table = response.getDataTable();
-            var riskIndex = 0;
-            for(var i=0;i<table.getNumberOfRows();i++){
-         	   riskIndex += table.getValue(i,0);
-            }
-            riskIndex = riskIndex/table.getNumberOfRows();
-            riskIndex = (1 - riskIndex/500)*100;
-            if (riskIndex > 0) {
-         	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(1) + "%. ";
-            }
-            var query1, queryText1, gvizQuery1;
-            query1 = "SELECT 'gridcode' " +
-            "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
-            "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + myLatlng2.lat() + ", " + myLatlng2.lng() + ")," + radius + "))";
-            queryText1 = encodeURIComponent(query1);
-            gvizQuery1 = new google.visualization.Query(
-                'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
-            gvizQuery1.send(function(response) {	
-              var table1 = response.getDataTable();
-              var riskIndex = 0;
-              for(var i=0;i<table1.getNumberOfRows();i++){
-           	   riskIndex += table1.getValue(i,0);
-              }
-              riskIndex = riskIndex/table1.getNumberOfRows();
-              riskIndex = (1 - riskIndex/20000)*100;
-              if (riskIndex > 0) {
-             	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(1) + "%. ";
-              }
-            });
-          
-          });
 
     	  customCircle = new google.maps.Circle({
               map: map,
@@ -2342,12 +2348,12 @@ var currentMarker;
          var bounds = customCircle.getBounds();
          
          google.maps.event.addListener(dragMarker, 'dragend', function() {
-        	
+        	 document.getElementById("buildingLabel").innerHTML = "<hr /># of Buildings affected within the simulation area:";
+           document.getElementById("riskLabel").innerHTML = "<hr />Risk level within the simulation area:";
         	 myLatlng2 = new google.maps.LatLng(dragMarker.position.lat(), dragMarker.position.lng());
              var count1=0;
              for(var i=0;i<mapMarkers.length;i++){
             	 var distance1 = google.maps.geometry.spherical.computeDistanceBetween(myLatlng2, mapMarkers[i].position);
-            	 console.log(distance1);
          	 	if(distance1<=radius){
          	 		count1++;
          	 	}
@@ -2356,11 +2362,11 @@ var currentMarker;
              var buildingStr = "";
              
              if(count1==0){
-            	 document.getElementById("buildingsAffected").innerHTML = "There are no buildings affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "No buildings affected";
              }else if(count1==1){
-            	 document.getElementById("buildingsAffected").innerHTML = "There is 1 building affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "1 building affected";
              }else{
-            	 document.getElementById("buildingsAffected").innerHTML = "There are " + count1 + " buildings affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "" + count1 + " buildings affected";
              }
                           
              var query, queryText, gvizQuery;
@@ -2378,8 +2384,12 @@ var currentMarker;
                }
                riskIndex = riskIndex/table.getNumberOfRows();
                riskIndex = (1 - riskIndex/500)*100;
+               console.log(riskIndex);
                if (riskIndex > 0) {
-            	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(1) + "%. ";
+            	   document.getElementById("averageFlood").innerHTML = "Flood: " + riskIndex.toFixed(1) + "% ";
+               }
+               else {
+            	   document.getElementById("averageFlood").innerHTML = "Flood: " + 0 + "% ";
                }
                
                //var floodRisk = (1 - table.getValue(0,0)/500) * 100;
@@ -2399,9 +2409,14 @@ var currentMarker;
                  }
                  riskIndex = riskIndex/table1.getNumberOfRows();
                  riskIndex = (1 - riskIndex/20000)*100;
+                 console.log(riskIndex);
                  if (riskIndex > 0) {
-                	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(1) + "%. ";
+                	 document.getElementById("averageFire").innerHTML = "Fire: " + riskIndex.toFixed(1) + "% ";
                  }
+                 else {
+                	 document.getElementById("averageFire").innerHTML = "Fire: " + 0 + "% ";
+                 }
+                 document.getElementById("averageEarthquake").innerHTML = "Earthquake: " + 0 + "% ";
                });
              
              });
@@ -2421,7 +2436,8 @@ var currentMarker;
     		$("#simulationSlide").slider({tooltip: 'always'});
     		simButton.value = "End Simulation";
     		simButton.className = "btn btn-danger";
-   		startSimulation();
+	      document.getElementById("simulationInstructions").innerHTML = "<b>Drag the created simulation marker to simulate.</b>";
+	   		startSimulation();
     	}
     	else {
     		$( "#simulationSlider" ).hide();
@@ -2432,6 +2448,10 @@ var currentMarker;
     		document.getElementById("averageFire").innerHTML = "";
     		document.getElementById("averageFlood").innerHTML = "";
     		document.getElementById("buildingsAffected").innerHTML = "";
+    		document.getElementById("buildingLabel").innerHTML = "";
+        document.getElementById("riskLabel").innerHTML = "";
+    		document.getElementById("simulationInstructions").innerHTML = "";
+    		document.getElementById("averageEarthquake").innerHTML = "";
     	}
     }
     
