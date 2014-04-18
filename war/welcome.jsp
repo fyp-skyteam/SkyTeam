@@ -79,14 +79,14 @@ for(int i=0;i<userDatasetList.size();i++){
 <body class="cbp-spmenu-push" style="overflow: hidden">
   <div style="text-align:center">
 <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4" style="margin: auto;">
-  <a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
-	<a href="#" style="text-decoration:none;" id="button1">Points of Interest</a>
-	<a href="#" style="text-decoration:none;" id="button2">Data & Information</a>
-	<a href="#" style="text-decoration:none;" id="button4">Hazard Map</a>
-	<a href="#" style="text-decoration:none;" id="button5">Risk Calculation</a>
-	<a href="#" style="text-decoration:none;" id="button6">Historical Analysis</a>
-  <a href="#" style="text-decoration:none;" id="button3" data-toggle="modal" data-target="#ComparisonModal">Comparison</a>
-	<a href="#" style="text-decoration:none;" id="button8">Simulation</a>
+  <a href="#" style="text-decoration:none;" class="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
+	<a href="#" style="text-decoration:none;" class="button1">Points of Interest</a>
+	<a href="#" style="text-decoration:none;" class="button2">Filter Data</a>
+	<a href="#" style="text-decoration:none;" class="button4">Hazard Map</a>
+	<a href="#" style="text-decoration:none;" class="button5">Risk Calculation</a>
+  	<a href="#" style="text-decoration:none;" class="button3" data-toggle="modal" data-target="#ComparisonModal">Comparison</a>
+	<a href="#" style="text-decoration:none;" class="button8">Simulation</a>
+	<a href="#" style="text-decoration:none;" class="button9" data-toggle="modal" data-target="#widgetModal"><b>Show All</b></a>
 	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:20px;">
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
@@ -95,6 +95,68 @@ for(int i=0;i<userDatasetList.size();i++){
 </nav>
 </div>
 
+
+
+<!-- WIDGET MODAL CONTAINER -->
+<div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id=UploadModalLabel">All Widgets</h4>
+      </div>
+      <div class="modal-body">
+      	<style>
+      		.widget-btn{
+      			margin: 20px;
+      			padding:10px;
+      			background: #00baff;
+      			border:0;
+      			color:white;
+      			height:70px;
+      			width:110px;
+      		}
+      	</style>
+      	<div class="row">
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button3 widget-btn" data-toggle="modal" data-target="#UploadModal">Upload New File</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button1 widget-btn">Points of Interest</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button2 widget-btn">Filter Data</button>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-md-4">
+				<button href="#" style="text-decoration:none;" class="button4 widget-btn">Hazard Map</button>      		</div>
+      		<div class="col-md-4">
+				<button href="#" style="text-decoration:none;" class="button5 widget-btn">Risk Calculation</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button3 widget-btn" data-toggle="modal" data-target="#ComparisonModal">Comparison</button>
+      			
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-md-4">
+ 				<button href="#" style="text-decoration:none;" class="button8 widget-btn">Simulation</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" style="text-decoration:none;" class="button6 widget-btn">Historical Analysis</button>
+      			
+      		</div>
+      		<div class="col-md-4">
+      			
+      		</div>
+      	</div>
+		
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END OF WIDGET MODAL CONTAINER -->
 <!-- NAVIGATION BAR -->
 <div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;">
     <div class="container">
@@ -148,19 +210,23 @@ for(int i=0;i<userDatasetList.size();i++){
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
 
     <h3>Points of Interest</h3>
-    <br/>
+    <div id="selectedPOI" style="text-align: center"><h5><b>Please select a point to begin.</b></h5></div>
     <div id="controls">
    <input type="hidden" id="wid1IsSelected" value="false">
    <input type="hidden" id="markerSelected" value="false">
     <input type="hidden" id="markerPosition"/>
     <table style="width:100%"><tr style="width:100%">
-    	<td style="padding-right:10px">Radius (m)</td>
+    <h5 style="color:Black">Radius (m):</h5>
+    <tr>
     	<td>
     		<input id="poiSlide" type="text" value="500" width="100%" data-slider-min="500" data-slider-max="2000" data-slider-step="10" data-slider-value="500">  
     	</td>
-    </tr></table>
+    </tr>
+    </table>
+    <hr />
+    <h5 style="color:Black">Location:</h5>
     <select id="type" class="form form-control">
-      <option value="">Select a type</option>
+      <option value="">Select a location</option>
 
       <option value="convenience_store">Convenience Store</option>
       <option value="fire_station">Fire Station</option>
@@ -171,8 +237,9 @@ for(int i=0;i<userDatasetList.size();i++){
     </select>
     
   </div>
-  <td><button id="updatePoiRadBtn" class="btn btn-primary">Search</button></td>
-  <div id="selectedPOI"><h5>Please select a point to begin.</h5></div>
+  <hr />
+  <div style="text-align:center"><input type="button" id="updatePoiRadBtn" class="btn btn-primary"  value="Search" /></div>
+  <br />
     <div id="listing">
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results">
@@ -209,6 +276,9 @@ for(int i=0;i<userDatasetList.size();i++){
 		        <option value="Selangor">Selangor</option>
 		        <option value="Terengganu">Terengganu</option>
 		        <option value="Wilayah Persekutuan">Wilayah Persekutuan</option>
+		        <option value="Federal Territory of Kuala Lumpur">Federal Territory of Kuala Lumpur</option>
+		        <option value="Federal Territory of Labuan">Federal Territory of Labuan</option>
+		        <option value="Federal Territory of Putrajaya">Federal Territory of Putrajaya</option>
 		      </select>
 		 </div>
 		 <div id="visualization" style="width: 800px; height: 400px;"></div>
@@ -223,11 +293,19 @@ for(int i=0;i<userDatasetList.size();i++){
 
 	<h3> Simulation </h3>
     <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
-    Radius(m)<input id="simulationSlide" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
-    <br/>
-    <b id="buildingsAffected"></b>
-    <p id="averageFlood"></p>
-    <p id="averageFire"></p>
+    <h5 id="simulationInstructions" style="text-align:center"></h5>
+    <div id="simulationSlider"  style="text-align:center"><hr />
+	    <h5 style="color:Black">Radius (m):</h5>
+	    <input id="simulationSlide" style="visibility:hidden;" type="text" value="500" width="100%" data-slider-min="5000" data-slider-max="50000" data-slider-step="500" data-slider-value="5000">  
+    </div>
+    <div style="text-align:center">
+	    <h5 style="color:Black" id="buildingLabel"></h5>
+	    <b id="buildingsAffected"></b>
+	    <h5 style="color:Black" id="riskLabel"></h5>
+	    <b><p id="averageFlood"></p>
+	    <p id="averageFire"></p>
+	    <p id="averageEarthquake"></p></b>
+    </div>
 </div>
 </div>
  
@@ -237,11 +315,12 @@ for(int i=0;i<userDatasetList.size();i++){
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
   
 	<h3>Risk Calculation</h3>
-		<div id="selectedRisk"><h5>Please select a point to begin.</h5></div>
-		<div id="floodRisk" style="visibility:hidden"><h4><font color="Black">Flood Risk: </font><u><b id="floodRiskValue"></b></u></h4></div>
-		<div id="fireRisk" style="visibility:hidden"><h4><font color="Black">Fire Risk: </font><u><b id="fireRiskValue"></b></u></h4></div>
-		<div id="earthquakeRisk" style="visibility:hidden"><h4><font color="Black">Earthquake Risk: </font><u><b id="earthquakeRiskValue"></b></u></h4></div>
-		<div id="donut-chart"></div>
+		<div id="selectedRisk" style="text-align:center"><h5><b>Please select a point to begin.</b></h5></div>
+		<div id="floodRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Flood Risk: </font><b id="floodRiskValue"></b></h5></div>
+		<div id="fireRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Fire Risk: </font><b id="fireRiskValue"></b></h5></div>
+		<div id="earthquakeRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Earthquake Risk: </font><b id="earthquakeRiskValue"></b></h5></div>
+		<hr />
+		<div id="donut-chart" style="text-align:center"></div>
   </div>
   </div>
 <!-- END OF RISK CALCULATION WIDGET -->
@@ -252,17 +331,17 @@ for(int i=0;i<userDatasetList.size();i++){
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
   
 	<h3>Hazard Map</h3>
-	<h4 style="color:Black">Select Country:</h4>
+	<h5 style="color:Black">Select Country:</h5>
 	<select class="selectpicker" data-width="100%">
 	 <option value="malaysia" >Malaysia</option>
 	</select>
 	<br />
-	<h4 style="color:Black">Maps Available:</h4>
-	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map
+	<h5 style="color:Black">Maps Available:</h5>
+	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map <font color="black">(Source)</font>
 	<br />
-	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map
+	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map <font color="black">(Source)</font>
 	<br />
-	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map
+	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map <font color="black">(Source)</font>
   </div>
   </div>
 <!-- END OF HAZARD MAP WIDGET -->
@@ -272,8 +351,8 @@ for(int i=0;i<userDatasetList.size();i++){
   <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
 
-    <h3>Data & Information</h3>
-    <br/>
+    <h3>Filter Data</h3>
+    <h5><font color="Black">Current View:</font></h5>
     <div class="row">
       <div class="col-sm-7">
 	      <form name="view_data" method="post" action="view">
@@ -285,7 +364,7 @@ for(int i=0;i<userDatasetList.size();i++){
 	         <%if (chosenData.equals("filter")){%>
 	         <option selected>Custom</option>
 	         <%}%>
-	         <option value="all"<%if (chosenData.equals("all")) {%>selected<%}%>>Show All</option>
+	         <option value="all"<%if (chosenData.equals("all")) {%>selected<%}%>>Show All Datasets</option>
 	         <%for(String dataset: userDatasetList){%>
             <option value="<%=dataset%>"<%if(chosenData.equals(dataset)){%>selected<%}%>><%=dataset%></option>
            <%}%>
@@ -294,9 +373,10 @@ for(int i=0;i<userDatasetList.size();i++){
 	       </form>
 	      </div>
 	      <div class="col-sm-5">
-	       <a class="btn btn btn-default" data-toggle="modal" data-target="#SearchModal">Custom View</a>   
+	       <a class="btn btn btn-primary" data-toggle="modal" data-target="#SearchModal">Custom Filter</a>   
 	     </div>
 	  </div>   
+	  <h5><font color="Black">Map Markers Displayed:</font></h5>
 	<div id="listing">
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results2">
@@ -323,6 +403,24 @@ for(int i=0;i<userDatasetList.size();i++){
 <div id="map_canvas" style="background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
     </div>
     
+<!-- WELCOME MODAL CONTAINER -->
+<div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+     
+  
+  <div class="modal-body" style="text-align:center">
+   <h2>Welcome to GeoIntel</h2>
+   <br />
+   <h4><font color="Black">To begin using GeoIntel, upload your map markers by accessing the Widget Dashboard. (Thao or Bea, please rephrase this.)</font></h4>
+   <br />
+        <button class="btn btn-md btn-primary" data-dismiss="modal">Close</button>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- END OF WELCOME MODAL CONTAINER -->
 
 <!-- SEARCH MODAL CONTAINER -->
 <div class="modal fade" id="SearchModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
@@ -572,15 +670,13 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
         <h4 class="modal-title" id=UploadModalLabel">Upload File</h4>
       </div>
       <div class="modal-body">
+      <h4 style="color:Black">Upload map data (.zip):</h4>
         <form name="upload-file" action="upload" method="post" enctype="multipart/form-data"  role="form">
           <div class="form-group">
             <input type="file" name="data">
           </div>
-          
-         <!-- Initialize Bootstrap Select -->
-			  <link href="assets/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
-			  <script src="assets/bootstrap-select/bootstrap-select.js" type="text/javascript"></script>
-  
+         <hr /> 
+      <h4 style="color:Black">Select currency of map markers to be uploaded:</h4>    
           <select class="selectpicker" name="currency" data-size="11">
 			      <option value="SGD" data-subtext="Singapore Dollar" selected>SGD</option>
 			      <option value="AUD" data-subtext="Australian Dollar">AUD</option>
@@ -594,9 +690,11 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 			      <option value="JPY" data-subtext="Japanese Yen">JPY</option>
 			      <option value="USD" data-subtext="United States Dollar">USD</option>
           </select>
-			    <br/><input type="checkbox" name="clear data" class="style1" value="clear-data"/> Clear all the previously stored data by you	    
+          <hr />
+			 <input type="checkbox" name="clear data" class="style1" value="clear-data"/> Clear all the previously stored data by you	    
 			   <input type="hidden" name="username" value="<%=username%>">   
 			    <div class="form-group">
+			    <hr />
             <p align="right"><button type="submit" value="Upload" class="btn btn btn-primary">Submit</button></p>
           </div>
         </form>
@@ -615,7 +713,9 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
         <h4 class="modal-title" id=ComparisonModalLabel">Comparison</h4>
       </div>
       <div class="modal-body">
-	      <table id="comparisonTable" border="1" style="table-layout: fixed; width:100%">
+        <div id="noComparisonLabel" style="text-align:center">No points have been added for comparison. <br />Please select a marker and click 'Add to Comparison' to begin.</div>
+	      <div id="comparisonTableContainer" style="display:none">
+	      <table id="comparisonTable" border="1" style="table-layout: fixed; width:100%; text-align:center">
 	      <tr>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Name</font></th>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Earthquake</font></th>
@@ -624,14 +724,18 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Total</font></th>
 	      </tr>
 	      </table>
+	      </div>
+	      <div id ="comparisonChart"></div>
       </div>
-      <div id ="comparisonChart"></div>
+      
     </div>
   </div>
 </div>
 <!-- END OF COMPARISON MODAL CONTAINER -->
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
 <script>
+
 google.load("visualization", "1", {packages:["corechart"]});
 
 //GLOBAL DATATABLE VARIABLE
@@ -691,6 +795,7 @@ var currentMarker;
 	$(document).ready(function() {
 	    $('.selectpicker').selectpicker();
 	    $( "#draggable" ).draggable();
+	    $( "#simulationSlider" ).hide();
 	  });
 	
 	$(function() {
@@ -708,7 +813,7 @@ var currentMarker;
 	    $( ".resizable" ).resizable();
 
 		        // set effect from select menu value
-	   $( "#button1" ).click(function() {
+	   $( ".button1" ).click(function() {
 	    	//to indicate that poi is chosen and display radius
 	    	
 	    	$("#wid1IsSelected").val("true");
@@ -743,7 +848,7 @@ var currentMarker;
 	      return false;
 	    });
 	    
-	    $( "#button2" ).click(function() {
+	    $( ".button2" ).click(function() {
 	      // get effect type from
 	      var selectedEffect = $( "#effectTypes" ).val();
 	 
@@ -756,7 +861,7 @@ var currentMarker;
 	      return false;
 	    });
 	    
-	    $( "#button4" ).click(function() {
+	    $( ".button4" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -769,7 +874,7 @@ var currentMarker;
 		      return false;
 		    });
 	    
-	    $( "#button5" ).click(function() {
+	    $( ".button5" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -781,7 +886,7 @@ var currentMarker;
 		      $( "#widget5" ).show( 'clip', options, 500 );
 		      return false;
 		    });
-	    $( "#button6" ).click(function() {
+	    $( ".button6" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -794,7 +899,7 @@ var currentMarker;
 		      return false;
 		    });
 	   
-	    $( "#button7" ).click(function() {
+	    $( ".button7" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -807,7 +912,7 @@ var currentMarker;
 		      return false;
 		    });
 	    
-	    $( "#button8" ).click(function() {
+	    $( ".button8" ).click(function() {
 		      // get effect type from
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
@@ -926,9 +1031,26 @@ var currentMarker;
 			$( "#widget7" ).hide( 'scale', options, 500 );
 	    });
 	    $( "#close8" ).click(function() {
+	    	
+	    	$( "#simulationSlider" ).hide();
+	    	document.getElementById("simulationButton").value = "Start Simulation";
+	    	document.getElementById("simulationButton").className = "btn btn-success";
+	    	if (dragMarker != null) {
+	    		  dragMarker.setMap(null);
+	    	}
+	    	if (customCircle != null) {
+	    		  customCircle.setMap(null);
+	    	}
+        document.getElementById("averageFire").innerHTML = "";
+        document.getElementById("averageFlood").innerHTML = "";
+        document.getElementById("buildingsAffected").innerHTML = "";
+        document.getElementById("buildingLabel").innerHTML = "";
+        document.getElementById("riskLabel").innerHTML = "";
+        document.getElementById("simulationInstructions").innerHTML = "";
+        document.getElementById("averageEarthquake").innerHTML = "";
 	    	// get effect type from
 			var selectedEffect = $( "#effectTypes" ).val();
-	
+			  
 			// most effect types need no options passed by default
 			var options = {};
 			// some effects have required parameters
@@ -940,8 +1062,7 @@ var currentMarker;
 	
 			// run the effect
 			$( "#widget8" ).hide( 'scale', options, 500 );
-			dragMarker.setMap(null);
-    		customCircle.setMap(null);
+    		
 		});
 
 
@@ -1048,10 +1169,9 @@ var currentMarker;
 	  //SIMULATION VARIABLES
 	  var customCircle;
 	  var dragMarker;
-	  var simulationRadius;
+	  var simulationRadius = 5000;
 	  var dragged = false;
 	  
-	  $("#simulationSlide").slider({tooltip: 'always'});
 	  $("#simulationSlide").on('slide', function(slideEvt) {	 		
 	 		simulationRadius = slideEvt.value;
 	 		startSimulation();
@@ -1332,42 +1452,66 @@ var currentMarker;
 	                  
 	                   //function to display all available information of the point
 	                   function displayData(array,latitude,longitude,vIndex) {
-	                	   var query = "SELECT 'name','Risk Factor','2013' " +
-	                       "FROM 1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg "+
-	                       "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
-	                       var queryText = encodeURIComponent(query);
-	                       var gvizQuery = new google.visualization.Query(
-	                           'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
-	                      
-	                       gvizQuery.send(function(response) {
-		                    	 var string1 = response.getDataTable().getValue(0,2);
-		                    	 var string2 = response.getDataTable().getValue(1,2);
-		                    	 var string3 = response.getDataTable().getValue(2,2);
-		                    	 var stringId = array[13].toString();
-		                    	 var number = comparisonAdded.indexOf(array[0]);
-		                    	 if (number >= 0) {
-		                    		 infowindow2.setContent(
-		                                     "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
-		                                     "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
-		                                     "<br />" + "<b>Foundation Type:</b> " + array[7] + 
-		                                     "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
-		                                     "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-		                                     "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" value=\"Added\" style=\"width:150px\" disabled></input></center><br />"
-		                                     );
-		                    	 }
-		                    	 else {
-			                    	 infowindow2.setContent(
-			                                   "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
-			                                   "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
-			                                   "<br />" + "<b>Foundation Type:</b> " + array[7] + 
-			                                   "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
-			                                   "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
-			                                   "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; this.disabled = true; showCompareAdd('"+array[0]+"'); addComparison('"+array[0]+"','"+string1+"','"+string2+"','"+string3+"','"+stringId+"'); colorHighest(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
-			                                   );
-		                    	 }
-		                      });  
-	             
-	       }
+	                	   var floodValue;
+	                	   var fireValue;
+	                	   var earthquakeValue;
+	                	   //Flood Query Table
+	                	   var query, queryText, gvizQuery;
+                       query = "SELECT 'gridcode' " +
+                       "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
+                       "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+                       queryText = encodeURIComponent(query);
+                       gvizQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
+                       gvizQuery.send(function(response) { 
+	                       var table = response.getDataTable();
+	                       if (table.getNumberOfRows() != 0) {
+	                           floodValue = parseFloat(((1 - table.getValue(0,0)/500) * 100).toFixed(1));
+	                       }
+	                       else {
+	                           floodValue = 0;
+	                       }
+                         //Fire Query Table
+                         var query1, queryText1, gvizQuery1;
+                         query1 = "SELECT 'gridcode' " +
+                         "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
+                         "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ latitude + ', ' + longitude + "),1))";
+                         queryText1 = encodeURIComponent(query1);
+                         gvizQuery1 = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+                         gvizQuery1.send(function(response) {  
+	                         var table1 = response.getDataTable();
+	                         if (table1.getNumberOfRows() != 0) {
+	                          fireValue = parseFloat(((1 - table1.getValue(0,0)/20000) * 100).toFixed(1));
+	                         }
+	                         else {
+	                           fireValue = 0;
+	                         }
+	                         //ADD QUERY TO EARTHQUAKE HERE
+	                         earthquakeValue = 0;
+	                         var stringId = array[13].toString();
+	                         var number = comparisonAdded.indexOf(stringId);
+                           if (number >= 0) {
+                             infowindow2.setContent(
+                                         "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
+                                         "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
+                                         "<br />" + "<b>Foundation Type:</b> " + array[7] + 
+                                         "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
+                                         "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
+                                         "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" value=\"Added\" style=\"width:150px\" disabled></input></center><br />"
+                                         );
+                           }
+                           else {
+                             infowindow2.setContent(
+                                         "<h4> " + array[0] + "<br /> (" + array[9] + ")</h4>" + "<b>Type:</b> " + array[1] + "<br />" + "<b>Year Built:</b> " + array[3] +
+                                         "<br />" +  "<b>Masonry:</b> " + array[10]+  "<br />" + "<b>Roof Material:</b> " + array[11] + 
+                                         "<br />" + "<b>Foundation Type:</b> " + array[7] + 
+                                         "</br>" + "<b>Height:</b> " + array[2] + "<br />" + "<b>Capacity:</b> " + array[4] +
+                                         "<br />" + "<b>Property Coverage Limit:</b> " + array[5] + "<br />" + "<b>Loss Coverage Limit:</b> " + array[6] + 
+                                         "<br />" + "<b>Dataset:</b> " + array[12] + "<br /><br /><center><input type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"this.value='Added'; this.disabled = true; showCompareAdd('"+stringId+"'); addComparison('"+array[0]+"','"+earthquakeValue+"','"+floodValue+"','"+fireValue+"','"+stringId+"'); colorHighest(); \" value=\"Add to Comparison\" style=\"width:150px\"></input></center><br />"
+                                         );
+                           }
+                         });
+                       });             
+                     }
 	                   //center map or center Malaysia
 	                   if (mapMarkers.length > 0) {
 	                	   AutoCenter();
@@ -1377,6 +1521,9 @@ var currentMarker;
 	                	  //Malaysia Coordinates
 	                	  map.setCenter(new google.maps.LatLng(4.210484,101.97576600000002));
 	                	  map.setZoom(8);
+	                	  $('#welcomeModal').modal();
+
+	                	  
 	                  }
 	  }
 
@@ -1839,10 +1986,24 @@ var currentMarker;
 	                     [name, new Date(2012,11,31), array[0][6],array[1][6],array[2][6],array[3][6]],
 	                     [name, new Date(2013,11,31), array[0][7],array[1][7],array[2][7],array[3][7]],
 	             ]);  
-	         
+	              var options = {};
+	              options['state'] =
+	              '{"yZoomedIn":false,"xLambda":1,"colorOption":"2","xZoomedIn":false,' +
+	            	  '"xZoomedDataMax":1388448000000,"showTrails":true,"sizeOption":"2",' +
+	            	  '"yAxisOption":"2","uniColorForNonSelected":false,' +
+	            	  '"yZoomedDataMax":93.29,"orderedByX":false,"iconType":"BUBBLE",' +
+	            	  '"xAxisOption":"_TIME","nonSelectedAlpha":0.4,"yZoomedDataMin":6.45,' +
+	            	  '"dimensions":{"iconDimensions":["dim0"]},"yLambda":1,' +
+	            	  '"iconKeySettings":[],"xZoomedDataMin":1167523200000,' +
+	            	  '"playDuration":15000,"time":"2006-12-31","orderedByY":false,' +
+	            	  '"duration":{"timeUnit":"D","multiplier":1}}';
+
+      	          options['width'] = 800;
+	              options['height'] = 400;
+	              //chart.draw(data, options);	
 	              var motionchart = new google.visualization.MotionChart(
 	                      document.getElementById('visualization'));
-	                  motionchart.draw(data, {'width': 800, 'height': 400});
+	                  motionchart.draw(data,options );
 	               });
 	             
 	        }
@@ -1901,12 +2062,12 @@ var currentMarker;
 	
 
 	function displaySelectedPOI(selected) {
-	      document.getElementById('selectedPOI').innerHTML = ('<h5>Selected point: <b><u>' + selected.name + '</b></u></h5>');
+	      document.getElementById('selectedPOI').innerHTML = ('<h5><font color="black">Selected point: </font><br /><b><u>' + selected.name + '</b></u></h5>');
 	  }
 	
 	//Risk Calculation Functionalities
 			 function displaySelectedRisk(selected) {
-		      document.getElementById('selectedRisk').innerHTML = ('<h4><font color="black"> Selected point: </font><b><u>' + selected.name + '</b></u></h4>' + '<h4><font color="black">Vulnerability Index: </font><b><u>' + selected.vIndex + '</b></u></h4>' );
+		      document.getElementById('selectedRisk').innerHTML = ('<h5><font color="black"> Selected point: </font><b><u>' + selected.name + '</b></u></h5><hr />' + '<h5><font color="black">Vulnerability Index: </font><b><u>' + selected.vIndex + '</b></u></h4>' );
 		      document.getElementById("fireRisk").style.visibility="visible";
 		      document.getElementById("floodRisk").style.visibility="visible";
 		      document.getElementById("earthquakeRisk").style.visibility="visible";
@@ -1920,6 +2081,7 @@ var currentMarker;
     		var fireRisk = "";
     		var floodRisk = "";
     		var earthquakeRisk = ""
+    		//Flood Query Table
     	  var query, queryText, gvizQuery;
           query = "SELECT 'gridcode' " +
           "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
@@ -1929,15 +2091,16 @@ var currentMarker;
           gvizQuery.send(function(response) { 
             var table = response.getDataTable();
             if (table.getNumberOfRows() != 0) {
-            	  floodRisk = ((1 - table.getValue(0,0)/500) * 100).toFixed(2);
+            	  floodRisk = ((1 - table.getValue(0,0)/500) * 100).toFixed(1);
             }
             if (floodRisk != "") {
                 document.getElementById("floodRiskValue").innerHTML = floodRisk + "%";
             }
             else {
-            	  document.getElementById("floodRiskValue").innerHTML = "No data available";
+            	  document.getElementById("floodRiskValue").innerHTML = 0;
                 floodRisk = 0;
             }
+            //Fire Query Table
             var query1, queryText1, gvizQuery1;
             query1 = "SELECT 'gridcode' " +
             "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
@@ -1947,13 +2110,13 @@ var currentMarker;
             gvizQuery1.send(function(response) {  
 	              var table1 = response.getDataTable();
 	              if (table1.getNumberOfRows() != 0) {
-	               fireRisk = ((1 - table1.getValue(0,0)/20000) * 100).toFixed(2);
+	               fireRisk = ((1 - table1.getValue(0,0)/20000) * 100).toFixed(1);
 	              }
 	              if (fireRisk != "") {
 	            	  document.getElementById("fireRiskValue").innerHTML = fireRisk + "%";
 	              }
 	              else {
-	            	  document.getElementById("fireRiskValue").innerHTML = "No data available";
+	            	  document.getElementById("fireRiskValue").innerHTML = 0;
 	            	  fireRisk = 0;
 	              }
 	              earthquakeRisk = 0;
@@ -1976,27 +2139,29 @@ var currentMarker;
 	        ['Earthquake',    earthquake]
     	  ]);
     	  var options = {
+    			  chartArea:{width:"90%",height:"90%"},
     			  pieSliceText: 'label',
+    			  backgroundColor: "transparent"
     	        };
     	  var chart = new google.visualization.PieChart(document.getElementById('donut-chart'));
           chart.draw(data, options);
       }
 	
     //Comparison Functionalities
-    function showCompareAdd(name) {
+    function showCompareAdd(id) {
+    	  document.getElementById('comparisonTableContainer').style.display = "block";
+    	  document.getElementById('noComparisonLabel').style.display= "none";
+    	  document.getElementById('comparisonChart').style.display = "block";
     	  document.getElementById('compareAdd').style.display = "block";
-    	  comparisonAdded.push(name);
+    	  comparisonAdded.push(id);
     }
 
     function hideCompareAdd() {
         document.getElementById('compareAdd').style.display = "none";
     }
     
-    function addComparison(name,string1,string2,string3,id)
-    {
+    function addComparison(name,earthquakeValue,floodValue,fireValue,id) {
     	var table = document.getElementById("comparisonTable");
- 		
-  
     	var rowCount = table.rows.length;
       var row = table.insertRow(rowCount);
       row.id = id;
@@ -2007,36 +2172,49 @@ var currentMarker;
       var cell5 = row.insertCell(4);
       var cell6 = row.insertCell(5);
       cell1.innerHTML = name;
-      cell2.innerHTML = string1;
-      cell3.innerHTML = string2;
-      cell4.innerHTML = string3;
-      cell5.innerHTML = ((parseFloat(string1)+parseFloat(string2)+parseFloat(string3))/3).toFixed(2);
-      cell6.innerHTML = '<center><button type="button" class="btn btn-default btn-xs" onclick="deleteRow('+id+');colorHighest()">Delete</button></center>'
-      var average = ((parseFloat(string1)+parseFloat(string2)+parseFloat(string3))/3).toFixed(2);
+      cell2.innerHTML = earthquakeValue;
+      cell3.innerHTML = floodValue;
+      cell4.innerHTML = fireValue;
+      cell5.innerHTML = ((parseFloat(earthquakeValue)+parseFloat(floodValue)+parseFloat(fireValue))/3).toFixed(1);
+      cell6.innerHTML = '<center><button type="button" class="btn btn-default btn-xs" onclick="deleteRow('+id+','+rowCount+');colorHighest()">Delete</button></center>'
+      var average = ((parseFloat(earthquakeValue)+parseFloat(floodValue)+parseFloat(fireValue))/3).toFixed(1);
       var chart = document.getElementById("comparisonChart");
-		if (chart.innerHTML == ""){
-			 // Create and populate the data table.
-		  	  data = google.visualization.arrayToDataTable([
-		  	    ['Building Name', 'Earthquake', 'Flood', 'Fire', 'Total'],
-		  	    [name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
-		  	  ]);
-
-		  	  // Create and draw the visualization.
-		        new google.visualization.ColumnChart(document.getElementById('comparisonChart')).draw(data,
-		             {width:400, height:400,
-		              vAxis: {title: "Building Name"},
-		              hAxis: {title: "Risk (%)"}}
-		        );
-		}else{
-			
-			data.addRow([name,  parseFloat(string1),    parseFloat(string2),    parseFloat(string3), parseFloat(average)]
-		  	  );
-			new google.visualization.ColumnChart(document.getElementById('comparisonChart')).draw(data,
-		             {width:400, height:400,
-		              vAxis: {title: "Building Name"},
-		              hAxis: {title: "Risk (%)"}}
-		        );
-		}
+			if (chart.innerHTML == ""){
+				 // Create and populate the data table.
+			  	  data = google.visualization.arrayToDataTable([
+			  	    ['Building Name', 'Flood', 'Fire', 'Earthquake', 'Total Average','ID'],
+			  	    [name,  parseFloat(floodValue),    parseFloat(fireValue),    parseFloat(earthquakeValue), parseFloat(average), parseFloat(id)]
+			  	  ]);
+			  	var view = new google.visualization.DataView(data);
+			  	view.setColumns([0,1,2,3,4])
+	
+			  	  // Create and draw the visualization.
+			        new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
+			        		{width:550,height: 500,
+			        	  chartArea: {top: 20},
+	                    hAxis: {title: "Risk(%)"},
+	                    vAxis: {textStyle: {fontSize: 11}},
+	                      legend: { position: 'right', alignment: 'start',textStyle: {fontSize: 10} }
+		                      }
+			        );
+			}
+			else{
+				
+				data.addRow([name,  parseFloat(floodValue),    parseFloat(fireValue),    parseFloat(earthquakeValue), parseFloat(average), parseFloat(id)]
+			  	  );
+				var view = new google.visualization.DataView(data);
+		        view.setColumns([0,1,2,3,4])
+	
+		          // Create and draw the visualization.
+		        new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
+		                  {width:550,height: 500,
+		                  chartArea: {top: 20},
+		                      hAxis: {title: "Risk(%)"},
+		                      vAxis: {textStyle: {fontSize: 10}},
+		                        legend: { position: 'right', alignment: 'start',textStyle: {fontSize: 10} }
+		                          }
+		              );
+			}
     }
     function colorHighest() {
         var highestCell2Value = 0;
@@ -2072,31 +2250,75 @@ var currentMarker;
               highestCell4 = a;
             }
             if (highestCell5Value < cell5) {
-              highestCell5Value < cell5;
+              highestCell5Value = cell5;
               highestCell5 = a;
             }
             
         }
-          table.rows[highestCell2].cells[1].className = 'highestValue';
-          table.rows[highestCell3].cells[2].className = 'highestValue';
-          table.rows[highestCell4].cells[3].className = 'highestValue';
-          table.rows[highestCell5].cells[4].className = 'highestValue';
+        for (var a = 1; a < rowCount; a++) {
+        	table.rows[a].cells[1].className = '';
+            var cell2 = parseFloat(table.rows[a].cells[1].innerHTML);
+            table.rows[a].cells[2].className = '';
+            var cell3 = parseFloat(table.rows[a].cells[2].innerHTML);
+            table.rows[a].cells[3].className = '';
+            var cell4 = parseFloat(table.rows[a].cells[3].innerHTML);
+            table.rows[a].cells[4].className = '';
+            var cell5 = parseFloat(table.rows[a].cells[4].innerHTML);
+            
+              if (highestCell2Value == cell2) { 
+            	  table.rows[a].cells[1].className = 'highestValue';
+              }
+              if (highestCell3Value == cell3) { 
+            	  table.rows[a].cells[2].className = 'highestValue';
+              }
+              if (highestCell4Value == cell4) {
+            	  table.rows[a].cells[3].className = 'highestValue';
+              }
+              if (highestCell5Value == cell5) {
+                table.rows[a].cells[4].className = 'highestValue';
+              }
+        }
       }
     
     function deleteRow(rowid)  
     {   
         var row = document.getElementById(rowid);
         row.parentNode.removeChild(row);
+        var remove = comparisonAdded.indexOf(rowid);
+        comparisonAdded.splice(remove,1);
+        var dtRows = data.getNumberOfRows();
+        for (var a = 0; a < dtRows; a++) {
+        	var dtId = data.getValue(a,5);
+        	if (rowid == dtId) {
+        		data.removeRow(a);
+        		break;
+        	}
+        }
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0,1,2,3,4])
+
+        // Create and draw the visualization.
+          new google.visualization.BarChart(document.getElementById('comparisonChart')).draw(view,
+                      {width:550,height: 500,
+                      chartArea: {top: 20},
+                          hAxis: {title: "Risk(%)"},
+                          vAxis: {textStyle: {fontSize: 10}},
+                            legend: { position: 'right', alignment: 'start',textStyle: {fontSize: 10} }
+                              }
+                  );
+        if (comparisonAdded.length == 0) {
+        	document.getElementById('comparisonTableContainer').style.display = "none";
+            document.getElementById('noComparisonLabel').style.display= "block";
+            document.getElementById('comparisonChart').style.display = "none";
+        }
     }
-    
     
    //Simulation Functionalities
     function startSimulation()  {
+    	  
         var myLatlng2;
         var mapCenter = map.getCenter();
-        
-        
-        
+
         if(dragged == true){
         	mapCenter = dragMarker.position;
         }
@@ -2116,68 +2338,7 @@ var currentMarker;
               map: map,
               draggable: true
           });
-    	  myLatlng2 = new google.maps.LatLng(dragMarker.position.lat(), dragMarker.position.lng());
-          var count1=0;
-          for(var i=0;i<mapMarkers.length;i++){
-         	 var distance1 = google.maps.geometry.spherical.computeDistanceBetween(myLatlng2, mapMarkers[i].position);
-         	 console.log(distance1);
-      	 	if(distance1<=radius){
-      	 		count1++;
-      	 	}
-          }	 
-			 
-          var buildingStr = "";
           
-          if(count1==0){
-         	 document.getElementById("buildingsAffected").innerHTML = "There are no buildings affected in this area. ";
-          }else if(count1==1){
-         	 document.getElementById("buildingsAffected").innerHTML = "There is 1 building affected in this area. ";
-          }else{
-         	 document.getElementById("buildingsAffected").innerHTML = "There are " + count1 + " buildings affected in this area. ";
-          }
-                       
-          var query, queryText, gvizQuery;
-          query = "SELECT 'gridcode' " +
-          "FROM 1TZgZZZrh7qp2aiJlVwGCIIdpZ3-CdaCJx7K85MLF "+
-          "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG( "+ myLatlng2.lat() + ', ' + myLatlng2.lng() + ")," + radius + "))";
-          queryText = encodeURIComponent(query);
-          gvizQuery = new google.visualization.Query(
-              'http://www.google.com/fusiontables/gvizdata?tq=' + queryText);
-          gvizQuery.send(function(response) {	
-            var table = response.getDataTable();
-            var riskIndex = 0;
-            for(var i=0;i<table.getNumberOfRows();i++){
-         	   riskIndex += table.getValue(i,0);
-            }
-            riskIndex = riskIndex/table.getNumberOfRows();
-            riskIndex = (1 - riskIndex/500)*100;
-            if (riskIndex > 0) {
-         	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(2) + "%. ";
-            }
-            
-            //var floodRisk = (1 - table.getValue(0,0)/500) * 100;
-            //document.getElementById("flood-risk").innerHTML = floodRisk.toFixed(2) + "%";  
-            var query1, queryText1, gvizQuery1;
-            query1 = "SELECT 'gridcode' " +
-            "FROM 1bx6kxzPzX6_g4IJEEYmZmy4ze4xvRF_c8kUZEWp0 "+
-            "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + myLatlng2.lat() + ", " + myLatlng2.lng() + ")," + radius + "))";
-            queryText1 = encodeURIComponent(query1);
-            gvizQuery1 = new google.visualization.Query(
-                'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
-            gvizQuery1.send(function(response) {	
-              var table1 = response.getDataTable();
-              var riskIndex = 0;
-              for(var i=0;i<table1.getNumberOfRows();i++){
-           	   riskIndex += table1.getValue(i,0);
-              }
-              riskIndex = riskIndex/table1.getNumberOfRows();
-              riskIndex = (1 - riskIndex/20000)*100;
-              if (riskIndex > 0) {
-             	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(2) + "%. ";
-              }
-            });
-          
-          });
 
     	  customCircle = new google.maps.Circle({
               map: map,
@@ -2196,12 +2357,12 @@ var currentMarker;
          var bounds = customCircle.getBounds();
          
          google.maps.event.addListener(dragMarker, 'dragend', function() {
-        	
+        	 document.getElementById("buildingLabel").innerHTML = "<hr /># of Buildings affected within the simulation area:";
+           document.getElementById("riskLabel").innerHTML = "<hr />Risk level within the simulation area:";
         	 myLatlng2 = new google.maps.LatLng(dragMarker.position.lat(), dragMarker.position.lng());
              var count1=0;
              for(var i=0;i<mapMarkers.length;i++){
             	 var distance1 = google.maps.geometry.spherical.computeDistanceBetween(myLatlng2, mapMarkers[i].position);
-            	 console.log(distance1);
          	 	if(distance1<=radius){
          	 		count1++;
          	 	}
@@ -2210,11 +2371,11 @@ var currentMarker;
              var buildingStr = "";
              
              if(count1==0){
-            	 document.getElementById("buildingsAffected").innerHTML = "There are no buildings affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "No buildings affected";
              }else if(count1==1){
-            	 document.getElementById("buildingsAffected").innerHTML = "There is 1 building affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "1 building affected";
              }else{
-            	 document.getElementById("buildingsAffected").innerHTML = "There are " + count1 + " buildings affected in this area. ";
+            	 document.getElementById("buildingsAffected").innerHTML = "" + count1 + " buildings affected";
              }
                           
              var query, queryText, gvizQuery;
@@ -2232,8 +2393,12 @@ var currentMarker;
                }
                riskIndex = riskIndex/table.getNumberOfRows();
                riskIndex = (1 - riskIndex/500)*100;
+               console.log(riskIndex);
                if (riskIndex > 0) {
-            	   document.getElementById("averageFlood").innerHTML = "Average Flood Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+            	   document.getElementById("averageFlood").innerHTML = "Flood: " + riskIndex.toFixed(1) + "% ";
+               }
+               else {
+            	   document.getElementById("averageFlood").innerHTML = "Flood: " + 0 + "% ";
                }
                
                //var floodRisk = (1 - table.getValue(0,0)/500) * 100;
@@ -2253,9 +2418,14 @@ var currentMarker;
                  }
                  riskIndex = riskIndex/table1.getNumberOfRows();
                  riskIndex = (1 - riskIndex/20000)*100;
+                 console.log(riskIndex);
                  if (riskIndex > 0) {
-                	 document.getElementById("averageFire").innerHTML = "Average Fire Risk within this area: " + riskIndex.toFixed(2) + "%. ";
+                	 document.getElementById("averageFire").innerHTML = "Fire: " + riskIndex.toFixed(1) + "% ";
                  }
+                 else {
+                	 document.getElementById("averageFire").innerHTML = "Fire: " + 0 + "% ";
+                 }
+                 document.getElementById("averageEarthquake").innerHTML = "Earthquake: " + 0 + "% ";
                });
              
              });
@@ -2269,18 +2439,28 @@ var currentMarker;
     function changeSimulationState() {
     	var simButton = document.getElementById("simulationButton");
     	if (simButton.value == "Start Simulation") {
+    		$( "#simulationText" ).show();
+    		$( "#simulationSlider" ).show();
+    		$( "#simulationSlide" ).show();
+    		$("#simulationSlide").slider({tooltip: 'always'});
     		simButton.value = "End Simulation";
     		simButton.className = "btn btn-danger";
-    		startSimulation();
+	      document.getElementById("simulationInstructions").innerHTML = "<b>Drag the created simulation marker to simulate.</b>";
+	   		startSimulation();
     	}
     	else {
+    		$( "#simulationSlider" ).hide();
     		simButton.value = "Start Simulation";
     		simButton.className = "btn btn-success";
     		dragMarker.setMap(null);
     		customCircle.setMap(null);
-    		document.getElementById("averageFire").innerHTML = ""
-    		document.getElementById("averageFlood").innerHTML = ""
-    		document.getElementById("buildingsAffected").innerHTML = ""
+    		document.getElementById("averageFire").innerHTML = "";
+    		document.getElementById("averageFlood").innerHTML = "";
+    		document.getElementById("buildingsAffected").innerHTML = "";
+    		document.getElementById("buildingLabel").innerHTML = "";
+        document.getElementById("riskLabel").innerHTML = "";
+    		document.getElementById("simulationInstructions").innerHTML = "";
+    		document.getElementById("averageEarthquake").innerHTML = "";
     	}
     }
     
