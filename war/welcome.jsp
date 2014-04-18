@@ -1101,7 +1101,7 @@ var currentMarker;
 	  
  	  
  	 
-	  //DATA INFORMATION CHECKBOX VARIABLES
+	  //DATA INFORMATION  function
       function updateVisibility(id) {
   	  	var marker = mapMarkers[id]; // find the marker by given id
   	  	if (document.getElementById('markerCheckBox'+id).checked) {
