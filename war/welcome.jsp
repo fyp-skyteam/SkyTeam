@@ -412,9 +412,8 @@ for(int i=0;i<userDatasetList.size();i++){
   <div class="modal-body" style="text-align:center">
    <h2>Welcome to GeoIntel</h2>
    <br />
-   <h4><font color="Black">To begin using GeoIntel, upload your map markers by accessing the Widget Dashboard. <br /><br />(Thao or Bea, please rephrase this.)</font></h4>
+   <h4><font color="Black">To begin using GeoIntel, upload your map markers by accessing the Widget Dashboard. (Thao or Bea, please rephrase this.)</font></h4>
    <br />
-   
         <button class="btn btn-md btn-primary" data-dismiss="modal">Close</button>
   </div>
 </div>
@@ -1188,9 +1187,6 @@ var currentMarker;
     var comparisonAdded = new Array();
 
 	  function initialize() {
-		//FAQs
-		 $('#test').popover();
-		
 	  //intitialize Historical Analysis
 	  drawVisualization();
 	  // marker's longitude and langitude
@@ -1525,8 +1521,8 @@ var currentMarker;
 	                	  //Malaysia Coordinates
 	                	  map.setCenter(new google.maps.LatLng(4.210484,101.97576600000002));
 	                	  map.setZoom(8);
-	                	  var modalObj = $('#welcomeModal').modal();
-	                	 
+	                	  $('#welcomeModal').modal();
+
 	                	  
 	                  }
 	  }
