@@ -1111,6 +1111,10 @@ var currentMarker;
   	  	}
   	  }
 	  
+      function popLocationInfo(markerID) {
+	   		google.maps.event.trigger(mapMarkers[markerID], 'click');
+	   }
+	  
 	  //SIMULATION VARIABLES
 	  var customCircle;
 	  var dragMarker;
@@ -1269,6 +1273,47 @@ var currentMarker;
 	                       id: locations[i][5],
 	                       vIndex: locations[i][6]
 	                     });
+	                	   mapMarkers.push(marker);
+	                	   var results2 = document.getElementById('results2');
+	                	   var tr = document.createElement('tr');
+	                	   tr.style.backgroundColor = (i% 2 == 0 ? '#F0F0F0' : '#FFFFFF');
+	                	   
+	                	   
+	                	   var checkboxTd = document.createElement('td');
+	                	   var iconTd = document.createElement('td');
+	                	   var nameTd = document.createElement('td');
+	                	   
+	                	   
+	                	   
+	                	   var checkbox = document.createElement('input');
+	                	   checkbox.setAttribute('type', 'checkbox');
+	                	   checkbox.setAttribute('onchange', 'updateVisibility('+i+')');
+	                	   checkbox.setAttribute('id', 'markerCheckBox'+i);
+	                	   checkbox.setAttribute('checked', 'true');
+	                	   
+	                	   var icon = document.createElement('img');
+	                	   icon.src = icons[number-1];
+	                	   icon.setAttribute('class', 'placeIcon');
+	                	   icon.setAttribute('className', 'placeIcon');
+	                	   
+	                	   var name = document.createElement('p');
+	                	   name.innerHTML = locations[i][2];
+	                	   name.setAttribute('id','location'+i);
+	                	   name.setAttribute('onClick','popLocationInfo('+i+')');
+	                	   
+	                	   
+	                	   checkboxTd.appendChild(checkbox);
+	                	   iconTd.appendChild(icon);
+	                	   nameTd.appendChild(name);
+	                	   
+	                	   tr.appendChild(checkboxTd);
+	                	   tr.appendChild(iconTd);
+	                	   tr.appendChild(nameTd);
+	                	   
+	                	   
+	                	   results2.appendChild(tr);  
+	                	   
+	                	   /*
 	                	   if(i%2==0){
 	                             
 	                		   document.getElementById('results2').innerHTML += 
@@ -1286,8 +1331,7 @@ var currentMarker;
 	                                  '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
 	                                  '<td>'+ locations[i][2] + '</td>'
 	                                  '</tr>'; 
-	                          }
-	                     mapMarkers.push(marker);
+	                          }*/
 	                 
 	                     //Hover Function for info window
 	                     google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
