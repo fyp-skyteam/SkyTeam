@@ -95,22 +95,7 @@ for(int i=0;i<userDatasetList.size();i++){
 </nav>
 </div>
 
-<!-- WELCOME MODAL CONTAINER -->
-<div class="modal hide fade" id="welcomeModal">
-  <div class="modal-header">
-    <a class="close" data-dismiss="modal">×</a>
-    <h3>Modal header</h3>
-  </div>
-  <div class="modal-body">
-    <p>TEST</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn">Close</a>
-    <a href="#" class="btn btn-primary">Save changes</a>
-  </div>
-</div>
 
-<!-- END OF WELCOME MODAL CONTAINER -->
 
 <!-- WIDGET MODAL CONTAINER -->
 <div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
@@ -418,6 +403,25 @@ for(int i=0;i<userDatasetList.size();i++){
 <div id="map_canvas" style="background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
     </div>
     
+<!-- WELCOME MODAL CONTAINER -->
+<div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+     
+  
+  <div class="modal-body" style="text-align:center">
+   <h2>Welcome to GeoIntel</h2>
+   <br />
+   <h4><font color="Black">To begin using GeoIntel, upload your map markers by accessing the Widget Dashboard. <br /><br />(Thao or Bea, please rephrase this.)</font></h4>
+   <br />
+   
+        <button class="btn btn-md btn-primary" data-dismiss="modal">Close</button>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- END OF WELCOME MODAL CONTAINER -->
 
 <!-- SEARCH MODAL CONTAINER -->
 <div class="modal fade" id="SearchModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
@@ -729,8 +733,10 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
   </div>
 </div>
 <!-- END OF COMPARISON MODAL CONTAINER -->
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
 <script>
+
 google.load("visualization", "1", {packages:["corechart"]});
 
 //GLOBAL DATATABLE VARIABLE
@@ -1030,8 +1036,12 @@ var currentMarker;
 	    	$( "#simulationSlider" ).hide();
 	    	document.getElementById("simulationButton").value = "Start Simulation";
 	    	document.getElementById("simulationButton").className = "btn btn-success";
-        dragMarker.setMap(null);
-        customCircle.setMap(null);
+	    	if (dragMarker != null) {
+	    		  dragMarker.setMap(null);
+	    	}
+	    	if (customCircle != null) {
+	    		  customCircle.setMap(null);
+	    	}
         document.getElementById("averageFire").innerHTML = "";
         document.getElementById("averageFlood").innerHTML = "";
         document.getElementById("buildingsAffected").innerHTML = "";
@@ -1053,8 +1063,6 @@ var currentMarker;
 	
 			// run the effect
 			$( "#widget8" ).hide( 'scale', options, 500 );
-			dragMarker.setMap(null);
-    		customCircle.setMap(null);
     		
 		});
 
@@ -1180,6 +1188,9 @@ var currentMarker;
     var comparisonAdded = new Array();
 
 	  function initialize() {
+		//FAQs
+		 $('#test').popover();
+		
 	  //intitialize Historical Analysis
 	  drawVisualization();
 	  // marker's longitude and langitude
@@ -1514,7 +1525,9 @@ var currentMarker;
 	                	  //Malaysia Coordinates
 	                	  map.setCenter(new google.maps.LatLng(4.210484,101.97576600000002));
 	                	  map.setZoom(8);
-	                	  $('#welcomeModal').modal('show');
+	                	  var modalObj = $('#welcomeModal').modal();
+	                	 
+	                	  
 	                  }
 	  }
 

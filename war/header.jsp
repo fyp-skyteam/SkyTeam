@@ -11,7 +11,7 @@
 
 <script src="assets/js/jquery.nouislider.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/bootstrap-file/bootstrap-filestyle.min.js"> </script>
 <script src="assets/jquery-ui-1.10.4.custom/development-bundle/jquery-1.10.2.js"></script>
 <script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.core.js"></script>
@@ -35,10 +35,6 @@
 <!-- INITIALIZE GOOGLE MAPS -->
 <script src="http://maps.gstatic.com/cat_js/intl/en_us/mapfiles/api-3/15/8/%7Bmain,places%7D.js" type="text/javascript"></script>
 <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization,geometry,places"></script>
-
-<link rel="stylesheet" href="assets/morris/morris.css">
-<script src="assets/morris/morris.min.js"></script>
-<script src="assets/morris/raphael-min.js"></script>
 
 <script src="assets/js/bootstrap-slider.js"></script>
 <script src="assets/js/classie.js"></script>
