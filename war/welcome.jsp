@@ -102,7 +102,7 @@ for(int i=0;i<userDatasetList.size();i++){
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" id="widgetModalClose" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id=UploadModalLabel">All Widgets</h4>
       </div>
       <div class="modal-body">
@@ -254,8 +254,9 @@ for(int i=0;i<userDatasetList.size();i++){
 <!--END OF POINT OF INTERESTS WIDGET-->
 
 <!-- HISTORICAL ANALYSIS WIDGET (TEMPORARILY NOT DRAGGABLE)-->
-  <div class="toggler">
-  <div id="widget6" class="ui-corner-all resizable" style="z-index: 10000;"">
+
+  <div class="row toggler" style="text-align:center; z-index:10000; height:100%; width:100%;">
+  <div id="widget6" class="ui-corner-all resizable" style="z-index: 10000; position:relative;">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
   
 	<h3>Historical Analysis</h3>
@@ -281,9 +282,12 @@ for(int i=0;i<userDatasetList.size();i++){
 		        <option value="Federal Territory of Putrajaya">Federal Territory of Putrajaya</option>
 		      </select>
 		 </div>
-		 <div id="visualization" style="width: 800px; height: 400px;"></div>
+		 <div style="width:100%; text-align:center;">
+			 <div id="visualization" style="width: 100%; height: 400px;"></div>
+		</div>
   </div>
   </div>
+
 <!-- END OF HISTORICAL ANALYSIS WIDGET -->
  
  <!-- SIMULATION WIDGET-->	
@@ -888,6 +892,7 @@ var currentMarker;
 		    });
 	    $( ".button6" ).click(function() {
 		      // get effect type from
+		      
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
 		      // most effect types need no options passed by default
@@ -896,6 +901,8 @@ var currentMarker;
 		 
 		      // run the effect
 		      $( "#widget6" ).show( 'clip', options, 500 );
+		      $('#widgetModalClose').click();
+		      $('.modal-backdrop').remove();
 		      return false;
 		    });
 	   
