@@ -5,6 +5,7 @@ import entity.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipInputStream;
@@ -25,12 +26,12 @@ public class UploadManager {
 		ArrayList<String> output = new ArrayList<String>();
 		
 		try {
-			int count = 0;
+			//int count = 0;
 			while ((str = in.readLine()) != null) {
-				count++;
-				if (count > 1) {
+				//count++;
+				//if (count > 1) {
 					output.add(str);
-				}
+				//}
 			}
 		} catch (Exception e) {
 
@@ -38,13 +39,32 @@ public class UploadManager {
 		return output;
 	}
 	
+	/*public String[] readColumns(ZipInputStream zin){
+		BufferedReader in = new BufferedReader(new InputStreamReader(zin));
+		String str = "";
+		try {
+			int count = 0;
+			while ((str = in.readLine()) != null) {
+				count++;
+				if (count > 1) {
+					break;
+				}
+			}
+		} catch (Exception e) {
+
+		}
+		String[] columns = str.split(",",-1);
+		return columns;
+	}*/
+	
 	public ArrayList<User> convertDataToUsers(ArrayList<String> locationData, String datasetName){
 		ArrayList<User> users = new ArrayList<User>();
-        for(int i=0;i<locationData.size();i++){
+        for(int i=1;i<locationData.size();i++){
 			String[] data = locationData.get(i).split(",",-1);
 			String username = data[0].trim();
 			String name = data[1].trim();
-            String password = data[2].trim();  
+            String password = data[2].trim();
+            //String access = data[3].trim();
             ArrayList<String> userErrorStr = getUserErrorStr(users,username,name,password);
             if(userErrorStr.isEmpty()){
             	User user = new User(username, name, password);
@@ -69,6 +89,9 @@ public class UploadManager {
 		if(password.isEmpty()||password==null){
 			output.add("password field is empty");
 		}
+		/*if(access.isEmpty()||access==null){
+			output.add("access field is empty");
+		}*/
 		return output;
 	}
 	
@@ -87,9 +110,39 @@ public class UploadManager {
 	
 	public ArrayList<Location> convertDataToLocations(ArrayList<String> locationData, String datasetName, String currency, String username){
 		ArrayList<Location> locations = new ArrayList<Location>();
-        for(int i=0;i<locationData.size();i++){
+		String columnsStr = locationData.get(0);
+		String[] columns = columnsStr.split(",",-1);
+        for(int i=1;i<locationData.size();i++){
 			String[] data = locationData.get(i).split(",",-1);
-			String latitudeStr = data[0].trim();
+			int where = Arrays.asList(columns).indexOf("Latitude");
+			String latitudeStr = data[where].trim();
+			where = Arrays.asList(columns).indexOf("Longitude");
+			String longitudeStr = data[where].trim();
+			where = Arrays.asList(columns).indexOf("Building Name");
+            String buildingName = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Building Type");
+            String buildingType = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Building Height");
+            String buildingHeightStr = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Year Built");
+            String yearBuiltStr = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Capacity");
+            String capacityStr = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Premium");
+            String premiumStr = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Property Coverage Limit");
+            String propertyCoverageLimitStr = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Loss Coverage Limit");
+            String lossCoverageLimitStr = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Foundation Type");
+            String foundationType = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Remark");
+            String remarks = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Masonry");
+            String masonry = data[where].trim();
+            where = Arrays.asList(columns).indexOf("Roof");
+            String roof = data[where].trim();
+			/*String latitudeStr = data[0].trim();
 			String longitudeStr = data[1].trim();
             String buildingName = data[2].trim();
             String buildingType = data[3].trim();
@@ -102,7 +155,7 @@ public class UploadManager {
             String foundationType = data[10].trim();
             String remarks = data[11].trim();
             String masonry = data[12].trim();
-            String roof = data[13].trim();
+            String roof = data[13].trim();*/
             ArrayList<String> locationErrorStr = getLocationErrorStr(locations,latitudeStr, longitudeStr, buildingName, 
                    buildingType,buildingHeightStr, yearBuiltStr,capacityStr,premiumStr, propertyCoverageLimitStr,
                   lossCoverageLimitStr, foundationType, masonry, roof, username);

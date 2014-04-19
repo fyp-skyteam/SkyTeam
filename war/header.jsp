@@ -11,7 +11,7 @@
 
 <script src="assets/js/jquery.nouislider.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="assets/bootstrap-file/bootstrap-filestyle.min.js"> </script>
 <script src="assets/jquery-ui-1.10.4.custom/development-bundle/jquery-1.10.2.js"></script>
 <script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.core.js"></script>
@@ -36,10 +36,6 @@
 <script src="http://maps.gstatic.com/cat_js/intl/en_us/mapfiles/api-3/15/8/%7Bmain,places%7D.js" type="text/javascript"></script>
 <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization,geometry,places"></script>
 
-<link rel="stylesheet" href="assets/morris/morris.css">
-<script src="assets/morris/morris.min.js"></script>
-<script src="assets/morris/raphael-min.js"></script>
-
 <script src="assets/js/bootstrap-slider.js"></script>
 <script src="assets/js/classie.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -52,12 +48,13 @@
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/default.css" />
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/component.css" />
 <link rel="stylesheet" type="text/css" href="assets/css/slider.css" />
-
+<link href="assets/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
+<script src="assets/bootstrap-select/bootstrap-select.js" type="text/javascript"></script>
 
 <style>
  #widget1 { min-width: 240px; min-height: 120px; max-height: 800px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget2 { min-width: 350px; min-height: 140px; left:850px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
+ #widget2 { min-width: 400px; min-height: 140px; left:850px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  #widget4 { min-width: 300px; min-height: 140px; left:260px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget4 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
@@ -65,7 +62,7 @@
  #widget5 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  #widget6 { min-width: 800px; min-height: 500px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget6 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget8 { min-width: 300px; min-height: 200px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
+ #widget8 { min-width: 350px; min-height: 100px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
  #widget8 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
  
  html { height: 100% }

@@ -61,8 +61,8 @@ public class BootstrapServlet extends HttpServlet{
                         zis.close();
                     }
             }                       
-            ArrayList<Location> locations = uploadManager.convertDataToLocations(locationData, "system location dataset" , currency,"admin");                
-            locationDAO.addLocations(locations);  
+            //ArrayList<Location> locations = uploadManager.convertDataToLocations(locationData, "system location dataset" , currency,"admin");                
+            //locationDAO.addLocations(locations);  
             ArrayList<User> users = uploadManager.convertDataToUsers(userData,"system user dataset");
             userDAO.addUser(users);
             HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();
