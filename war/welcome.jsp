@@ -12,6 +12,7 @@
 User user = (User) session.getAttribute("authenticated.user");
 String username = user.getUsername();
 String errorMsg=(String)request.getParameter("locationErrors");
+String searchMsg = (String)session.getAttribute("searchMsg");
 /**
 HashMap<String,ArrayList<String>> locationErrors = (HashMap<String,ArrayList<String>>)request.getAttribute("locationErrors");
 ArrayList<String> fileErrors = (ArrayList<String>)request.getAttribute("fileErrors");
@@ -185,6 +186,10 @@ for(int i=0;i<userDatasetList.size();i++){
  <%if (errorMsg != null) {%><div class="alert alert-danger alert-dismissable" style="z-index:1; position:absolute; width: 50%; margin-left:auto; margin-right:auto; left:0; right:0">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
   <%=errorMsg%>
+</div><%}%>
+<%if (searchMsg != null) {%><div class="alert alert-danger alert-dismissable" style="z-index:1; position:absolute; width: 50%; margin-left:auto; margin-right:auto; left:0; right:0">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <%=searchMsg%>
 </div><%}%>
   </div>
 <!-- END OF NAVIGATION BAR -->
@@ -452,6 +457,7 @@ double minLossCoverageLimit = locationDAO.getMinimumLossCoverageLimit(locations)
 ArrayList<String> foundationTypes = locationDAO.retrieveAllFoundationTypes(locations);
 ArrayList<String> masonryTypes = locationDAO.retrieveAllMasonryTypes(locations);
 ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
+ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
 %>
 <form name="search_location" method="post" action="search">
     <div class="row">
@@ -637,9 +643,9 @@ ArrayList<String> roofTypes = locationDAO.retrieveAllRoofTypes(locations);
             Dataset:
         </div>
         <div class="col-md-7">
-           <%for (int i=0;i<userDatasetList.size();i++){%>
-            <input name="datasets" type="checkbox" value="<%=userDatasetList.get(i)%>" checked/>
-            <%=userDatasetList.get(i)%>
+           <%for (int i=0;i<locationDatasets.size();i++){%>
+            <input name="datasets" type="checkbox" value="<%=locationDatasets.get(i)%>" checked/>
+            <%=locationDatasets.get(i)%>
         <%}%>
 
         </div>

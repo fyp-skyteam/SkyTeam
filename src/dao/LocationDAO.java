@@ -118,6 +118,20 @@ public class LocationDAO implements java.io.Serializable{
 		}	
 	}
 	
+	public ArrayList<String> retrieveAllDatasets(List<Location> locations){
+		ArrayList<String> duplicateDatasets = new ArrayList<String>();
+		if(locations.size()!=0 || locations!=null){
+			for(Location l: locations){
+				duplicateDatasets.add(l.getCSVName());
+			}
+			Set set = new HashSet(duplicateDatasets);
+			ArrayList uniqueDatasets = new ArrayList(set);
+			return uniqueDatasets;
+		}else{
+			return duplicateDatasets;
+		}	
+	}
+	
 	public double getMaximumHeight(List<Location> locations){
 		double output = 0;
 		try{

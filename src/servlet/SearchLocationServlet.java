@@ -99,13 +99,25 @@ public class SearchLocationServlet extends HttpServlet{
 			out.println(locations.get(i).toString()+"</br>");
 		}
 		out.println("</br></br></br>");*/
-
-		session.setAttribute("locationSearchResult",locations);
-		session.setAttribute("currentView","filter");
-		response.sendRedirect("welcome.jsp");
-		
-		
-		
+		String searchMsg = "";
+		if(locations.isEmpty() || locations==null){
+			searchMsg = "<strong>There is no matching search result. Please try again!</strong>";
+			locations = locationDAO.retrieveByUsername(username);
+			session.setAttribute("locationSearchResult",locations);
+			session.setAttribute("searchMsg", searchMsg);
+			session.setAttribute("currentView","all");
+			response.sendRedirect("welcome.jsp");
+		}else{
+			if(locations.size()==1){
+				searchMsg = "<strong>There is 1 matching search result.</strong>";
+			}else{
+				searchMsg = "<strong>There are " + locations.size() + " matching search results.</strong>";
+			}			
+			session.setAttribute("locationSearchResult",locations);
+			session.setAttribute("currentView","filter");
+			session.setAttribute("searchMsg", searchMsg);
+			response.sendRedirect("welcome.jsp");
+		}
 	}
 	
 }
