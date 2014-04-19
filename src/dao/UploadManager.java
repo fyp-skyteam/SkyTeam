@@ -3,11 +3,9 @@ package dao;
 import entity.*;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.*;
-import java.util.HashMap;
-import java.util.List;
 import java.util.zip.ZipInputStream;
 import java.util.Calendar;
 
@@ -22,6 +20,25 @@ public class UploadManager {
 	   
 	public ArrayList<String> readCSV(ZipInputStream zin) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(zin));
+		String str;
+		ArrayList<String> output = new ArrayList<String>();
+		
+		try {
+			//int count = 0;
+			while ((str = in.readLine()) != null) {
+				//count++;
+				//if (count > 1) {
+					output.add(str);
+				//}
+			}
+		} catch (Exception e) {
+
+		}
+		return output;
+	}
+	
+	public ArrayList<String> readCSV(InputStream stream) {
+		BufferedReader in = new BufferedReader(new InputStreamReader(stream));
 		String str;
 		ArrayList<String> output = new ArrayList<String>();
 		

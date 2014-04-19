@@ -2,11 +2,14 @@ package servlet;
 
 import entity.*;  
 import dao.*;
+
 import java.io.*; 
 import java.util.*;
 import java.util.zip.*;
+
 import javax.servlet.*;
 import javax.servlet.http.*; 
+
 import org.apache.commons.fileupload.*; 
 import org.apache.commons.fileupload.servlet.*;
 import org.apache.commons.fileupload.util.*;
@@ -25,7 +28,8 @@ public class UploadFileServlet extends HttpServlet{
        	LocationDAO locationDAO = new LocationDAO();	
         HashMap<String,ArrayList<String>> locationDatasets = new HashMap<String,ArrayList<String>>();
         try{
-            FileItemIterator iter = upload.getItemIterator(request);      
+            FileItemIterator iter = upload.getItemIterator(request);   
+            ArrayList<String> fileErrors = new ArrayList<String>();
             while (iter.hasNext()) {
                 FileItemStream item = iter.next();
                 InputStream stream = item.openStream();
@@ -41,25 +45,34 @@ public class UploadFileServlet extends HttpServlet{
                 		username = str.toString();
                 	}
                 } else {   
-                	//out.println("error: stuck at servlet");
-                    ZipInputStream zis = new ZipInputStream(stream);
-                    ZipEntry ze = zis.getNextEntry();
-                  
-                                         
-                    while (ze != null){
-                        String datasetName = ze.getName();   
-                        ArrayList<String> locationData = new ArrayList<String>();
-                        locationData.addAll(uploadManager.readCSV(zis));
-                        locationDatasets.put(datasetName, locationData);
-                        ze = zis.getNextEntry();
-                            
-                    }
-                    zis.close();
+                	String fileName = item.getName();
+                	 if (fileName.substring(fileName.length()-3,fileName.length()).equals("zip")){
+                		 ZipInputStream zis = new ZipInputStream(stream);
+                         ZipEntry ze = zis.getNextEntry(); 
+                         while (ze != null){ 
+                        	 String datasetName = ze.getName();      
+                             if(!datasetName.substring(datasetName.length()-3,datasetName.length()).equals("csv")){
+                            	 fileErrors.add(datasetName+": invalid file type");
+                             }else{
+                            	 ArrayList<String> locationData = new ArrayList<String>();
+                                 locationData.addAll(uploadManager.readCSV(zis));
+                                 locationDatasets.put(datasetName, locationData);
+                                 
+                             }      
+                             ze = zis.getNextEntry();
+                         }
+                         zis.close();
+                	 }else if (fileName.substring(fileName.length()-3,fileName.length()).equals("csv")){
+                		 ArrayList<String> locationData = new ArrayList<String>();
+                         locationData.addAll(uploadManager.readCSV(stream));
+                         locationDatasets.put(fileName, locationData);
+                	 }else{
+                		 RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp?locationErrors=Invalid file type! Please upload either a zip or csv file");
+                         dispatcher.forward(request, response);
+                	 }    
                 }
             }
-            //out.println(currency);
-            //out.println(clearUserData);
-            //out.println(username);
+
             ArrayList<Location> allLocations = new ArrayList<Location>();
             if(clearUserData){
             	locationDAO.removeUserLocations(username);  
@@ -68,41 +81,47 @@ public class UploadFileServlet extends HttpServlet{
             while(iterator.hasNext()){
                     String datasetName = (String)iterator.next();
                     ArrayList<String> dataset = locationDatasets.get(datasetName);
-                    //out.println(dataset.size());
-                    //for(int i=0;i<dataset.size();i++){
-                      //  out.println(dataset.get(i));
-                    //}        
+      
                     ArrayList<Location> locations = uploadManager.convertDataToLocations(dataset,datasetName,currency,username);
                     locationDAO.addLocations(locations);
                     allLocations.addAll(locations);
             }           
             HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();  
             
-            if(!locationErrors.isEmpty()){      
+            if(!locationErrors.isEmpty() || !fileErrors.isEmpty()){      
                 //out.println("test error");
                 String errorMsg = "<strong>You have successuflly uploaded " + allLocations.size() + " building locations on the map</strong></br>";
-                errorMsg += "<strong>Warning! The following building locations have not been uploaded due to the following errors:</strong></br>";
-                //HashMap<String,ArrayList<String>> locationErrors = (HashMap<String,ArrayList<String>>)request.getAttribute("locationErrors");
-                //ArrayList<String> fileErrors = (ArrayList<String>)request.getAttribute("fileErrors");
-               
-                Iterator<String> iterator1 = locationErrors.keySet().iterator();
-                while(iterator1.hasNext()){
-                    String errorLine = iterator1.next();
-                    errorMsg += errorLine+": ";
-                    ArrayList<String> errorStr = locationErrors.get(errorLine);
-                    for(int i=0;i<errorStr.size();i++){
-                        if(i==errorStr.size()){
-                        	errorMsg += errorStr.get(i);
+                if(!fileErrors.isEmpty()){
+                	errorMsg += "<strong>Warning! The following files have not been uploaded. Please upload either a csv file or a zip file containing only csv files:</strong></br>";
+                    for(int i=0;i<fileErrors.size();i++){
+                        if(i==(fileErrors.size()-1)){
+                        	errorMsg += fileErrors.get(i);
                         }else{
-                        	errorMsg += errorStr.get(i)+ ", ";
+                        	errorMsg += fileErrors.get(i)+ ", ";
                         }
                     }
                     errorMsg += "</br>";
-
                 }
-                //out.println(errorMsg);
+                if(!locationErrors.isEmpty()){
+                	 errorMsg += "<strong>Warning! The following building locations have not been uploaded due to the following errors:</strong></br>";
+                     Iterator<String> iterator1 = locationErrors.keySet().iterator();
+                     while(iterator1.hasNext()){
+                         String errorLine = iterator1.next();
+                         errorMsg += errorLine+": ";
+                         ArrayList<String> errorStr = locationErrors.get(errorLine);
+                         for(int i=0;i<errorStr.size();i++){
+                             if(i==(errorStr.size()-1)){
+                             	errorMsg += errorStr.get(i);
+                             }else{
+                             	errorMsg += errorStr.get(i)+ ", ";
+                             }
+                         }
+                         errorMsg += "</br>";
+
+                     }
+                }
                 RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp?locationErrors="+errorMsg);
-               dispatcher.forward(request, response);
+                dispatcher.forward(request, response);
             }else{
             	RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp?locationErrors="+"<strong>You have successuflly uploaded " + allLocations.size() + " building locations on the map</strong>");
                 dispatcher.forward(request, response);

@@ -4,6 +4,7 @@ import entity.*;
 import dao.*;
 
 import java.io.*; 
+import java.net.URLConnection;
 import java.util.*;
 import java.util.zip.*;
 
@@ -39,26 +40,45 @@ public class BootstrapServlet extends HttpServlet{
                     if (item.isFormField()) {
                     	 currency = Streams.asString(stream);           
                     } else { 
-                        ZipInputStream zis = new ZipInputStream(stream);
-                        ZipEntry ze = zis.getNextEntry();      	
-                        locationDAO.removeAll();
-                        userDAO.removeAll();                    	
-                        
-                        while (ze != null){
-                                String datasetName = ze.getName();      
-                                if(!datasetName.substring(datasetName.length()-3,datasetName.length()).equals("csv")){
-                                    fileErrors.add(datasetName+": invalid file type");
-                                }else if(!datasetName.equals("locations.csv")&&!datasetName.equals("users.csv")){
-                                	fileErrors.add(datasetName+": invalid file name");
-                                }else if(datasetName.equals("locations.csv")){  
-                                    locationData.addAll(uploadManager.readCSV(zis));            
-                                }else if(datasetName.equals("users.csv")){
-                                    userData.addAll(uploadManager.readCSV(zis));
-                                }
-                                ze = zis.getNextEntry();
-                                
-                        }
-                        zis.close();
+                    	String fileName = item.getName();
+                    	//String fileType = FacesContext.getCurrentInstance().getEexternalContext().getMimeType(fileName);
+                    	
+                    	 if (fileName.substring(fileName.length()-3,fileName.length()).equals("zip")){
+                    		 ZipInputStream zis = new ZipInputStream(stream);
+                             ZipEntry ze = zis.getNextEntry();      	
+                             locationDAO.removeAll();
+                             userDAO.removeAll();                    	
+                             
+                             while (ze != null){
+                                     String datasetName = ze.getName();      
+                                     if(!datasetName.substring(datasetName.length()-3,datasetName.length()).equals("csv")){
+                                         fileErrors.add(datasetName+": invalid file type");
+                                     }else if(!datasetName.equals("locations.csv")&&!datasetName.equals("users.csv")){
+                                     	fileErrors.add(datasetName+": invalid file name");
+                                     }else if(datasetName.equals("locations.csv")){  
+                                         locationData.addAll(uploadManager.readCSV(zis));            
+                                     }else if(datasetName.equals("users.csv")){
+                                         userData.addAll(uploadManager.readCSV(zis));
+                                     }
+                                     ze = zis.getNextEntry();
+                                     
+                             }
+                             zis.close();
+                    	 }else if(fileName.substring(fileName.length()-3,fileName.length()).equals("csv")){
+                    		 locationDAO.removeAll();
+                             userDAO.removeAll();  
+                    		 userData.addAll(uploadManager.readCSV(stream));
+                    		  /*BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+	                	        StringBuilder strBuilder  = new StringBuilder();
+	                	        String line;
+	                	        while ((line = reader.readLine()) != null) {
+	                	            strBuilder.append(line);
+	                	        }
+	                	        out.println(strBuilder.toString());   //Prints the string content read from input stream
+	                	        reader.close();*/
+                    	 }else{
+                    		 fileErrors.add("Invalid file type: please upload either zip or csv file");
+                    	 }
                     }
             }                       
             //ArrayList<Location> locations = uploadManager.convertDataToLocations(locationData, "system location dataset" , currency,"admin");                
