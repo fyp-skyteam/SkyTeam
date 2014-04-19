@@ -102,7 +102,7 @@ for(int i=0;i<userDatasetList.size();i++){
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" id="widgetModalClose" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id=UploadModalLabel">All Widgets</h4>
       </div>
       <div class="modal-body">
@@ -254,8 +254,9 @@ for(int i=0;i<userDatasetList.size();i++){
 <!--END OF POINT OF INTERESTS WIDGET-->
 
 <!-- HISTORICAL ANALYSIS WIDGET (TEMPORARILY NOT DRAGGABLE)-->
-  <div class="toggler">
-  <div id="widget6" class="ui-corner-all resizable" style="z-index: 10000;"">
+
+  <div class="row toggler" style="text-align:center; z-index:10000; height:100%; width:100%;">
+  <div id="widget6" class="ui-corner-all resizable" style="z-index: 10000; position:relative;">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
   
 	<h3>Historical Analysis</h3>
@@ -281,9 +282,12 @@ for(int i=0;i<userDatasetList.size();i++){
 		        <option value="Federal Territory of Putrajaya">Federal Territory of Putrajaya</option>
 		      </select>
 		 </div>
-		 <div id="visualization" style="width: 800px; height: 400px;"></div>
+		 <div style="width:100%; text-align:center;">
+			 <div id="visualization" style="width: 100%; height: 400px;"></div>
+		</div>
   </div>
   </div>
+
 <!-- END OF HISTORICAL ANALYSIS WIDGET -->
  
  <!-- SIMULATION WIDGET-->	
@@ -888,6 +892,7 @@ var currentMarker;
 		    });
 	    $( ".button6" ).click(function() {
 		      // get effect type from
+		      
 		      var selectedEffect = $( "#effectTypes" ).val();
 		 
 		      // most effect types need no options passed by default
@@ -896,6 +901,8 @@ var currentMarker;
 		 
 		      // run the effect
 		      $( "#widget6" ).show( 'clip', options, 500 );
+		      $('#widgetModalClose').click();
+		      $('.modal-backdrop').remove();
 		      return false;
 		    });
 	   
@@ -1156,7 +1163,7 @@ var currentMarker;
 	  
  	  
  	 
-	  //DATA INFORMATION CHECKBOX VARIABLES
+	  //DATA INFORMATION  FUNCTION
       function updateVisibility(id) {
   	  	var marker = mapMarkers[id]; // find the marker by given id
   	  	if (document.getElementById('markerCheckBox'+id).checked) {
@@ -1165,6 +1172,10 @@ var currentMarker;
   	  	   	marker.setMap(null);
   	  	}
   	  }
+	  
+      function popLocationInfo(markerID) {
+	   		google.maps.event.trigger(mapMarkers[markerID], 'click');
+	   }
 	  
 	  //SIMULATION VARIABLES
 	  var customCircle;
@@ -1324,6 +1335,47 @@ var currentMarker;
 	                       id: locations[i][5],
 	                       vIndex: locations[i][6]
 	                     });
+	                	   mapMarkers.push(marker);
+	                	   var results2 = document.getElementById('results2');
+	                	   var tr = document.createElement('tr');
+	                	   tr.style.backgroundColor = (i% 2 == 0 ? '#F0F0F0' : '#FFFFFF');
+	                	   
+	                	   
+	                	   var checkboxTd = document.createElement('td');
+	                	   var iconTd = document.createElement('td');
+	                	   var nameTd = document.createElement('td');
+	                	   
+	                	   
+	                	   
+	                	   var checkbox = document.createElement('input');
+	                	   checkbox.setAttribute('type', 'checkbox');
+	                	   checkbox.setAttribute('onchange', 'updateVisibility('+i+')');
+	                	   checkbox.setAttribute('id', 'markerCheckBox'+i);
+	                	   checkbox.setAttribute('checked', 'true');
+	                	   
+	                	   var icon = document.createElement('img');
+	                	   icon.src = icons[number-1];
+	                	   icon.setAttribute('class', 'placeIcon');
+	                	   icon.setAttribute('className', 'placeIcon');
+	                	   
+	                	   var name = document.createElement('p');
+	                	   name.innerHTML = locations[i][2];
+	                	   name.setAttribute('id','location'+i);
+	                	   name.setAttribute('onClick','popLocationInfo('+i+')');
+	                	   
+	                	   
+	                	   checkboxTd.appendChild(checkbox);
+	                	   iconTd.appendChild(icon);
+	                	   nameTd.appendChild(name);
+	                	   
+	                	   tr.appendChild(checkboxTd);
+	                	   tr.appendChild(iconTd);
+	                	   tr.appendChild(nameTd);
+	                	   
+	                	   
+	                	   results2.appendChild(tr);  
+	                	   
+	                	   /*
 	                	   if(i%2==0){
 	                             
 	                		   document.getElementById('results2').innerHTML += 
@@ -1341,8 +1393,7 @@ var currentMarker;
 	                                  '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
 	                                  '<td>'+ locations[i][2] + '</td>'
 	                                  '</tr>'; 
-	                          }
-	                     mapMarkers.push(marker);
+	                          }*/
 	                 
 	                     //Hover Function for info window
 	                     google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
