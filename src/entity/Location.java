@@ -143,12 +143,12 @@ public class Location implements java.io.Serializable{
 		this.longitude=longitude;
 	}
         
-        public void setPremium(double premium){
-            this.premium = premium;
-        }
-        
-        @Override
-        public String toString(){
-            return "building name=" + buildingName + ", dataset=" + csvName + ", username=" + username;
-        }
+    public void setPremium(double premium){
+        this.premium = premium;
+    }
+    
+    @Override
+    public String toString(){
+        return "building name=" + buildingName + ", dataset=" + csvName + ", username=" + username;
+    }
 }

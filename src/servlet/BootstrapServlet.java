@@ -27,9 +27,11 @@ public class BootstrapServlet extends HttpServlet{
         UploadManager uploadManager = new UploadManager();            
        	LocationDAO locationDAO = new LocationDAO();	
         UserDAO userDAO = new UserDAO();
+        LocationMetadataDAO locationMetadataDAO = new LocationMetadataDAO();
         ArrayList<String> fileErrors = new ArrayList<String>();
-        ArrayList<String> locationData = new ArrayList<String>();
+        //ArrayList<String> locationData = new ArrayList<String>();
         ArrayList<String> userData = new ArrayList<String>();
+        ArrayList<String> locationMetadata = new ArrayList<String>();
         //HashMap<String,ArrayList<String>> locationDatasets = new HashMap<String,ArrayList<String>>();
         try{
             FileItemIterator iter = upload.getItemIterator(request);
@@ -48,15 +50,15 @@ public class BootstrapServlet extends HttpServlet{
                              ZipEntry ze = zis.getNextEntry();      	
                              locationDAO.removeAll();
                              userDAO.removeAll();                    	
-                             
+                             locationMetadataDAO.removeAll();
                              while (ze != null){
                                      String datasetName = ze.getName();      
                                      if(!datasetName.substring(datasetName.length()-3,datasetName.length()).equals("csv")){
                                          fileErrors.add(datasetName+": invalid file type");
-                                     }else if(!datasetName.equals("locations.csv")&&!datasetName.equals("users.csv")){
+                                     }else if(!datasetName.equals("locations metadata.csv")&&!datasetName.equals("users.csv")){
                                      	fileErrors.add(datasetName+": invalid file name");
-                                     }else if(datasetName.equals("locations.csv")){  
-                                         locationData.addAll(uploadManager.readCSV(zis));            
+                                     }else if(datasetName.equals("locations metadata.csv")){
+                                    	 locationMetadata.addAll(uploadManager.readCSV(zis));
                                      }else if(datasetName.equals("users.csv")){
                                          userData.addAll(uploadManager.readCSV(zis));
                                      }
@@ -81,15 +83,16 @@ public class BootstrapServlet extends HttpServlet{
                     	 }
                     }
             }                       
-            //ArrayList<Location> locations = uploadManager.convertDataToLocations(locationData, "system location dataset" , currency,"admin");                
-            //locationDAO.addLocations(locations);  
+  
             ArrayList<User> users = uploadManager.convertDataToUsers(userData,"system user dataset");
+            ArrayList<LocationMetadata> locationMetadataObject = uploadManager.convertDataToLocationMetadata(locationMetadata,"system user dataset");
             userDAO.addUser(users);
-            HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();
+            locationMetadataDAO.addLocationMetadata(locationMetadataObject);
+            //HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();
             HashMap<String,ArrayList<String>> userErrors = uploadManager.getUserErrors();
-            if(!locationErrors.isEmpty()||!fileErrors.isEmpty()||!userErrors.isEmpty()){
+            if(!fileErrors.isEmpty()||!userErrors.isEmpty()){
             	String errorMsg = "";
-            	if(!locationErrors.isEmpty()){
+            	/*if(!locationErrors.isEmpty()){
             		Iterator iterator = locationErrors.keySet().iterator();         	
                 	while(iterator.hasNext()){
                 		String errorLine = (String)iterator.next();
@@ -104,7 +107,7 @@ public class BootstrapServlet extends HttpServlet{
                 		}
                 		errorMsg += "</br>";
                 	}
-            	}
+            	}*/
             	if(!userErrors.isEmpty()){
             		Iterator iterator = userErrors.keySet().iterator();         	
                 	while(iterator.hasNext()){

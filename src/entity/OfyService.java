@@ -6,6 +6,7 @@ public class OfyService {
 	static{
 		ObjectifyService.register(Location.class);
 		ObjectifyService.register(User.class);
+		ObjectifyService.register(LocationMetadata.class);
 	}
 	
 	public static Objectify getOfy(){
