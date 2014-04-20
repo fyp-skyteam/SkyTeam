@@ -1587,7 +1587,25 @@ var currentMarker;
 
 	 
 	  //Hazard Map Functionalities
-	  function displayFire(country) {
+	  var heatmapData = [];
+	  var gradient = [
+	                  'rgba(255, 170, 170, 0)',
+	                  'rgba(255, 153, 153, 1)',
+	                  'rgba(255, 136, 136, 1)',
+	                  'rgba(255, 119, 119, 1)',
+	                  'rgba(255, 102, 102, 1)',
+	                  'rgba(255, 85, 85, 1)',
+	                  'rgba(255, 68, 68, 1)',
+	                  'rgba(255, 51, 51, 1)',
+	                  'rgba(255, 34, 34, 1)',
+	                  'rgba(255, 17, 17, 1)',
+	                  'rgba(255, 0, 0, 1)',
+	                 	'rgba(204, 0, 0, 1)',	                  
+	                  'rgba(187, 0, 0, 1)',
+	                  'rgba(170, 0, 0, 1)',
+	                  'rgba(153, 0, 0, 1)'
+	          	  ];
+	   function displayFire(country) {
 		  if (fireLayer != null) {
 			  fireLayer.setMap(null);
 	            fireLayer = null;
@@ -1596,8 +1614,17 @@ var currentMarker;
 			  var script = document.createElement('script');
         script.src = 'sample3.json';
         document.getElementsByTagName('head')[0].appendChild(script);
+        
+        var pointArray = new google.maps.MVCArray(heatmapData);
+	    fireLayer = new google.maps.visualization.HeatmapLayer({
+	        data: pointArray
+	      });
+	      fireLayer.set('radius',25);
+	      fireLayer.set('gradient',gradient);
+	      fireLayer.setMap(map);
+        
         window.eqfeed_callback = function(results) {
-	        var heatmapData = [];
+        	//var heatmapData = [];
 	        for (var i = 0; i < results.features.length; i++) {
 	          var fire = results.features[i];
 	          var geometry = fire.geometry;
@@ -1605,12 +1632,12 @@ var currentMarker;
 	          var latLng = new google.maps.LatLng(coords[1], coords[0]);
 	          heatmapData.push(latLng);
 	        }
-	        fireLayer = new google.maps.visualization.HeatmapLayer({
+/* 	        fireLayer = new google.maps.visualization.HeatmapLayer({
 	          data: heatmapData,
 	          dissipating: true,
 	          radius: 40,
 	          map: map
-	        });
+	        }); */
         }
 		  }
 	  }
