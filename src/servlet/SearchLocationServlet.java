@@ -37,86 +37,65 @@ public class SearchLocationServlet extends HttpServlet{
 		String[] datasets = request.getParameterValues("datasets");
 		String remark = request.getParameter("remark");		
 		
-		/**
-		out.println(buildingName);
-		for(String str: buildingTypes){
-			out.println(str);
-		}
-		out.println(strMinHeight);
-		out.println(strMaxHeight);
-		out.println(strMinYearBuilt);
-		out.println(strMaxYearBuilt);
-		out.println(strMinCapacity);
-		out.println(strMaxCapacity);
-		out.println(strMinPremium);
-		out.println(strMaxPremium);
-		out.println(strMinProCovLimit);
-		out.println(strMaxProCovLimit);
-		out.println(strMinLossCovLimit);
-		out.println(strMaxLossCovLimit);
-		for(String str: foundationTypes){
-			out.println(str);
-		}
-		for(String str: datasets){
-			out.println(str);
-		}
-		out.println(remark);
-		out.println("</br></br>");
-		*/
-		
-		double minHeight = Double.parseDouble(strMinHeight);
-		double maxHeight = Double.parseDouble(strMaxHeight);
-		int minYearBuilt = Integer.parseInt(strMinYearBuilt);
-		int maxYearBuilt = Integer.parseInt(strMaxYearBuilt);
-		int minCapacity = Integer.parseInt(strMinCapacity);
-		int maxCapacity = Integer.parseInt(strMaxCapacity);
-		double minPremium = Double.parseDouble(strMinPremium);
-		double maxPremium = Double.parseDouble(strMaxPremium);
-		double minProCovLimit = Double.parseDouble(strMinProCovLimit);
-		double maxProCovLimit = Double.parseDouble(strMaxProCovLimit);
-		double minLossCovLimit = Double.parseDouble(strMinLossCovLimit);
-		double maxLossCovLimit = Double.parseDouble(strMaxLossCovLimit);
-		
 		List<Location> locations = locationDAO.retrieveByUsername(username);
-		locations.addAll(locationDAO.retrieveByUsername("admin"));
-		locations = locationDAO.retrieveByBuildingName(buildingName,locations);
-		locations = locationDAO.retrieveByBuildingType(buildingTypes,locations);
-		locations = locationDAO.retrieveByHeight(minHeight, maxHeight,locations);
-		locations = locationDAO.retrieveByYearBuilt(minYearBuilt, maxYearBuilt,locations);
-		locations = locationDAO.retrieveByCapacity(minCapacity, maxCapacity,locations);
-		locations = locationDAO.retrieveByPremium(minPremium, maxPremium,locations);
-		locations = locationDAO.retrieveByPropertyCoverageLimit(minProCovLimit, maxProCovLimit,locations);
-		locations = locationDAO.retrieveByLossCoverageLimit(minLossCovLimit, maxLossCovLimit,locations);
-		locations = locationDAO.retrieveByFoundationType(foundationTypes,locations);
-		locations = locationDAO.retrieveByMasonryType(masonryTypes,locations);
-		locations = locationDAO.retrieveByRoofType(roofTypes,locations);
-		locations = locationDAO.retrieveByDataset(datasets,locations);
-		locations = locationDAO.retrieveByRemark(remark,locations);
-		
-		/**
-		out.println(locations.size());
-		for(int i=0;i<locations.size();i++){
-			out.println(locations.get(i).toString()+"</br>");
-		}
-		out.println("</br></br></br>");*/
 		String searchMsg = "";
-		if(locations.isEmpty() || locations==null){
+		if(buildingTypes==null
+				|| foundationTypes==null
+				|| masonryTypes==null
+				|| roofTypes==null
+				|| datasets==null){
 			searchMsg = "<strong>There is no matching search result. Please try again!</strong>";
-			locations = locationDAO.retrieveByUsername(username);
 			session.setAttribute("locationSearchResult",locations);
 			session.setAttribute("searchMsg", searchMsg);
 			session.setAttribute("currentView","all");
 			response.sendRedirect("welcome.jsp");
 		}else{
-			if(locations.size()==1){
-				searchMsg = "<strong>There is 1 matching search result.</strong>";
+			double minHeight = Double.parseDouble(strMinHeight);
+			double maxHeight = Double.parseDouble(strMaxHeight);
+			int minYearBuilt = Integer.parseInt(strMinYearBuilt);
+			int maxYearBuilt = Integer.parseInt(strMaxYearBuilt);
+			int minCapacity = Integer.parseInt(strMinCapacity);
+			int maxCapacity = Integer.parseInt(strMaxCapacity);
+			double minPremium = Double.parseDouble(strMinPremium);
+			double maxPremium = Double.parseDouble(strMaxPremium);
+			double minProCovLimit = Double.parseDouble(strMinProCovLimit);
+			double maxProCovLimit = Double.parseDouble(strMaxProCovLimit);
+			double minLossCovLimit = Double.parseDouble(strMinLossCovLimit);
+			double maxLossCovLimit = Double.parseDouble(strMaxLossCovLimit);
+			
+			locations.addAll(locationDAO.retrieveByUsername("admin"));
+			locations = locationDAO.retrieveByBuildingName(buildingName,locations);
+			locations = locationDAO.retrieveByBuildingType(buildingTypes,locations);
+			locations = locationDAO.retrieveByHeight(minHeight, maxHeight,locations);
+			locations = locationDAO.retrieveByYearBuilt(minYearBuilt, maxYearBuilt,locations);
+			locations = locationDAO.retrieveByCapacity(minCapacity, maxCapacity,locations);
+			locations = locationDAO.retrieveByPremium(minPremium, maxPremium,locations);
+			locations = locationDAO.retrieveByPropertyCoverageLimit(minProCovLimit, maxProCovLimit,locations);
+			locations = locationDAO.retrieveByLossCoverageLimit(minLossCovLimit, maxLossCovLimit,locations);
+			locations = locationDAO.retrieveByFoundationType(foundationTypes,locations);
+			locations = locationDAO.retrieveByMasonryType(masonryTypes,locations);
+			locations = locationDAO.retrieveByRoofType(roofTypes,locations);
+			locations = locationDAO.retrieveByDataset(datasets,locations);
+			locations = locationDAO.retrieveByRemark(remark,locations);
+			
+			if(locations.isEmpty() || locations==null){
+				searchMsg = "<strong>There is no matching search result. Please try again!</strong>";
+				locations = locationDAO.retrieveByUsername(username);
+				session.setAttribute("locationSearchResult",locations);
+				session.setAttribute("searchMsg", searchMsg);
+				session.setAttribute("currentView","all");
+				response.sendRedirect("welcome.jsp");
 			}else{
-				searchMsg = "<strong>There are " + locations.size() + " matching search results.</strong>";
-			}			
-			session.setAttribute("locationSearchResult",locations);
-			session.setAttribute("currentView","filter");
-			session.setAttribute("searchMsg", searchMsg);
-			response.sendRedirect("welcome.jsp");
+				if(locations.size()==1){
+					searchMsg = "<strong>There is 1 matching search result.</strong>";
+				}else{
+					searchMsg = "<strong>There are " + locations.size() + " matching search results.</strong>";
+				}			
+				session.setAttribute("locationSearchResult",locations);
+				session.setAttribute("currentView","filter");
+				session.setAttribute("searchMsg", searchMsg);
+				response.sendRedirect("welcome.jsp");
+			}
 		}
 	}
 	
