@@ -33,6 +33,10 @@ public class User implements java.io.Serializable{
     return name;
   } // getName
 
+  public String getPassword(){
+	  return password;
+  }
+  
   public void setName(String name) {
     this.name = name;
   } // setName

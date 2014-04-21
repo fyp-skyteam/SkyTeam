@@ -11,7 +11,7 @@
 
 <script src="assets/js/jquery.nouislider.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
 <script type="text/javascript" src="assets/bootstrap-file/bootstrap-filestyle.min.js"> </script>
 <script src="assets/jquery-ui-1.10.4.custom/development-bundle/jquery-1.10.2.js"></script>
 <script src="assets/jquery-ui-1.10.4.custom/development-bundle/ui/jquery.ui.core.js"></script>
@@ -50,6 +50,7 @@
 <link rel="stylesheet" type="text/css" href="assets/css/slider.css" />
 <link href="assets/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
 <script src="assets/bootstrap-select/bootstrap-select.js" type="text/javascript"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
 <style>
  #widget1 { min-width: 240px; min-height: 120px; max-height: 800px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
@@ -72,12 +73,17 @@ $('input[type="checkbox"].style1').checkbox({
        checkedClass: 'icon-check',
        uncheckedClass: 'icon-check-empty'
  });
+ 	  .tooltip{
+ 	  	position:fixed;
+ 	  	z-index: 9999999999999;
+ 	  }
       #legend {
         background: #FFF;
         margin: 10px;
         padding: 5px;
         width: 150px;
       }
+      
 
       #legend p {
         font-weight: bold;

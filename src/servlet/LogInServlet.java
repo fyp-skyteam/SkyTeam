@@ -12,7 +12,7 @@ public class LogInServlet extends HttpServlet{
 		String username = request.getParameter("username").toLowerCase().trim();
 		String password = request.getParameter("password");
 		if(username.equals("admin") && password.equals("admin")){
-			response.sendRedirect("bootstrapmenu.html");
+			response.sendRedirect("bootstrap-menu.jsp");
 		}else{
 			UserDAO userDAO = new UserDAO();
 			User user= userDAO.authenticate(username, password); 

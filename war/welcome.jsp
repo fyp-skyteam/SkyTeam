@@ -680,7 +680,7 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
         <h4 class="modal-title" id=UploadModalLabel">Upload File</h4>
       </div>
       <div class="modal-body">
-      <h4 style="color:Black">Upload map data (.zip):</h4>
+      <h4 style="color:Black">Upload map data <button id="uploadTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on left">?</button></h4>
         <form name="upload-file" action="upload" method="post" enctype="multipart/form-data"  role="form">
           <div class="form-group">
             <input type="file" name="data">

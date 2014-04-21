@@ -129,11 +129,17 @@ public class BootstrapServlet extends HttpServlet{
             	        errorMsg += fileErrors.get(i) + "</br>";
             	    }
             	}
-            	out.println("The following data is invalid and therefore, was not bootstraped completely: </br>");
-            	out.println(errorMsg);
+            	errorMsg = "The following data is invalid and therefore, was not bootstraped completely: </br>" + errorMsg;
+            	RequestDispatcher dispatcher = request.getRequestDispatcher("bootstrap-menu.jsp?bootstrapMsg="+errorMsg);
+                dispatcher.forward(request, response);
+            	//out.println("The following data is invalid and therefore, was not bootstraped completely: </br>");
+            	//out.println(errorMsg);
             }else{
-            	out.println("The data was successfully bootstraped completely");
-            }            	
+            	
+            	RequestDispatcher dispatcher = request.getRequestDispatcher("bootstrap-menu.jsp?bootstrapMsg="+"The data was successfully bootstraped completely");
+                dispatcher.forward(request, response);
+            	//out.println("The data was successfully bootstraped completely");
+            }   //test         	
         }catch(Exception e){
             e.printStackTrace();
         }
