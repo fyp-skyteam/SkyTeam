@@ -742,7 +742,6 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
   </div>
 </div>
 <!-- END OF COMPARISON MODAL CONTAINER -->
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
 <script>
 
@@ -1186,7 +1185,7 @@ var currentMarker;
 	  //SIMULATION VARIABLES
 	  var customCircle;
 	  var dragMarker;
-	  var simulationRadius = 5000;
+	  var simulationRadius = 9000;
 	  var dragged = false;
 	  
 	  $("#simulationSlide").on('slide', function(slideEvt) {	 		
@@ -2399,15 +2398,15 @@ var currentMarker;
     
    //Simulation Functionalities
     function startSimulation()  {
-    	  
+    	var simulationCenter = new google.maps.LatLng(3.139003,101.686855);  
         var myLatlng2;
         var mapCenter = map.getCenter();
 
         if(dragged == true){
         	mapCenter = dragMarker.position;
         }
-        
-        map.setZoom(10);
+        map.setCenter(simulationCenter);
+        map.setZoom(9);
     	  if(customCircle!=null){
     		  customCircle.setMap(null);
     	  }
@@ -2417,7 +2416,7 @@ var currentMarker;
     	  var radius = simulationRadius;
     	  //ICON NEEDS TO BE CHANGED FOR DRAG MARKER
     	  dragMarker = new google.maps.Marker({
-              position: mapCenter,
+              position: simulationCenter,
               title: 'Location',
               map: map,
               draggable: true
