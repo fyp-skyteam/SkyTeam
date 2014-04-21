@@ -731,7 +731,7 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Earthquake</font></th>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Flood</font></th>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Fire</font></th>
-		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Average Risk</font></th>
+		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Average</font></th>
 	      </tr>
 	      </table>
 	      </div>
@@ -2224,7 +2224,7 @@ var currentMarker;
     	  ]);
     	  var options = {
     			  chartArea:{width:"90%",height:"90%"},
-    			  pieSliceText: 'label',
+    			  //pieSliceText: 'label',
     			  backgroundColor: "transparent"
     	        };
     	  var chart = new google.visualization.PieChart(document.getElementById('donut-chart'));
