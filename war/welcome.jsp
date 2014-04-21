@@ -731,7 +731,7 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Earthquake</font></th>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Flood</font></th>
 		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Fire</font></th>
-		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Total</font></th>
+		      <th style="text-align:center" bgcolor="#2C9EE1"><font color="#fff">Average Risk</font></th>
 	      </tr>
 	      </table>
 	      </div>
@@ -2266,7 +2266,7 @@ var currentMarker;
 			if (chart.innerHTML == ""){
 				 // Create and populate the data table.
 			  	  data = google.visualization.arrayToDataTable([
-			  	    ['Building Name', 'Flood', 'Fire', 'Earthquake', 'Total Average','ID'],
+			  	    ['Building Name', 'Flood', 'Fire', 'Earthquake', 'Average','ID'],
 			  	    [name,  parseFloat(floodValue),    parseFloat(fireValue),    parseFloat(earthquakeValue), parseFloat(average), parseFloat(id)]
 			  	  ]);
 			  	var view = new google.visualization.DataView(data);
