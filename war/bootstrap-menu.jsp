@@ -14,47 +14,73 @@ UserDAO uDAO = new UserDAO();
 LocationMetadataDAO lDAO = new LocationMetadataDAO();
 ArrayList<User> users = (ArrayList<User>)uDAO.retrieveAll();
 ArrayList<LocationMetadata> metadata = (ArrayList<LocationMetadata>)lDAO.retrieveAll();
-Collections.sort(metadata, new Comparator<LocationMetadata>(){
+/* Collections.sort(metadata, new Comparator<LocationMetadata>(){
     public int compare(LocationMetadata m1, LocationMetadata m2) {
         return m1.getColumnName().compareToIgnoreCase(m2.getColumnName());
     }
-}); 
+});  */
 %>
 <html>
 <head>
 <title>Administrative Service</title>
+<link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
-Welcome Back Administrator!
+<div class="alert alert-info alert-dismissable" style="font:20px; text-align:center;">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Welcome back administrator!</strong>
+</div>
+<div class="container">
+<br/>
+<br/>
 <h2> Bootstrap Data </h2>
+<hr/>
 <form action="bootstrap" method="post" enctype="multipart/form-data">
 <!-- later implement current date to be submitted instead of static -->
+<table>
+	<tr>
+		<td>
+			<b>Filename:</b>
+		</td>
+		<td>
+			<b>Currency:</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<br/>
+			<input type="file" name="data" /> 
+		</td>
+		<td>
+			<select name="currency">
+				<option value="SGD" selected>SGD</option>
+				<option value="AUD">AUD</option>
+				<option value="CAD">CAD</option>
+				<option value="CHF">CHF</option>
+				<option value="CNY">CNY</option>
+				<option value="EUR">EUR</option>
+				<option value="GBP">GBP</option>
+				<option value="HKD">HKD</option>
+				<option value="INR">INR</option>
+				<option value="JPY">JPY</option>
+				<option value="USD">USD</option>
+			</select>
+		</td>
+	</tr>
+</table>
+ 
+ 
+    <br/>
+ <input type="submit" value="Bootstrap" class="btn btn-success"/>
 
- <b>Filename:</b>
- <input type="file" name="data" />
+ <font color="green"><%=bootstrapMsg %></font>
  <br/>
+ <hr/>
  
- <select name="currency">
-	<option value="SGD" selected>SGD</option>
-	<option value="AUD">AUD</option>
-	<option value="CAD">CAD</option>
-	<option value="CHF">CHF</option>
-	<option value="CNY">CNY</option>
-	<option value="EUR">EUR</option>
-	<option value="GBP">GBP</option>
-	<option value="HKD">HKD</option>
-	<option value="INR">INR</option>
-	<option value="JPY">JPY</option>
-	<option value="USD">USD</option>
-</select>
- 
- <input type="submit" value="Bootstrap" />
- <br/>
- <font color="red"><%=bootstrapMsg %></font>
 </form>
 Data that has been bootstraped: <br/>
 <h3>User Data:</h3>
-<table border="1">
+<table class="table">
 	<tr>
 		<th>Name</th>
 		<th>Username</th>
@@ -69,7 +95,7 @@ Data that has been bootstraped: <br/>
 	<%} %>
 </table>
 <h3>Location Metadata (including the vulnerability index):</h3>
-<table border="1">
+<table class="table">
 	<tr>
 		<th>Attribute</th>
 		<th>Required?</th>
@@ -77,8 +103,22 @@ Data that has been bootstraped: <br/>
 		<th>Vulnerability Index</th>
 	</tr>
 	<%for (int i=0; i<metadata.size(); i++){ %>
-		<tr>
+		
+			<%if(metadata.get(i).getColumnName().equalsIgnoreCase("Foundation Type")
+					|| metadata.get(i).getColumnName().equalsIgnoreCase("Building Type")
+					|| metadata.get(i).getColumnName().equalsIgnoreCase("Masonry")
+					|| metadata.get(i).getColumnName().equalsIgnoreCase("Roof")
+					|| metadata.get(i).getColumnName().equalsIgnoreCase("Building Age")){%>
+					<tr style="background:#fffcea">
+			<%
+			}else{
+			%>
+				<tr>
+			<%
+			}
+			%>
 			<td><%=metadata.get(i).getColumnName()%></td>
+			
 			<td><%=metadata.get(i).getRequired()%></td>
 			<%if(metadata.get(i).getValue()==null) {%>
 				<td>N.A.</td>
@@ -93,3 +133,9 @@ Data that has been bootstraped: <br/>
 </table>
 <hr/>
 Go Back to <a href="login.jsp">Log In Page</a>
+<br/>
+</div>
+<script src="assets/jquery/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

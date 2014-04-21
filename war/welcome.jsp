@@ -301,7 +301,7 @@ for(int i=0;i<userDatasetList.size();i++){
 <div id="widget8" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close8" class="closeBtn">x</a>
 
-	<h3>Simulation <button id="hazardTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title=" This widget allows you to simulate a hazard event. a. Drag the marker to the map to specify the epicenter of the hazard event and drag the slider to indicate the radius of the affected area.">?</button></h3>
+	<h3>Simulation <button id="simulationTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title=" This widget allows you to simulate a hazard event. a. Drag the marker to the map to specify the epicenter of the hazard event and drag the slider to indicate the radius of the affected area.">?</button></h3>
     <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
     <h5 id="simulationInstructions" style="text-align:center"></h5>
     <div id="simulationSlider"  style="text-align:center"><hr />
@@ -324,7 +324,7 @@ for(int i=0;i<userDatasetList.size();i++){
   <div id="widget5" class="ui-corner-all resizable">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
   
-	<h3>Risk Calculation <button id="hazardTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to retrieve the vulnerability index of the selected building and calculate the different risks associated with it.">?</button></h3>
+	<h3>Risk Calculation <button id="riskTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to retrieve the vulnerability index of the selected building and calculate the different risks associated with it.">?</button></h3>
 
 		<div id="selectedRisk" style="text-align:center"><h5><b>Please select a point to begin.</b></h5></div>
 		<div id="floodRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Flood Risk: </font><b id="floodRiskValue"></b></h5></div>
@@ -750,9 +750,10 @@ $("#uploadTooltip").tooltip();
 $("#poiTooltip").tooltip({container: 'body'});
 $("#filterTooltip").tooltip({container: 'body'});
 $("#hazardTooltip").tooltip({container: 'body'});
+$("#riskTooltip").tooltip({container: 'body'});
 $("#historicalTooltip").tooltip({container: 'body'});
 $("#comparisonTooltip").tooltip();
-$("#simulationTooltip").tooltip();
+$("#simulationTooltip").tooltip({container: 'body'});
 google.load("visualization", "1", {packages:["corechart"]});
 
 //GLOBAL DATATABLE VARIABLE
