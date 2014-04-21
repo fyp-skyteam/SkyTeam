@@ -214,7 +214,7 @@ for(int i=0;i<userDatasetList.size();i++){
   <div id="widget1" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
 
-    <h3>Points of Interest</h3>
+    <h3>Points of Interest <button id="poiTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to select a marker and search for nearby points of interest. You can specify the radius of the search with the slider provided.">?</button></h3>
     <div id="selectedPOI" style="text-align: center"><h5><b>Please select a point to begin.</b></h5></div>
     <div id="controls">
    <input type="hidden" id="wid1IsSelected" value="false">
@@ -264,7 +264,8 @@ for(int i=0;i<userDatasetList.size();i++){
   <div id="widget6" class="ui-corner-all resizable" style="z-index: 10000; position:relative;">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
   
-	<h3>Historical Analysis</h3>
+	<h3>Historical Analysis <button id="historicalTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget displays risk index of the location across time. Specify the various parameters of the chart and click Play button to set the graph in motion.">?</button></h3>
+
 		<div>
 		<label>State:</label>
 		      <select id="state" onchange="drawVisualization();">
@@ -300,7 +301,7 @@ for(int i=0;i<userDatasetList.size();i++){
 <div id="widget8" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close8" class="closeBtn">x</a>
 
-	<h3> Simulation </h3>
+	<h3>Simulation <button id="hazardTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title=" This widget allows you to simulate a hazard event. a. Drag the marker to the map to specify the epicenter of the hazard event and drag the slider to indicate the radius of the affected area.">?</button></h3>
     <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
     <h5 id="simulationInstructions" style="text-align:center"></h5>
     <div id="simulationSlider"  style="text-align:center"><hr />
@@ -323,7 +324,8 @@ for(int i=0;i<userDatasetList.size();i++){
   <div id="widget5" class="ui-corner-all resizable">
     <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
   
-	<h3>Risk Calculation</h3>
+	<h3>Risk Calculation <button id="hazardTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to retrieve the vulnerability index of the selected building and calculate the different risks associated with it.">?</button></h3>
+
 		<div id="selectedRisk" style="text-align:center"><h5><b>Please select a point to begin.</b></h5></div>
 		<div id="floodRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Flood Risk: </font><b id="floodRiskValue"></b></h5></div>
 		<div id="fireRisk" style="visibility:hidden; text-align:center"><h5><font color="Black">Fire Risk: </font><b id="fireRiskValue"></b></h5></div>
@@ -339,7 +341,8 @@ for(int i=0;i<userDatasetList.size();i++){
   <div id="widget4" class="ui-corner-all resizable">
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
   
-	<h3>Hazard Map</h3>
+	<h3>Hazard Map <button id="hazardTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to see view 3 hazard maps: fire, flood and earthquake - on its own or with one another. The hazard maps visualize the probability of hazard.">?</button></h3>
+
 	<h5 style="color:Black">Select Country:</h5>
 	<select class="selectpicker" data-width="100%">
 	 <option value="malaysia" >Malaysia</option>
@@ -360,7 +363,7 @@ for(int i=0;i<userDatasetList.size();i++){
   <div id="widget2" class="ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
 
-    <h3>Filter Data</h3>
+    <h3>Filter Data  <button id="filterTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to filter markers by visualizing only the buildings you are interested in. Click on the building name below to pop up its details. Check boxes allow you to toggle the visibility of the buildings.">?</button></h3>
     <h5><font color="Black">Current View:</font></h5>
     <div class="row">
       <div class="col-sm-7">
@@ -421,7 +424,7 @@ for(int i=0;i<userDatasetList.size();i++){
   <div class="modal-body" style="text-align:center">
    <h2>Welcome to GeoIntel</h2>
    <br />
-   <h4><font color="Black">To begin using GeoIntel, upload your map markers by accessing the Widget Dashboard. (Thao or Bea, please rephrase this.)</font></h4>
+   <h4><font color="Black">To begin analysing, click on the Widget Dashboard and access the Upload widget to map out your data.</font></h4>
    <br />
         <button class="btn btn-md btn-primary" data-dismiss="modal">Close</button>
   </div>
@@ -677,10 +680,10 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id=UploadModalLabel">Upload File</h4>
+        <h4 class="modal-title" id=UploadModalLabel">Upload File <button id="uploadTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to upload data regarding the buildings you want to visualize in the map. File formats you can upload include .csv and .zip files">?</button></h4>
       </div>
       <div class="modal-body">
-      <h4 style="color:Black">Upload map data <button id="uploadTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on left">?</button></h4>
+      <h4 style="color:Black">Upload map data </h4>
         <form name="upload-file" action="upload" method="post" enctype="multipart/form-data"  role="form">
           <div class="form-group">
             <input type="file" name="data">
@@ -720,7 +723,7 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id=ComparisonModalLabel">Comparison</h4>
+        <h4 class="modal-title" id=ComparisonModalLabel">Comparison <button id="comparisonTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to compare the different risks of the different buildings. Select the marker you wish to add to the comparison table and click “Add to Comparison” on the pop up.">?</button></h4>
       </div>
       <div class="modal-body">
         <div id="noComparisonLabel" style="text-align:center">No points have been added for comparison. <br />Please select a marker and click 'Add to Comparison' to begin.</div>
@@ -744,7 +747,13 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
 <!-- END OF COMPARISON MODAL CONTAINER -->
 
 <script>
-
+$("#uploadTooltip").tooltip();
+$("#poiTooltip").tooltip({container: 'body'});
+$("#filterTooltip").tooltip({container: 'body'});
+$("#hazardTooltip").tooltip({container: 'body'});
+$("#historicalTooltip").tooltip({container: 'body'});
+$("#comparisonTooltip").tooltip();
+$("#simulationTooltip").tooltip();
 google.load("visualization", "1", {packages:["corechart"]});
 
 //GLOBAL DATATABLE VARIABLE
@@ -2508,6 +2517,32 @@ var currentMarker;
                  else {
                 	 document.getElementById("averageFire").innerHTML = "Fire: " + 0 + "% ";
                  }
+                 /*
+                 var query2, queryText2, gvizQuery2;
+                 query1 = "SELECT 'gridcode' " +
+                 "FROM [HUNG PUT THE LINK TO EARTHQUAKE HERE] "+
+                 "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + myLatlng2.lat() + ", " + myLatlng2.lng() + ")," + radius + "))";
+                 queryText2 = encodeURIComponent(query2);
+                 gvizQuery2 = new google.visualization.Query(
+                     'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
+                 gvizQuery2.send(function(response) {	
+                   var table2 = response.getDataTable();
+                   var riskIndex = 0;
+                   for(var i=0;i<table2.getNumberOfRows();i++){
+                	   riskIndex += table2.getValue(i,0);
+                   }
+                   riskIndex = riskIndex/table2.getNumberOfRows();
+                   riskIndex = (1 - riskIndex/20000)*100;
+                   console.log(riskIndex);
+                   if (riskIndex > 0) {
+                  	 document.getElementById("averageEarthquake").innerHTML = "Earthquake: " + riskIndex.toFixed(1) + "% ";
+                   }
+                   else {
+                  	 document.getElementById("averageEarthquake").innerHTML = "Earthquake: " + 0 + "% ";
+                   }
+               });
+                 */
+                 //DELETE THIS AFTER YOU FINISH
                  document.getElementById("averageEarthquake").innerHTML = "Earthquake: " + 0 + "% ";
                });
              
