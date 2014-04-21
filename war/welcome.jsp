@@ -342,7 +342,6 @@ for(int i=0;i<userDatasetList.size();i++){
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
   
 	<h3>Hazard Map <button id="hazardTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to see view 3 hazard maps: fire, flood and earthquake - on its own or with one another. The hazard maps visualize the probability of hazard.">?</button></h3>
-
 	<h5 style="color:Black">Select Country:</h5>
 	<select class="selectpicker" data-width="100%">
 	 <option value="malaysia" >Malaysia</option>
