@@ -348,11 +348,11 @@ for(int i=0;i<userDatasetList.size();i++){
 	</select>
 	<br />
 	<h5 style="color:Black">Maps Available:</h5>
-	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map <font color="black">(Source)</font>
+	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map <font color="black"></font>
 	<br />
-	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map <font color="black">(Source)</font>
+	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map <font color="black"></font>
 	<br />
-	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map <font color="black">(Source)</font>
+	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map <font color="black"></font>
   </div>
   </div>
 <!-- END OF HAZARD MAP WIDGET -->
@@ -584,6 +584,7 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
         </div>
     </div>
     <br/>
+
     <div class="row">
         <div class="col-md-5">
             Loss Coverage Limit:
@@ -1628,7 +1629,7 @@ var currentMarker;
 	        data: pointArray
 	      });
 	      fireLayer.set('radius',25);
-	      fireLayer.set('gradient',gradient);
+	      //fireLayer.set('gradient',gradient);
 	      fireLayer.setMap(map);
         
         window.eqfeed_callback = function(results) {
@@ -1711,7 +1712,7 @@ var currentMarker;
 		    var type = document.getElementById('type').value;
 		    var keyword = document.getElementById('keyword').value;
 		    var rankBy = 'distance';
-		    var radString = rad-300;
+		    var radString = rad-200;
 		    var request = {
 		    	    location: markerPosition,
 		    	    radius: radString,

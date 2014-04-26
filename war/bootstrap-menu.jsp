@@ -14,11 +14,11 @@ UserDAO uDAO = new UserDAO();
 LocationMetadataDAO lDAO = new LocationMetadataDAO();
 ArrayList<User> users = (ArrayList<User>)uDAO.retrieveAll();
 ArrayList<LocationMetadata> metadata = (ArrayList<LocationMetadata>)lDAO.retrieveAll();
-/* Collections.sort(metadata, new Comparator<LocationMetadata>(){
+Collections.sort(metadata, new Comparator<LocationMetadata>(){
     public int compare(LocationMetadata m1, LocationMetadata m2) {
         return m1.getColumnName().compareToIgnoreCase(m2.getColumnName());
     }
-});  */
+});  
 %>
 <html>
 <head>
@@ -31,8 +31,6 @@ ArrayList<LocationMetadata> metadata = (ArrayList<LocationMetadata>)lDAO.retriev
   <strong>Welcome back administrator!</strong>
 </div>
 <div class="container">
-<br/>
-<br/>
 <h2> Bootstrap Data </h2>
 <hr/>
 <form action="bootstrap" method="post" enctype="multipart/form-data">
@@ -109,7 +107,7 @@ Data that has been bootstraped: <br/>
 					|| metadata.get(i).getColumnName().equalsIgnoreCase("Masonry")
 					|| metadata.get(i).getColumnName().equalsIgnoreCase("Roof")
 					|| metadata.get(i).getColumnName().equalsIgnoreCase("Building Age")){%>
-					<tr style="background:#fffcea">
+					<tr style="background:#F78181">
 			<%
 			}else{
 			%>
