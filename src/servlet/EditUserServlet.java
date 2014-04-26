@@ -14,19 +14,26 @@ public class EditUserServlet extends HttpServlet{
 		response.setContentType("text/html");
 		//PrintWriter out = response.getWriter();
 		String name = request.getParameter("name");
-		String username = request.getParameter("username");
+		//String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String idStr = request.getParameter("id");
-
+		String[] widgets = request.getParameterValues("widgets");
 		Long id = Long.parseLong(idStr);
 		UserDAO uDao = new UserDAO();
 		
-		ArrayList<String> error = uDao.getError(name, username, password);
+		ArrayList<String> error = uDao.getError(name, password);
 		if(error ==null || error.isEmpty()){
 			User user = uDao.retrieve(id);
+			ArrayList<String> userWidgets = new ArrayList<String>();
+			if(widgets!=null){
+				for(String str: widgets){
+					userWidgets.add(str);
+				}
+			}
 			user.setName(name);
-			user.setUsername(username);
+			//user.setUsername(username);
 			user.setPassword(password);
+			user.setWidgets(userWidgets);
 			uDao.modify(user);
 			response.sendRedirect("bootstrap-menu.jsp");
 		}else{
@@ -34,8 +41,8 @@ public class EditUserServlet extends HttpServlet{
 			for(String str: error){
 				errorMsg += str + "<br/>";
 			}
-			RequestDispatcher dispatcher = request.getRequestDispatcher("edit-user.jsp?username=" + username
-					+ "&password=" + password + "&id=" + id + "&name=" + name + "&errorMsg=" + errorMsg);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("edit-user.jsp?password=" + password + 
+					"&id=" + id + "&name=" + name + "&errorMsg=" + errorMsg);
 			dispatcher.forward(request, response);
 		}
 		

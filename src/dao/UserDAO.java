@@ -56,16 +56,16 @@ public class UserDAO implements java.io.Serializable{
 		ofy.delete(User.class, id); 
 	}
 	
-	public ArrayList<String> getError(String name, String username, String password){
+	public ArrayList<String> getError(String name, String password){
 		ArrayList<String> output = new ArrayList<String>();
 		if(name.trim().isEmpty()){
 			output.add("Name field is empty");
 		}
-		if(username.trim().isEmpty()){
+		/*if(username.trim().isEmpty()){
 			output.add("Username field is empty");
 		}else if(duplicateUsername(username)){
 			output.add("Duplicate username");
-		}
+		}*/
 		if(password.trim().isEmpty()){
 			output.add("Password field is empty");
 		}
@@ -73,7 +73,7 @@ public class UserDAO implements java.io.Serializable{
 		return output;
 	}
 	
-	public boolean duplicateUsername(String username){
+	/*public boolean duplicateUsername(String username){
 		List<User> users = retrieveAll();
 		boolean duplicate = false;
 		for(User u: users){
@@ -83,5 +83,5 @@ public class UserDAO implements java.io.Serializable{
 			}
 		}
 		return duplicate;
-	}
+	}*/
 }	
