@@ -64,6 +64,24 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-name>GetDataServlet</servlet-name>
     <url-pattern>get_data</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>RemoveUserServlet</servlet-name>
+    <servlet-class>servlet.RemoveUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemoveUserServlet</servlet-name>
+    <url-pattern>remove-user</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>EditUserServlet</servlet-name>
+    <servlet-class>servlet.EditUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditUserServlet</servlet-name>
+    <url-pattern>edit-user</url-pattern>
+  </servlet-mapping>
     
     <servlet>
   <servlet-name>SystemServiceServlet</servlet-name>

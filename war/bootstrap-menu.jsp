@@ -83,12 +83,17 @@ Data that has been bootstraped: <br/>
 		<th>Name</th>
 		<th>Username</th>
 		<th>Password</th>
+		<th>Action</th>
 	</tr>
 	<%for (int i=0; i<users.size(); i++){ %>
 		<tr>
 			<td><%=users.get(i).getName()%></td>
 			<td><%=users.get(i).getUsername()%></td>
 			<td><%=users.get(i).getPassword()%></td>
+			<td><a href="remove-user?id=<%=users.get(i).getId()%>" onclick="if (! confirm('Warning! This account (<%=users.get(i).getUsername() %>) will be removed together with any associated data (uploaded data, account info). Do you want to procceed this action? ')) return false;">Remove</a>
+				&nbsp; &nbsp; <a href="edit-user.jsp?id=<%=users.get(i).getId()%>">Edit</a>
+			
+			</td>
 		</tr>	
 	<%} %>
 </table>
@@ -131,6 +136,8 @@ Data that has been bootstraped: <br/>
 </table>
 <hr/>
 Go Back to <a href="login.jsp">Log In Page</a>
+<br/>
+<br/>
 <br/>
 </div>
 <script src="assets/jquery/jquery.min.js"></script>

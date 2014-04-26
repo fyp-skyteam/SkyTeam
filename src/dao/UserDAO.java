@@ -1,7 +1,9 @@
 package dao;
 
 import com.googlecode.objectify.*;
+
 import entity.*;
+
 import java.util.*;
 
 public class UserDAO implements java.io.Serializable{
@@ -47,5 +49,10 @@ public class UserDAO implements java.io.Serializable{
 	    Objectify ofy = OfyService.getOfy();
 	    Iterable<Key<User>> allUserKeys = ofy.query(User.class).fetchKeys();
 	    ofy.delete(allUserKeys); 
+	}
+	
+	public void removeUserById(Long id){
+	    Objectify ofy = OfyService.getOfy();
+		ofy.delete(User.class, id); 
 	}
 }	
