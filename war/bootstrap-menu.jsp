@@ -83,6 +83,7 @@ Data that has been bootstraped: <br/>
 		<th>Name</th>
 		<th>Username</th>
 		<th>Password</th>
+		<th>Widget Access</th>
 		<th>Action</th>
 	</tr>
 	<%for (int i=0; i<users.size(); i++){ %>
@@ -90,6 +91,17 @@ Data that has been bootstraped: <br/>
 			<td><%=users.get(i).getName()%></td>
 			<td><%=users.get(i).getUsername()%></td>
 			<td><%=users.get(i).getPassword()%></td>
+			<td>
+			<% ArrayList<String> widgets = users.get(i).getWidgets();
+			if(widgets!=null){
+				for(String widget: widgets){
+					%>
+					  <%=widget %><br/>
+					<%
+				}
+				 
+			}%>
+			</td>
 			<td><a href="remove-user?id=<%=users.get(i).getId()%>" onclick="if (! confirm('Warning! This account (<%=users.get(i).getUsername() %>) will be removed together with any associated data (uploaded data, account info). Do you want to procceed this action? ')) return false;">Remove</a>
 				&nbsp; &nbsp; <a href="edit-user.jsp?id=<%=users.get(i).getId()%>">Edit</a>
 			

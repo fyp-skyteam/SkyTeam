@@ -14,7 +14,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Query;
 
 public class BootstrapManager {
-
+	
 	public ArrayList<String> readCSV(ZipInputStream zin) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(zin));
 		String user;
@@ -34,20 +34,19 @@ public class BootstrapManager {
 		return output;
 	}
 	
-	public ArrayList<User> convertDataToUsers(ArrayList<String> userData){
+	/*public ArrayList<User> convertDataToUsers(ArrayList<String> userData){
 		ArrayList<User> users = new ArrayList<User>();
 		for(int i=0;i<userData.size();i++){
 			String[] data = userData.get(i).split(",",-1);
 			String username = data[0].trim();
 			String name = data[1].trim();
 			String password = data[2].trim();
-			
 			User user = new User(username,name,password);
 				users.add(user);
 			
 		}
 		return users;
-	}
+	}*/
 	
 	public void removeAll(){
     	Objectify ofy = OfyService.getOfy();

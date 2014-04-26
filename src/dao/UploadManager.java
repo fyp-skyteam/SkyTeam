@@ -17,7 +17,7 @@ public class UploadManager {
 
 	private HashMap<String,ArrayList<String>> locationErrors = new HashMap<String,ArrayList<String>>();
 	private HashMap<String,ArrayList <String>> userErrors = new HashMap<String,ArrayList<String>>();
-	   
+	
 	public ArrayList<String> readCSV(ZipInputStream zin) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(zin));
 		String str;
@@ -84,15 +84,24 @@ public class UploadManager {
 	
 	public ArrayList<User> convertDataToUsers(ArrayList<String> locationData, String datasetName){
 		ArrayList<User> users = new ArrayList<User>();
-        for(int i=1;i<locationData.size();i++){
+		ArrayList<String> widgetList = new ArrayList<String>();
+		widgetList.add("Upload New File");
+		widgetList.add("Points of Interest");
+		widgetList.add("Filter Data");
+		widgetList.add("Hazard Map");
+		widgetList.add("Risk Calculation");
+		widgetList.add("Comparison");
+		widgetList.add("Simulation");
+		widgetList.add("Historical Analysis");
+		for(int i=1;i<locationData.size();i++){
 			String[] data = locationData.get(i).split(",",-1);
 			String username = data[0].trim();
 			String name = data[1].trim();
             String password = data[2].trim();
             //String access = data[3].trim();
             ArrayList<String> userErrorStr = getUserErrorStr(users,username,name,password);
-            if(userErrorStr.isEmpty()){
-            	User user = new User(username, name, password);
+            if(userErrorStr.isEmpty()){	
+            	User user = new User(username, name, password, widgetList);
             	users.add(user);
             }else{
             	this.userErrors.put("("+datasetName + ", line " + (i+2)+")", userErrorStr);
