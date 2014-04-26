@@ -6,10 +6,14 @@
 <%@page import="java.text.*"%>
 <%@page import ="java.io.Serializable" %>
 <%
-String bootstrapMsg=(String)request.getParameter("bootstrapMsg");
-if(bootstrapMsg==null){
-	bootstrapMsg = "";
+String errorMsg=(String)request.getParameter("errorMsg");
+if(errorMsg==null){
+	errorMsg = "";
 }
+/* String successMsg = (String)session.getAttribute("successMsg");
+if(successMsg==null){
+	successMsg ="";
+} */
 UserDAO uDAO = new UserDAO();
 LocationMetadataDAO lDAO = new LocationMetadataDAO();
 ArrayList<User> users = (ArrayList<User>)uDAO.retrieveAll();
@@ -70,8 +74,8 @@ Collections.sort(metadata, new Comparator<LocationMetadata>(){
  
     <br/>
  <input type="submit" value="Bootstrap" class="btn btn-success"/>
-
- <font color="green"><%=bootstrapMsg %></font>
+ <font color="red"><%=errorMsg %></font>
+<%--  <font color="red"><%=successMsg %></font> --%>
  <br/>
  <hr/>
  
@@ -102,10 +106,15 @@ Data that has been bootstraped: <br/>
 				 
 			}%>
 			</td>
-			<td><a href="remove-user?id=<%=users.get(i).getId()%>" onclick="if (! confirm('Warning! This account (<%=users.get(i).getUsername() %>) will be removed together with any associated data (uploaded data, account info). Do you want to procceed this action? ')) return false;">Remove</a>
-				&nbsp; &nbsp; <a href="edit-user.jsp?id=<%=users.get(i).getId()%>">Edit</a>
-			
-			</td>
+			<%if(!users.get(i).getUsername().equals("admin")){%>
+				<td>
+					<a href="remove-user?id=<%=users.get(i).getId()%>" onclick="if (! confirm('Warning! This account (<%=users.get(i).getUsername() %>) will be removed together with any associated data (uploaded data, account info). Do you want to proceed this action? ')) return false;">Remove</a>
+					&nbsp; &nbsp; 
+					<a href="edit-user.jsp?id=<%=users.get(i).getId()%>">Edit</a>
+				</td>
+			<%}else{%>
+				<td></td>
+			<%} %>			
 		</tr>	
 	<%} %>
 </table>
