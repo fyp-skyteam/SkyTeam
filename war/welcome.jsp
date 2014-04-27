@@ -79,15 +79,34 @@ for(int i=0;i<userDatasetList.size();i++){
 
 <body class="cbp-spmenu-push" style="overflow: hidden">
   <div style="text-align:center">
+<!-- WIDGET BAR CONTAINER -->  
 <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4" style="margin: auto;">
-  <a href="#" style="text-decoration:none;" class="button3" data-toggle="modal" data-target="#UploadModal">Upload New File</a>
-	<a href="#" style="text-decoration:none;" class="button1">Points of Interest</a>
-	<a href="#" style="text-decoration:none;" class="button2">Filter Data</a>
-	<a href="#" style="text-decoration:none;" class="button4">Hazard Map</a>
-	<a href="#" style="text-decoration:none;" class="button5">Risk Calculation</a>
-  	<a href="#" style="text-decoration:none;" class="button3" data-toggle="modal" data-target="#ComparisonModal">Comparison</a>
-	<a href="#" style="text-decoration:none;" class="button8">Simulation</a>
-	<a href="#" style="text-decoration:none;" class="button9" data-toggle="modal" data-target="#widgetModal"><b>Show All</b></a>
+	
+	<!-- E: INSERT WIDGET ID AT ONLCIK. if you don't want to display show all for some user, just comment that line out-->
+	<!-- Widget buttons and their ID:
+		ID			Widget
+		-------------------------
+		w0  	Upload New File
+		w1		Points of Interest
+		w2		Filter Data
+		w4		Hazard Map
+		w5		Risk Calculation
+		w6		Historical Analysis
+		w7		Comparison
+		w8		Simulation
+		w9		Show all
+	 -->
+	
+	
+	<a href="#" id="w0" style="text-decoration:none;" onclick="openWidget('widget0')">Upload New File</a>
+	<a href="#" id="w1" style="text-decoration:none;" onclick="openWidget('widget1')">Points of Interest</a>
+	<a href="#" id="w2" style="text-decoration:none;" onclick="openWidget('widget2')">Filter Data</a>
+	<a href="#" id="w4" style="text-decoration:none;" onclick="openWidget('widget4')">Hazard Map</a>
+	<a href="#" id="w5" style="text-decoration:none;" onclick="openWidget('widget5')">Risk Calculation</a>
+	<a href="#" id="w6" style="text-decoration:none;" onclick="openWidget('widget6')">Historical Analysis</a>
+  	<a href="#" id="w7" style="text-decoration:none;" onclick="openWidget('widget7')">Comparison</a>
+  	<a href="#" id="w8" style="text-decoration:none;" onclick="openWidget('widget8')">Simulation</a>
+	<a href="#" id="w9" style="text-decoration:none;" onclick="openWidget('widget9')"><b>Show All</b></a>
 	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:20px;">
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
@@ -96,10 +115,14 @@ for(int i=0;i<userDatasetList.size();i++){
 </nav>
 </div>
 
-
+<!-- NEW WIDGET TEMPLATE
+<div id="[WIGETID]" class="widget ui-corner-all resizable">
+  <a onclick="closeWidget('[WIDGETID]')" style="color: #00b3ff; text-decoration:none;" href="#"  class="closeBtn">x</a>
+</div>
+-->
 
 <!-- WIDGET MODAL CONTAINER -->
-<div class="modal fade" id="widgetModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
+<div class="modal fade" id="WidgetModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -120,38 +143,36 @@ for(int i=0;i<userDatasetList.size();i++){
       	</style>
       	<div class="row">
       		<div class="col-md-4">
-      			<button href="#" style="text-decoration:none;" class="button3 widget-btn" data-toggle="modal" data-target="#UploadModal">Upload New File</button>
+      			<button href="#" onclick="openWidget('widget0')"  style="text-decoration:none;" class="widget-btn">Upload New File</button>
       		</div>
       		<div class="col-md-4">
-      			<button href="#" style="text-decoration:none;" class="button1 widget-btn">Points of Interest</button>
+      			<button href="#" onclick="openWidget('widget1')"  style="text-decoration:none;" class="widget-btn">Points of Interest</button>
       		</div>
       		<div class="col-md-4">
-      			<button href="#" style="text-decoration:none;" class="button2 widget-btn">Filter Data</button>
+      			<button href="#" onclick="openWidget('widget2')"style="text-decoration:none;" class="widget-btn">Filter Data</button>
       		</div>
+      		<div class="col-md-4">
+				<button href="#" onclick="openWidget('widget4')" style="text-decoration:none;" class="widget-btn">Hazard Map</button>      		</div>
+      		<div class="col-md-4">
+				<button href="#" onclick="openWidget('widget5')" style="text-decoration:none;" class="widget-btn">Risk Calculation</button>
+      		</div>
+      		<div class="col-md-4">
+				<button href="#" onclick="openWidget('widget7')" style="text-decoration:none;" class="widget-btn">Comparison</button>
+      		</div>
+      		<div class="col-md-4">
+ 				<button href="#" onclick="openWidget('widget8')" style="text-decoration:none;" class="widget-btn">Simulation</button>
+      		</div>
+      		<div class="col-md-4">
+      			<button href="#" onclick="openWidget('widget6')" style="text-decoration:none;" class="widget-btn">Historical Analysis</button>
+      		</div>
+      		
+ 			<!-- NEW WIDGET BUTTON TEMPLATE
+      		<div class="col-md-4">
+				<button onclick="openWidget('WIDGETID')" href="#"  style="text-decoration:none;" class="widget-btn">[WIDGET NAME]</button>
+      		</div>
+			-->
       	</div>
-      	<div class="row">
-      		<div class="col-md-4">
-				<button href="#" style="text-decoration:none;" class="button4 widget-btn">Hazard Map</button>      		</div>
-      		<div class="col-md-4">
-				<button href="#" style="text-decoration:none;" class="button5 widget-btn">Risk Calculation</button>
-      		</div>
-      		<div class="col-md-4">
-      			<button href="#" style="text-decoration:none;" class="button3 widget-btn" data-toggle="modal" data-target="#ComparisonModal">Comparison</button>
-      			
-      		</div>
-      	</div>
-      	<div class="row">
-      		<div class="col-md-4">
- 				<button href="#" style="text-decoration:none;" class="button8 widget-btn">Simulation</button>
-      		</div>
-      		<div class="col-md-4">
-      			<button href="#" style="text-decoration:none;" class="button6 widget-btn">Historical Analysis</button>
-      			
-      		</div>
-      		<div class="col-md-4">
-      			
-      		</div>
-      	</div>
+      	
 		
       </div>
     </div>
@@ -211,8 +232,8 @@ for(int i=0;i<userDatasetList.size();i++){
 <div id="dragZone">
 <div class="toggler draggable">
 <!-- POINT OF INTEREST WIDGET-->	
-  <div id="widget1" class="ui-corner-all resizable">
-  <a style="color: #00b3ff; text-decoration:none;" href="#" id="close1" class="closeBtn">x</a>
+  <div id="widget1" class="widget ui-corner-all resizable">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget1')" class="closeBtn">x</a>
 
     <h3>Points of Interest <button id="poiTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to select a marker and search for nearby points of interest. You can specify the radius of the search with the slider provided.">?</button></h3>
     <div id="selectedPOI" style="text-align: center"><h5><b>Please select a point to begin.</b></h5></div>
@@ -258,11 +279,11 @@ for(int i=0;i<userDatasetList.size();i++){
 </div>
 <!--END OF POINT OF INTERESTS WIDGET-->
 
-<!-- HISTORICAL ANALYSIS WIDGET (TEMPORARILY NOT DRAGGABLE)-->
+<!-- HISTORICAL ANALYSIS WIDGET (NOT DRAGGABLE)-->
 
   <div class="row toggler" style="text-align:center; z-index:10000; height:100%; width:100%;">
-  <div id="widget6" class="ui-corner-all resizable" style="z-index: 10000; position:relative;">
-    <a style="color: #00b3ff; text-decoration:none;" href="#" id="close6" class="closeBtn">x</a>
+  <div id="widget6" class="widget ui-corner-all resizable" style="z-index: 10000; position:relative;">
+    <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget6')"class="closeBtn">x</a>
   
 	<h3>Historical Analysis <button id="historicalTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget displays risk index of the location across time. Specify the various parameters of the chart and click Play button to set the graph in motion.">?</button></h3>
 
@@ -298,8 +319,8 @@ for(int i=0;i<userDatasetList.size();i++){
  
  <!-- SIMULATION WIDGET-->	
 <div class="toggler draggable"> 
-<div id="widget8" class="ui-corner-all resizable">
-  <a style="color: #00b3ff; text-decoration:none;" href="#" id="close8" class="closeBtn">x</a>
+<div id="widget8" class="widget ui-corner-all resizable">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget8')" class="closeBtn">x</a>
 
 	<h3>Simulation <button id="simulationTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title=" This widget allows you to simulate a hazard event. a. Drag the marker to the map to specify the epicenter of the hazard event and drag the slider to indicate the radius of the affected area.">?</button></h3>
     <center><input type="button" class="btn btn-success" id="simulationButton" value="Start Simulation" onclick="changeSimulationState()"></input></center>
@@ -321,8 +342,8 @@ for(int i=0;i<userDatasetList.size();i++){
  
 <!-- RISK CALCULATION WIDGET -->
   <div class="toggler draggable">
-  <div id="widget5" class="ui-corner-all resizable">
-    <a style="color: #00b3ff; text-decoration:none;" href="#" id="close5" class="closeBtn">x</a>
+  <div id="widget5" class="widget ui-corner-all resizable">
+    <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget5')" class="closeBtn">x</a>
   
 	<h3>Risk Calculation <button id="riskTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to retrieve the vulnerability index of the selected building and calculate the different risks associated with it.">?</button></h3>
 
@@ -338,8 +359,8 @@ for(int i=0;i<userDatasetList.size();i++){
 
 <!--  HAZARD MAP WIDGET -->
   <div class="toggler draggable">
-  <div id="widget4" class="ui-corner-all resizable">
-  	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" class="closeBtn">x</a>
+  <div id="widget4" class="widget ui-corner-all resizable">
+  	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" onclick="closeWidget('widget4')" class="closeBtn">x</a>
   
 	<h3>Hazard Map <button id="hazardTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to see view 3 hazard maps: fire, flood and earthquake - on its own or with one another. The hazard maps visualize the probability of hazard.">?</button></h3>
 	<h5 style="color:Black">Select Country:</h5>
@@ -348,19 +369,19 @@ for(int i=0;i<userDatasetList.size();i++){
 	</select>
 	<br />
 	<h5 style="color:Black">Maps Available:</h5>
-	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map <font color="black"></font>
+	<input type="checkbox" onchange="displayFire('malaysia')">  Fire Map <font color="black">(Source)</font>
 	<br />
-	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map <font color="black"></font>
+	<input type="checkbox" onchange="displayFlood('malaysia')">  Flood Map <font color="black">(Source)</font>
 	<br />
-	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map <font color="black"></font>
+	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map <font color="black">(Source)</font>
   </div>
   </div>
 <!-- END OF HAZARD MAP WIDGET -->
 
 <!--  DATA AND INFORMATION WIDGET -->
   <div class="toggler draggable">
-  <div id="widget2" class="ui-corner-all resizable">
-  <a style="color: #00b3ff; text-decoration:none;" href="#" id="close2" class="closeBtn">x</a>
+  <div id="widget2" class="widget ui-corner-all resizable">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget2')" class="closeBtn">x</a>
 
     <h3>Filter Data  <button id="filterTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to filter markers by visualizing only the buildings you are interested in. Click on the building name below to pop up its details. Check boxes allow you to toggle the visibility of the buildings.">?</button></h3>
     <h5><font color="Black">Current View:</font></h5>
@@ -584,7 +605,6 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
         </div>
     </div>
     <br/>
-
     <div class="row">
         <div class="col-md-5">
             Loss Coverage Limit:
@@ -745,7 +765,126 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
   </div>
 </div>
 <!-- END OF COMPARISON MODAL CONTAINER -->
+<script>
+function closeWidget(widgetID){
+	
+	if(widgetID == 'widget1'){
+		//to hide radius
+    	$("#wid1IsSelected").val("false");
+    	$("#poiSlide").slider('setValue', 500);
+    	if($("#markerSelected").val() =="true"){
+    		circle.setMap(null);
+    	}
+		// get effect type from
+		var selectedEffect = $( "#effectTypes" ).val();
+		// most effect types need no options passed by default
+		var options = {};
+		// some effects have required parameters
+		if ( selectedEffect === "scale" ) {
+			options = { percent: 0 };
+		} else if ( selectedEffect === "size" ) {
+			options = { to: { width: 200, height: 60 } };
+		}
+	    clearResults();
+	    clearPOImarkers();
+		// run the effect
+		
+	}else if(widgetID=='widget8'){
+		$( "#simulationSlider" ).hide();
+    	document.getElementById("simulationButton").value = "Start Simulation";
+    	document.getElementById("simulationButton").className = "btn btn-success";
+    	if (dragMarker != null) {
+    		  dragMarker.setMap(null);
+    	}
+    	if (customCircle != null) {
+    		  customCircle.setMap(null);
+    	}
+	    document.getElementById("averageFire").innerHTML = "";
+	    document.getElementById("averageFlood").innerHTML = "";
+	    document.getElementById("buildingsAffected").innerHTML = "";
+	    document.getElementById("buildingLabel").innerHTML = "";
+	    document.getElementById("riskLabel").innerHTML = "";
+	    document.getElementById("simulationInstructions").innerHTML = "";
+	    document.getElementById("averageEarthquake").innerHTML = "";
+    	// get effect type from
+		var selectedEffect = $( "#effectTypes" ).val();
+		  
+		// most effect types need no options passed by default
+		var options = {};
+		// some effects have required parameters
+		if ( selectedEffect === "scale" ) {
+			options = { percent: 0 };
+		} else if ( selectedEffect === "size" ) {
+			options = { to: { width: 200, height: 60 } };
+		}
 
+	}
+	
+	// get effect type from
+	var selectedEffect = $( "#effectTypes" ).val();
+
+	// most effect types need no options passed by default
+	var options = {};
+	// some effects have required parameters
+	if ( selectedEffect === "scale" ) {
+		options = { percent: 0 };
+	} else if ( selectedEffect === "size" ) {
+		options = { to: { width: 200, height: 60 } };
+	}
+	// run the effect
+	console.log("meaow");
+	$( "#"+widgetID ).hide( 'scale', options, 500 );
+	console.log("meaow2");
+	
+}
+
+
+function openWidget(widgetID){
+	if(widgetID=='widget0'){
+		$('#UploadModal').modal('show'); 
+	}else if(widgetID=='widget7'){
+		$('#ComparisonModal').modal('show'); 
+	}else if(widgetID=='widget9'){
+		$('#WidgetModal').modal('show');
+	}
+	else{
+		if(widgetID=='widget1'){
+			$("#wid1IsSelected").val("true");
+			$markerSelected = $("#markerSelected").val();
+			if($markerSelected == "true"){
+		    	circle = new google.maps.Circle({
+			 			  center:currentMarker.position,
+			 			  radius: 500,
+			 			  strokeColor:"#0000FF",
+			 			  strokeOpacity:0.8,
+			 			  strokeWeight:2,
+			 			  fillColor:"#0000FF",
+			 			  fillOpacity:0.1
+			 			  });
+		
+			 			circle.setMap(map);
+			 		map.setZoom(14);
+			 		map.setCenter(currentMarker.position);
+			}
+		}else if(widgetID=='widget6'){
+		      $('#widgetModalClose').click();
+		      $('.modal-backdrop').remove();
+		}
+		
+		// get effect type from
+	    var selectedEffect = $( "#effectTypes" ).val();
+	
+	    // most effect types need no options passed by default
+	    var options = {};
+	    // some effects have required parameters
+	
+	    // run the effect
+	    $( "#"+widgetID ).show( 'clip', options, 500 );
+	    return false;
+	}
+	
+}
+</script>
 <script>
 $("#uploadTooltip").tooltip();
 $("#poiTooltip").tooltip({container: 'body'});
@@ -811,10 +950,13 @@ var currentMarker;
 			classie.toggle( showRightPush, 'disabled' );
 		}
 	}
+
 	$(document).ready(function() {
 	    $('.selectpicker').selectpicker();
 	    $( "#draggable" ).draggable();
 	    $( "#simulationSlider" ).hide();
+	    $( "#w6" ).hide();
+	    $( "#w8" ).hide();
 	  });
 	
 	$(function() {
@@ -831,273 +973,8 @@ var currentMarker;
 	    
 	    $( ".resizable" ).resizable();
 
-		        // set effect from select menu value
-	   $( ".button1" ).click(function() {
-	    	//to indicate that poi is chosen and display radius
-	    	
-	    	$("#wid1IsSelected").val("true");
-	    	$markerSelected = $("#markerSelected").val();
-	    	if($markerSelected == "true"){
-		    	circle = new google.maps.Circle({
-	 	 			  center:currentMarker.position,
-	 	 			  radius: 500,
-	 	 			  strokeColor:"#0000FF",
-	 	 			  strokeOpacity:0.8,
-	 	 			  strokeWeight:2,
-	 	 			  fillColor:"#0000FF",
-	 	 			  fillOpacity:0.1
-	 	 			  });
-	
-	 	 			circle.setMap(map);
-	 	 		map.setZoom(14);
-	 	 		map.setCenter(currentMarker.position);
-	   }
-	      // get effect type from
-	      var selectedEffect = $( "#effectTypes" ).val();
-	 
-	      // most effect types need no options passed by default
-	      var options = {};
-	      // some effects have required parameters
-	 
-	      // run the effect
-	      
-	      $( "#widget1" ).show( 'clip', options, 500 );
+ 	    $( ".widget" ).hide();
 
-	      
-	      return false;
-	    });
-	    
-	    $( ".button2" ).click(function() {
-	      // get effect type from
-	      var selectedEffect = $( "#effectTypes" ).val();
-	 
-	      // most effect types need no options passed by default
-	      var options = {};
-	      // some effects have required parameters
-	 
-	      // run the effect
-	      $( "#widget2" ).show( 'clip', options, 500 );
-	      return false;
-	    });
-	    
-	    $( ".button4" ).click(function() {
-		      // get effect type from
-		      var selectedEffect = $( "#effectTypes" ).val();
-		 
-		      // most effect types need no options passed by default
-		      var options = {};
-		      // some effects have required parameters
-		 
-		      // run the effect
-		      $( "#widget4" ).show( 'clip', options, 500 );
-		      return false;
-		    });
-	    
-	    $( ".button5" ).click(function() {
-		      // get effect type from
-		      var selectedEffect = $( "#effectTypes" ).val();
-		 
-		      // most effect types need no options passed by default
-		      var options = {};
-		      // some effects have required parameters
-		 
-		      // run the effect
-		      $( "#widget5" ).show( 'clip', options, 500 );
-		      return false;
-		    });
-	    $( ".button6" ).click(function() {
-		      // get effect type from
-		      
-		      var selectedEffect = $( "#effectTypes" ).val();
-		 
-		      // most effect types need no options passed by default
-		      var options = {};
-		      // some effects have required parameters
-		 
-		      // run the effect
-		      $( "#widget6" ).show( 'clip', options, 500 );
-		      $('#widgetModalClose').click();
-		      $('.modal-backdrop').remove();
-		      return false;
-		    });
-	   
-	    $( ".button7" ).click(function() {
-		      // get effect type from
-		      var selectedEffect = $( "#effectTypes" ).val();
-		 
-		      // most effect types need no options passed by default
-		      var options = {};
-		      // some effects have required parameters
-		 
-		      // run the effect
-		      $( "#widget7" ).show( 'clip', options, 500 );
-		      return false;
-		    });
-	    
-	    $( ".button8" ).click(function() {
-		      // get effect type from
-		      var selectedEffect = $( "#effectTypes" ).val();
-		 
-		      // most effect types need no options passed by default
-		      var options = {};
-		      // some effects have required parameters
-		      // run the effect
-		      $( "#widget8" ).show( 'clip', options, 500 );
-		      return false;
-		    });
-	    $( "#close1" ).click(function() {
-	    	//to hide radius
-	    	$("#wid1IsSelected").val("false");
-	    	$("#poiSlide").slider('setValue', 500);
-	    	if($("#markerSelected").val() =="true"){
-	    		circle.setMap(null);
-	    	}
-			// get effect type from
-			var selectedEffect = $( "#effectTypes" ).val();
-			// most effect types need no options passed by default
-			var options = {};
-			// some effects have required parameters
-			if ( selectedEffect === "scale" ) {
-				options = { percent: 0 };
-			} else if ( selectedEffect === "size" ) {
-				options = { to: { width: 200, height: 60 } };
-			}
-		    clearResults();
-		    clearPOImarkers();
-			// run the effect
-			$( "#widget1" ).hide( 'scale', options, 500 );
-	    });
-	    
-	    $( "#close2" ).click(function() {
-			// get effect type from
-			var selectedEffect = $( "#effectTypes" ).val();
-	
-			// most effect types need no options passed by default
-			var options = {};
-			// some effects have required parameters
-			if ( selectedEffect === "scale" ) {
-				options = { percent: 0 };
-			} else if ( selectedEffect === "size" ) {
-				options = { to: { width: 200, height: 60 } };
-			}
-	
-			// run the effect
-			$( "#widget2" ).hide( 'scale', options, 500 );
-	    });
-	    
-	    $( "#close4" ).click(function() {
-			// get effect type from
-			var selectedEffect = $( "#effectTypes" ).val();
-	
-			// most effect types need no options passed by default
-			var options = {};
-			// some effects have required parameters
-			if ( selectedEffect === "scale" ) {
-				options = { percent: 0 };
-			} else if ( selectedEffect === "size" ) {
-				options = { to: { width: 200, height: 60 } };
-			}
-	
-			// run the effect
-			$( "#widget4" ).hide( 'scale', options, 500 );
-	    });
-		
-	    $( "#close5" ).click(function() {
-			// get effect type from
-			var selectedEffect = $( "#effectTypes" ).val();
-	
-			// most effect types need no options passed by default
-			var options = {};
-			// some effects have required parameters
-			if ( selectedEffect === "scale" ) {
-				options = { percent: 0 };
-			} else if ( selectedEffect === "size" ) {
-				options = { to: { width: 200, height: 60 } };
-			}
-	
-			// run the effect
-			$( "#widget5" ).hide( 'scale', options, 500 );
-	    });
-	    
-	    $( "#close6" ).click(function() {
-			// get effect type from
-			var selectedEffect = $( "#effectTypes" ).val();
-	
-			// most effect types need no options passed by default
-			var options = {};
-			// some effects have required parameters
-			if ( selectedEffect === "scale" ) {
-				options = { percent: 0 };
-			} else if ( selectedEffect === "size" ) {
-				options = { to: { width: 200, height: 60 } };
-			}
-	
-			// run the effect
-			$( "#widget6" ).hide( 'scale', options, 500 );
-	    });
-	    
-	    $( "#close7" ).click(function() {
-			// get effect type from
-			var selectedEffect = $( "#effectTypes" ).val();
-	
-			// most effect types need no options passed by default
-			var options = {};
-			// some effects have required parameters
-			if ( selectedEffect === "scale" ) {
-				options = { percent: 0 };
-			} else if ( selectedEffect === "size" ) {
-				options = { to: { width: 200, height: 60 } };
-			}
-	
-			// run the effect
-			$( "#widget7" ).hide( 'scale', options, 500 );
-	    });
-	    $( "#close8" ).click(function() {
-	    	
-	    	$( "#simulationSlider" ).hide();
-	    	document.getElementById("simulationButton").value = "Start Simulation";
-	    	document.getElementById("simulationButton").className = "btn btn-success";
-	    	if (dragMarker != null) {
-	    		  dragMarker.setMap(null);
-	    	}
-	    	if (customCircle != null) {
-	    		  customCircle.setMap(null);
-	    	}
-        document.getElementById("averageFire").innerHTML = "";
-        document.getElementById("averageFlood").innerHTML = "";
-        document.getElementById("buildingsAffected").innerHTML = "";
-        document.getElementById("buildingLabel").innerHTML = "";
-        document.getElementById("riskLabel").innerHTML = "";
-        document.getElementById("simulationInstructions").innerHTML = "";
-        document.getElementById("averageEarthquake").innerHTML = "";
-	    	// get effect type from
-			var selectedEffect = $( "#effectTypes" ).val();
-			  
-			// most effect types need no options passed by default
-			var options = {};
-			// some effects have required parameters
-			if ( selectedEffect === "scale" ) {
-				options = { percent: 0 };
-			} else if ( selectedEffect === "size" ) {
-				options = { to: { width: 200, height: 60 } };
-			}
-	
-			// run the effect
-			$( "#widget8" ).hide( 'scale', options, 500 );
-    		
-		});
-
-
-	    
-	    $( "#widget1" ).hide();
-	    $( "#widget2" ).hide();
-	    $( "#widget3" ).hide();
-	    $( "#widget4" ).hide();
-	    $( "#widget5" ).hide();
-	    $( "#widget6" ).hide();
-	    $( "#widget7" ).hide();
-	    $( "#widget8" ).hide();
-		
 	
 	});
 	
@@ -1629,7 +1506,7 @@ var currentMarker;
 	        data: pointArray
 	      });
 	      fireLayer.set('radius',25);
-	      //fireLayer.set('gradient',gradient);
+	      fireLayer.set('gradient',gradient);
 	      fireLayer.setMap(map);
         
         window.eqfeed_callback = function(results) {
@@ -1712,7 +1589,7 @@ var currentMarker;
 		    var type = document.getElementById('type').value;
 		    var keyword = document.getElementById('keyword').value;
 		    var rankBy = 'distance';
-		    var radString = rad-200;
+		    var radString = rad-300;
 		    var request = {
 		    	    location: markerPosition,
 		    	    radius: radString,

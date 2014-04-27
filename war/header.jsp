@@ -53,18 +53,9 @@
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
 <style>
- #widget1 { min-width: 300px; min-height: 120px; max-height: 800px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
- #widget1 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget2 { min-width: 400px; min-height: 140px; left:850px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
- #widget2 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget4 { min-width: 300px; min-height: 140px; left:260px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
- #widget4 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget5 { min-width: 400px; min-height: 140px; top: 300px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
- #widget5 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget6 { min-width: 800px; min-height: 500px;padding: 1.2em; bottom:0; text-align:center; position: absolute; background-color: rgba(255,255,255,0.82)}
- #widget6 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
- #widget8 { min-width: 350px; min-height: 100px; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
- #widget8 h3 { margin: 0; text-align: center; margin-bottom: 5px; }
+ .widget { min-width: 300px; min-height: 120px; max-height: 800px; height: auto; width: auto; padding: 1.2em; position: absolute; background-color: rgba(255,255,255,0.82)}
+ .widget h3 { margin: 0; text-align: center; margin-bottom: 5px; }
+ 
  
  html { height: 100% }
  body { height: 100%; margin: 0; padding: 0 }
