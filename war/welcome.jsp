@@ -86,9 +86,10 @@ for(int i=0;i<userDatasetList.size();i++){
 	<!-- Widget buttons and their ID:
 		ID			Widget
 		-------------------------
-		w0  	Upload New File
-		w1		Points of Interest
-		w2		Filter Data
+		w0  	Admin
+		w1		Upload New File
+		w2		Points of Interest
+		w3		Filter Data
 		w4		Hazard Map
 		w5		Risk Calculation
 		w6		Historical Analysis
@@ -98,16 +99,16 @@ for(int i=0;i<userDatasetList.size();i++){
 	 -->
 	
 	
-	<a href="#" id="w0" style="text-decoration:none;" onclick="openWidget('widget0')">Upload New File</a>
-	<a href="#" id="w1" style="text-decoration:none;" onclick="openWidget('widget1')">Points of Interest</a>
-	<a href="#" id="w2" style="text-decoration:none;" onclick="openWidget('widget2')">Filter Data</a>
+	<a href="#" id="w0" style="text-decoration:none;" onclick="openWidget('widget0')">Admin</a>
+	<a href="#" id="w1" style="text-decoration:none;" onclick="openWidget('widget1')">Upload New File</a>
+	<a href="#" id="w2" style="text-decoration:none;" onclick="openWidget('widget2')">Points of Interest</a>
+	<a href="#" id="w3" style="text-decoration:none;" onclick="openWidget('widget3')">Filter Data</a>
 	<a href="#" id="w4" style="text-decoration:none;" onclick="openWidget('widget4')">Hazard Map</a>
 	<a href="#" id="w5" style="text-decoration:none;" onclick="openWidget('widget5')">Risk Calculation</a>
 	<a href="#" id="w6" style="text-decoration:none;" onclick="openWidget('widget6')">Historical Analysis</a>
   	<a href="#" id="w7" style="text-decoration:none;" onclick="openWidget('widget7')">Comparison</a>
   	<a href="#" id="w8" style="text-decoration:none;" onclick="openWidget('widget8')">Simulation</a>
 	<a href="#" id="w9" style="text-decoration:none;" onclick="openWidget('widget9')"><b>Show All</b></a>
-	<div class="main" style="position:absolute; z-index:3; width:20px; height:20px; right:20px;">
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
 	<button id="closeBottom" style="width:20px;right:0; background: rgba(32,153,223,0.91);">x</button>
@@ -115,11 +116,13 @@ for(int i=0;i<userDatasetList.size();i++){
 </nav>
 </div>
 
-<!-- NEW WIDGET TEMPLATE
+<!-- NEW WIDGET TEMPLATE (place under drag zone div)
 <div id="[WIGETID]" class="widget ui-corner-all resizable">
   <a onclick="closeWidget('[WIDGETID]')" style="color: #00b3ff; text-decoration:none;" href="#"  class="closeBtn">x</a>
 </div>
 -->
+
+
 
 <!-- WIDGET MODAL CONTAINER -->
 <div class="modal fade" id="WidgetModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
@@ -143,13 +146,13 @@ for(int i=0;i<userDatasetList.size();i++){
       	</style>
       	<div class="row">
       		<div class="col-md-4">
-      			<button href="#" onclick="openWidget('widget0')"  style="text-decoration:none;" class="widget-btn">Upload New File</button>
+      			<button href="#" onclick="openWidget('widget1')"  style="text-decoration:none;" class="widget-btn">Upload New File</button>
       		</div>
       		<div class="col-md-4">
-      			<button href="#" onclick="openWidget('widget1')"  style="text-decoration:none;" class="widget-btn">Points of Interest</button>
+      			<button href="#" onclick="openWidget('widget2')"  style="text-decoration:none;" class="widget-btn">Points of Interest</button>
       		</div>
       		<div class="col-md-4">
-      			<button href="#" onclick="openWidget('widget2')"style="text-decoration:none;" class="widget-btn">Filter Data</button>
+      			<button href="#" onclick="openWidget('widget3')"style="text-decoration:none;" class="widget-btn">Filter Data</button>
       		</div>
       		<div class="col-md-4">
 				<button href="#" onclick="openWidget('widget4')" style="text-decoration:none;" class="widget-btn">Hazard Map</button>      		</div>
@@ -231,9 +234,16 @@ for(int i=0;i<userDatasetList.size();i++){
 
 <div id="dragZone">
 <div class="toggler draggable">
+
+<!-- NEW ADMIN WIDGET-->
+<div id="widget0" class="widget ui-corner-all resizable">
+  <a onclick="closeWidget('widget0')" style="color: #00b3ff; text-decoration:none;" href="#"  class="closeBtn">x</a>
+</div>
+
+
 <!-- POINT OF INTEREST WIDGET-->	
-  <div id="widget1" class="widget ui-corner-all resizable">
-  <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget1')" class="closeBtn">x</a>
+  <div id="widget2" class="widget ui-corner-all resizable">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget2')" class="closeBtn">x</a>
 
     <h3>Points of Interest <button id="poiTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to select a marker and search for nearby points of interest. You can specify the radius of the search with the slider provided.">?</button></h3>
     <div id="selectedPOI" style="text-align: center"><h5><b>Please select a point to begin.</b></h5></div>
@@ -380,8 +390,8 @@ for(int i=0;i<userDatasetList.size();i++){
 
 <!--  DATA AND INFORMATION WIDGET -->
   <div class="toggler draggable">
-  <div id="widget2" class="widget ui-corner-all resizable">
-  <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget2')" class="closeBtn">x</a>
+  <div id="widget3" class="widget ui-corner-all resizable">
+  <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget3')" class="closeBtn">x</a>
 
     <h3>Filter Data  <button id="filterTooltip" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="This widget allows you to filter markers by visualizing only the buildings you are interested in. Click on the building name below to pop up its details. Check boxes allow you to toggle the visibility of the buildings.">?</button></h3>
     <h5><font color="Black">Current View:</font></h5>
@@ -840,7 +850,7 @@ function closeWidget(widgetID){
 
 
 function openWidget(widgetID){
-	if(widgetID=='widget0'){
+	if(widgetID=='widget1'){
 		$('#UploadModal').modal('show'); 
 	}else if(widgetID=='widget7'){
 		$('#ComparisonModal').modal('show'); 
@@ -848,7 +858,7 @@ function openWidget(widgetID){
 		$('#WidgetModal').modal('show');
 	}
 	else{
-		if(widgetID=='widget1'){
+		if(widgetID=='widget2'){
 			$("#wid1IsSelected").val("true");
 			$markerSelected = $("#markerSelected").val();
 			if($markerSelected == "true"){
@@ -956,6 +966,7 @@ var currentMarker;
 	    $( "#draggable" ).draggable();
 	    $( "#simulationSlider" ).hide();
 	    $( "#w6" ).hide();
+	    $( "#w7" ).hide();
 	    $( "#w8" ).hide();
 	  });
 	
