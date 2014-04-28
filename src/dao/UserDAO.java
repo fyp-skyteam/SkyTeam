@@ -8,7 +8,6 @@ import java.util.*;
 
 public class UserDAO implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
-    //private static final String TBLNAME = "location";
     
     public User authenticate(String username, String password){
 		User user = retrieveByUsername(username);
@@ -61,27 +60,12 @@ public class UserDAO implements java.io.Serializable{
 		if(name.trim().isEmpty()){
 			output.add("Name field is empty");
 		}
-		/*if(username.trim().isEmpty()){
-			output.add("Username field is empty");
-		}else if(duplicateUsername(username)){
-			output.add("Duplicate username");
-		}*/
+
 		if(password.trim().isEmpty()){
 			output.add("Password field is empty");
 		}
 		
 		return output;
 	}
-	
-	/*public boolean duplicateUsername(String username){
-		List<User> users = retrieveAll();
-		boolean duplicate = false;
-		for(User u: users){
-			if(u.getUsername().trim().equals(username.trim())){
-				duplicate = true;
-				break;
-			}
-		}
-		return duplicate;
-	}*/
+
 }	

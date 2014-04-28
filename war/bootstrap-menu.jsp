@@ -26,16 +26,33 @@ Collections.sort(metadata, new Comparator<LocationMetadata>(){
 %>
 <html>
 <head>
-<title>Administrative Service</title>
+<title>Administration Tools</title>
 <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
-<div class="alert alert-info alert-dismissable" style="font:20px; text-align:center;">
-  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-  <strong>Welcome back administrator!</strong>
-</div>
+<div class="navbar navbar-default navbar-fixed-top" style="position:relative; margin-bottom:0px;">
+    <div class="container">
+   
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#" onClick="location.reload();location.href='bootstrap-menu.jsp'">Administration Tools</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">  
+        <li class="dropdown">
+             <a href="welcome.jsp">Back to<b> GeoIntel</b></a>
+         </li>
+         </ul>
+         </div> 
+      </div><!--/.nav-collapse -->
+    </div>
 <div class="container">
-<h2> Bootstrap Data </h2>
+<br>
+<h4><u>Bootstrap Data</u></h4>
 <hr/>
 <form action="bootstrap" method="post" enctype="multipart/form-data">
 <!-- later implement current date to be submitted instead of static -->
@@ -78,10 +95,11 @@ Collections.sort(metadata, new Comparator<LocationMetadata>(){
 <%--  <font color="red"><%=successMsg %></font> --%>
  <br/>
  <hr/>
- 
+ <br />
 </form>
-Data that has been bootstraped: <br/>
-<h3>User Data:</h3>
+<h4><b>Data that has been bootstrapped:</b></h4>
+<br />
+<h4><u>User Data:</u></h4>
 <table class="table">
 	<tr>
 		<th>Name</th>
@@ -118,7 +136,9 @@ Data that has been bootstraped: <br/>
 		</tr>	
 	<%} %>
 </table>
-<h3>Location Metadata (including the vulnerability index):</h3>
+<hr />
+<br />
+<h4><u>Location Metadata:</u></h4>
 <table class="table">
 	<tr>
 		<th>Attribute</th>
@@ -156,7 +176,6 @@ Data that has been bootstraped: <br/>
 	<%} %>
 </table>
 <hr/>
-Go Back to <a href="login.jsp">Log In Page</a>
 <br/>
 <br/>
 <br/>

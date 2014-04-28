@@ -24,12 +24,8 @@ public class UploadManager {
 		ArrayList<String> output = new ArrayList<String>();
 		
 		try {
-			//int count = 0;
 			while ((str = in.readLine()) != null) {
-				//count++;
-				//if (count > 1) {
 					output.add(str);
-				//}
 			}
 		} catch (Exception e) {
 
@@ -43,12 +39,8 @@ public class UploadManager {
 		ArrayList<String> output = new ArrayList<String>();
 		
 		try {
-			//int count = 0;
 			while ((str = in.readLine()) != null) {
-				//count++;
-				//if (count > 1) {
 					output.add(str);
-				//}
 			}
 		} catch (Exception e) {
 
@@ -64,8 +56,6 @@ public class UploadManager {
 			String requiredStr = data[1].trim();
             String value = data[2].trim().toLowerCase();
             String vIndexStr = data[3].trim();
-            //ArrayList<String> userErrorStr = getUserErrorStr(users,username,name,password);
-            //if(userErrorStr.isEmpty()){
             boolean required = Boolean.parseBoolean(requiredStr);
             if(value.equals("")||value==null){
             	LocationMetadata aLocationMetadata = new LocationMetadata(columnName, required);
@@ -74,31 +64,32 @@ public class UploadManager {
                 double vIndex = Double.parseDouble(vIndexStr);
             	LocationMetadata aLocationMetadata = new LocationMetadata(columnName, required, value, vIndex);
             	output.add(aLocationMetadata);
-            }  
-            //}else{
-            	//this.userErrors.put("("+datasetName + ", line " + (i+2)+")", userErrorStr);
-            //}     
+            }     
 		}
         return output;
 	}
 	
 	public ArrayList<User> convertDataToUsers(ArrayList<String> locationData, String datasetName){
 		ArrayList<User> users = new ArrayList<User>();
-		ArrayList<String> widgetList = new ArrayList<String>();
-		widgetList.add("Upload New File");
-		widgetList.add("Points of Interest");
-		widgetList.add("Filter Data");
-		widgetList.add("Hazard Map");
-		widgetList.add("Risk Calculation");
-		widgetList.add("Comparison");
-		widgetList.add("Simulation");
-		widgetList.add("Historical Analysis");
+		
 		for(int i=1;i<locationData.size();i++){
+			ArrayList<String> widgetList = new ArrayList<String>();
+			
 			String[] data = locationData.get(i).split(",",-1);
 			String username = data[0].trim();
+			if (username.equals("admin")) {
+				widgetList.add("Administration Tools");
+			}
+			widgetList.add("Upload New File");
+			widgetList.add("Points of Interest");
+			widgetList.add("Filter Data");
+			widgetList.add("Hazard Map");
+			widgetList.add("Risk Calculation");
+			widgetList.add("Comparison");
+			widgetList.add("Simulation");
+			widgetList.add("Historical Analysis");
 			String name = data[1].trim();
             String password = data[2].trim();
-            //String access = data[3].trim();
             ArrayList<String> userErrorStr = getUserErrorStr(users,username,name,password);
             if(userErrorStr.isEmpty()){	
             	User user = new User(username, name, password, widgetList);
@@ -123,9 +114,6 @@ public class UploadManager {
 		if(password.isEmpty()||password==null){
 			output.add("password field is empty");
 		}
-		/*if(access.isEmpty()||access==null){
-			output.add("access field is empty");
-		}*/
 		return output;
 	}
 	
@@ -244,17 +232,7 @@ public class UploadManager {
     		}
     	}
     	double buildingAgeIndex = vIndexMap.get(benchmark);
-    	/*double buildingAgeIndex = -1;
-    	int year = Calendar.getInstance().get(Calendar.YEAR);
-    	int buildingAge = year - yearBuilt;
-    	if(buildingAge<25){
-    		buildingAgeIndex = 0.6;
-    	}else if(buildingAge>=25 && buildingAge<=50){
-    		buildingAgeIndex = 1.2;
-    	}else{
-    		buildingAgeIndex = 2;
-    	}*/
-    	
+
     	vIndexMap = dao.retrieveVIndexByColumnName("Foundation Type");
     	double buildingFoundationIndex = vIndexMap.get(foundationType.toLowerCase());
     	

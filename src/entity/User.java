@@ -14,14 +14,7 @@ public class User implements java.io.Serializable{
   public User() {
   } 
 
-  
-  /**
-  public User(String username, String name, String password) {
-    this(-1,username, name,password);
-  }*/
-  
   public User(String username, String name, String password, ArrayList<String> widgets) {
-	  	//this.id = id;  
 	  	this.username = username;
 	    this.name = name;
 	    this.password = password;
@@ -34,7 +27,7 @@ public class User implements java.io.Serializable{
   
   public String getName() {
     return name;
-  } // getName
+  } 
 
   public String getPassword(){
 	  return password;
@@ -50,7 +43,7 @@ public class User implements java.io.Serializable{
   
   public void setName(String name) {
     this.name = name;
-  } // setName
+  }
 
   public void setUsername(String username){
      this.username = username;
@@ -58,7 +51,7 @@ public class User implements java.io.Serializable{
   
   public void setPassword(String password) {
     this.password = password;
-  } // setPassword
+  } 
   
   public void setWidgets(ArrayList<String> widgets){
 	  this.widgets = widgets;
@@ -66,6 +59,6 @@ public class User implements java.io.Serializable{
 
   public boolean authenticate(String password) {
     return password.equals(this.password);
-  } // authenticate
+  } 
   
-} /* class User */
+}

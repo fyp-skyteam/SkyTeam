@@ -7,7 +7,6 @@ public class Location implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id private Long id;
-    //private long id;
 	private double latitude; 
 	private double longitude;
     private String buildingName;

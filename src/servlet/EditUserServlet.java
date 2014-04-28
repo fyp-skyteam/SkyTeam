@@ -12,9 +12,7 @@ public class EditUserServlet extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException{
 		response.setContentType("text/html");
-		//PrintWriter out = response.getWriter();
 		String name = request.getParameter("name");
-		//String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String idStr = request.getParameter("id");
 		String[] widgets = request.getParameterValues("widgets");
@@ -31,7 +29,6 @@ public class EditUserServlet extends HttpServlet{
 				}
 			}
 			user.setName(name);
-			//user.setUsername(username);
 			user.setPassword(password);
 			user.setWidgets(userWidgets);
 			uDao.modify(user);

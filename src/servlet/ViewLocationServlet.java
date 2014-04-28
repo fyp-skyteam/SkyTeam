@@ -22,17 +22,10 @@ public class ViewLocationServlet extends HttpServlet{
 		locations.addAll(locationDAO.retrieveByUsername("admin"));
 		ArrayList<String> userDatasetList = locationDAO.getDatasetListByUsername(username);
 		userDatasetList.add("system location dataset");
-		//String chosenDataset = null;
 		String chosenDataset = request.getParameter("dataset");
 		out.println(chosenDataset);
 		
 		if(!chosenDataset.equals("all")){
-			//for(String dataset: userDatasetList){
-				//chosenDataset = request.getParameter(dataset);
-				//if(chosenDataset!=null){
-					//break;
-				//}
-			//}
 			Iterator<Location> iter = locations.iterator();
 			while(iter.hasNext()){
 				Location l = iter.next();

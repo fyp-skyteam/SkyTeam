@@ -44,7 +44,7 @@
 <link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/demos/demos.css">
 <link rel="stylesheet" href="assets/jquery-ui-1.10.4.custom/development-bundle/themes/base/jquery.ui.all.css">    
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
-<link rel="shortcut icon" href="../favicon.ico">
+<link rel="shortcut icon" href="assets/jquery/ico/favicon.ico">
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/default.css" />
 <link rel="stylesheet" type="text/css" href="assets/css/slide-up/component.css" />
 <link rel="stylesheet" type="text/css" href="assets/css/slider.css" />

@@ -8,10 +8,7 @@ import java.util.*;
 
 public class LocationDAO implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
-    //private static final String TBLNAME = "location";
-    
-    
-    
+
     public Location retrieve(Long id) {
 		try{
 			return OfyService.getOfy().get(Location.class, id);    
@@ -336,17 +333,6 @@ public class LocationDAO implements java.io.Serializable{
 			return output;
 		}	
 	}
-	
-	/**
-	public List<Location> retrieveByConditions(String username, String[] buildingTypes, String buildingName){
-		List<Location> locations = retrieveByUsername(username);
-		locations.addAll(retrieveByUsername("admin"));
-		for(String buildingType: buildingTypes){
-			locations = retrieveByBuildingType(buildingType, locations);
-		}
-		locations = retrieveByBuildingName(buildingName, locations);
-		return locations;
-	}*/
 	
 	public List<Location> retrieveByBuildingType(String[] buildingTypes, List<Location> locations){
 		List<Location> output = new ArrayList<Location>();

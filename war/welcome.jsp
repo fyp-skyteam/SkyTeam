@@ -13,37 +13,12 @@ User user = (User) session.getAttribute("authenticated.user");
 String username = user.getUsername();
 String errorMsg=(String)request.getParameter("locationErrors");
 String searchMsg = (String)session.getAttribute("searchMsg");
-/**
-HashMap<String,ArrayList<String>> locationErrors = (HashMap<String,ArrayList<String>>)request.getAttribute("locationErrors");
-ArrayList<String> fileErrors = (ArrayList<String>)request.getAttribute("fileErrors");
-if(locationErrors!=null){
-    Iterator<String> iterator1 = locationErrors.keySet().iterator();
-    while(iterator1.hasNext()){
-        String errorLine = iterator1.next();
-        errorMsg += errorLine+": ";
-        ArrayList<String> errorStr = locationErrors.get(errorLine);
-        for(int i=0;i<errorStr.size();i++){
-            if(i==errorStr.size()){
-            	errorMsg += errorStr.get(i);
-            }else{
-            	errorMsg += errorStr.get(i)+ ", ";
-            }
-        }
-        errorMsg += "</br>";
-
-    }
-}
-if(fileErrors!=null){
-    for(int i=0;i<fileErrors.size();i++){
-        errorMsg += fileErrors.get(i) + ": invalid data file";
-        errorMsg +="</br>";
-    }
-}*/
+List<String> widgetAccess = new ArrayList<String>();
+widgetAccess = user.getWidgets();
 LocationDAO locationDAO = new LocationDAO();
 List<Location> locations = new ArrayList<Location>();
 List<Location> searchResults = (List<Location>)session.getAttribute("locationSearchResult");
 if(searchResults==null || searchResults.isEmpty()){
-   //ADD ERROR THAT SAYS NO RESULTS FOUND
   if (locationDAO.retrieveByUsername(username) != null ) {
 	 locations.addAll(locationDAO.retrieveByUsername(username));
   }
@@ -58,10 +33,7 @@ ArrayList<String> userDatasetList = new ArrayList<String>();
 if (locationDAO.retrieveByUsername(username) != null ) {
 	userDatasetList = locationDAO.getDatasetListByUsername(username);
 }
-/**
-if(locationDAO.retrieveByUsername("admin")!=null || !locationDAO.retrieveByUsername("admin").isEmpty()){
-	userDatasetList.add("system location dataset");	
-}*/
+
 HashMap<String,Integer> datasetMap = new HashMap<String,Integer>();
 for(int i=0;i<userDatasetList.size();i++){
 	if(!datasetMap.containsKey(userDatasetList.get(i))){
@@ -86,7 +58,7 @@ for(int i=0;i<userDatasetList.size();i++){
 	<!-- Widget buttons and their ID:
 		ID			Widget
 		-------------------------
-		w0  	Admin
+		w0  	Administration Tools
 		w1		Upload New File
 		w2		Points of Interest
 		w3		Filter Data
@@ -95,11 +67,10 @@ for(int i=0;i<userDatasetList.size();i++){
 		w6		Historical Analysis
 		w7		Comparison
 		w8		Simulation
-		w9		Show all
+		w9		Show All
 	 -->
-	
-	
-	<a href="#" id="w0" style="text-decoration:none;" onclick="openWidget('widget0')">Admin</a>
+
+	<a href="#" id="w0" style="text-decoration:none;" onclick="location.reload();location.href='bootstrap-menu.jsp'">Admin Tools</a>
 	<a href="#" id="w1" style="text-decoration:none;" onclick="openWidget('widget1')">Upload New File</a>
 	<a href="#" id="w2" style="text-decoration:none;" onclick="openWidget('widget2')">Points of Interest</a>
 	<a href="#" id="w3" style="text-decoration:none;" onclick="openWidget('widget3')">Filter Data</a>
@@ -235,13 +206,13 @@ for(int i=0;i<userDatasetList.size();i++){
 <div id="dragZone">
 <div class="toggler draggable">
 
-<!-- NEW ADMIN WIDGET-->
+<!-- W0 - ADMIN TOOLS WIDGET CONTENT-->
 <div id="widget0" class="widget ui-corner-all resizable">
   <a onclick="closeWidget('widget0')" style="color: #00b3ff; text-decoration:none;" href="#"  class="closeBtn">x</a>
 </div>
+<!-- W0 - END OF ADMIN TOOLS WIDGET CONTENT-->
 
-
-<!-- POINT OF INTEREST WIDGET-->	
+<!-- W2 - POINT OF INTEREST WIDGET CONTENT-->	
   <div id="widget2" class="widget ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget2')" class="closeBtn">x</a>
 
@@ -287,10 +258,9 @@ for(int i=0;i<userDatasetList.size();i++){
 
   </div>
 </div>
-<!--END OF POINT OF INTERESTS WIDGET-->
+<!-- W2 - END OF POINT OF INTEREST WIDGET CONTENT--> 
 
-<!-- HISTORICAL ANALYSIS WIDGET (NOT DRAGGABLE)-->
-
+<!-- W6 - HISTORICAL ANALYSIS WIDGET CONTENT-->
   <div class="row toggler" style="text-align:center; z-index:10000; height:100%; width:100%;">
   <div id="widget6" class="widget ui-corner-all resizable" style="z-index: 10000; position:relative;">
     <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget6')"class="closeBtn">x</a>
@@ -325,9 +295,9 @@ for(int i=0;i<userDatasetList.size();i++){
   </div>
   </div>
 
-<!-- END OF HISTORICAL ANALYSIS WIDGET -->
- 
- <!-- SIMULATION WIDGET-->	
+<!-- W6 - END OF HISTORICAL ANALYSIS WIDGET CONTENT-->
+
+<!-- W8 - SIMULATION WIDGET CONTENT-->	
 <div class="toggler draggable"> 
 <div id="widget8" class="widget ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget8')" class="closeBtn">x</a>
@@ -349,8 +319,9 @@ for(int i=0;i<userDatasetList.size();i++){
     </div>
 </div>
 </div>
+ <!-- W8 - END OF SIMULATION WIDGET CONTENT --> 
  
-<!-- RISK CALCULATION WIDGET -->
+<!-- W5 - RISK CALCULATION WIDGET CONTENT -->
   <div class="toggler draggable">
   <div id="widget5" class="widget ui-corner-all resizable">
     <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget5')" class="closeBtn">x</a>
@@ -365,9 +336,9 @@ for(int i=0;i<userDatasetList.size();i++){
 		<div id="donut-chart" style="text-align:center"></div>
   </div>
   </div>
-<!-- END OF RISK CALCULATION WIDGET -->
+<!-- W5 - END OF RISK CALCULATION WIDGET CONTENT -->
 
-<!--  HAZARD MAP WIDGET -->
+<!--  W4 - HAZARD MAP WIDGET CONTENT -->
   <div class="toggler draggable">
   <div id="widget4" class="widget ui-corner-all resizable">
   	<a style="color: #00b3ff; text-decoration:none;" href="#" id="close4" onclick="closeWidget('widget4')" class="closeBtn">x</a>
@@ -386,9 +357,9 @@ for(int i=0;i<userDatasetList.size();i++){
 	<input type="checkbox" onchange="displayEarthquake('malaysia')">  Earthquake Map <font color="black">(Source)</font>
   </div>
   </div>
-<!-- END OF HAZARD MAP WIDGET -->
+<!--  W4 - END OF HAZARD MAP WIDGET CONTENT -->
 
-<!--  DATA AND INFORMATION WIDGET -->
+<!--  W3 - FILTER DATA WIDGET CONTENT -->
   <div class="toggler draggable">
   <div id="widget3" class="widget ui-corner-all resizable">
   <a style="color: #00b3ff; text-decoration:none;" href="#" onclick="closeWidget('widget3')" class="closeBtn">x</a>
@@ -428,12 +399,8 @@ for(int i=0;i<userDatasetList.size();i++){
   </div>
   
 </div>
-<!-- END OF DATA AND INFORMATION WIDGET -->
-
-
-
+<!--  W3 - END OF FILTER DATA WIDGET CONTENT -->
 </div>
-
 
 <div id="_GPL_e6a00_parent_div" style="position: absolute; top: 0px; left: 0px; width: 1px; height: 1px; z-index: 2147483647;"><object type="application/x-shockwave-flash" id="_GPL_e6a00_swf" data="http://savingsslider-a.akamaihd.net/items/e6a00/storage.swf?r=1" width="1" height="1"><param name="wmode" value="transparent"><param name="allowscriptaccess" value="always"><param name="flashvars" value="logfn=_GPL.items.e6a00.log&amp;onload=_GPL.items.e6a00.onload&amp;onerror=_GPL.items.e6a00.onerror&amp;LSOName=gpl"></object></div>
 <div id="keywordsLabel">
@@ -445,7 +412,7 @@ for(int i=0;i<userDatasetList.size();i++){
 <div id="map_canvas" style="background-color: rgb(229, 227, 223); overflow: hidden; -webkit-transform: translateZ(0);">
     </div>
     
-<!-- WELCOME MODAL CONTAINER -->
+<!-- WELCOME MESSAGE MODAL CONTAINER -->
 <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
@@ -462,9 +429,9 @@ for(int i=0;i<userDatasetList.size();i++){
 </div>
 </div>
 
-<!-- END OF WELCOME MODAL CONTAINER -->
+<!-- END OF WELCOME MESSAGE MODAL CONTAINER -->
 
-<!-- SEARCH MODAL CONTAINER -->
+<!-- FILTER DATA (CUSTOM SEARCH) MODAL CONTAINER -->
 <div class="modal fade" id="SearchModal" tabindex="-1" role="dialog" aria-labelledby="SearchModalLabel" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
@@ -702,9 +669,9 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
 </div>
 </div>
 </div>
-<!-- END OF SEARCH MODAL CONTAINER -->
+<!-- END OF FILTER DATA (CUSTOM SEARCH) MODAL CONTAINER -->
 
-<!-- UPLOAD MODAL CONTAINER -->
+<!-- W1 - UPLOAD NEW FILE WIDGET MODAL CONTENT -->
 <div class="modal fade" id="UploadModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -745,9 +712,9 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
     </div>
   </div>
 </div>
-<!-- END OF UPLOAD MODAL CONTAINER -->
+<!-- W1 - END OF UPLOAD NEW FILE WIDGET MODAL CONTENT -->
 
-<!-- COMPARISON MODAL CONTAINER -->
+<!-- W7 - COMPARISON WIDGET MODAL CONTENT -->
 <div class="modal fade" id="ComparisonModal" tabindex="-1" role="dialog" aria-labelledby="ComparisonModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -774,8 +741,13 @@ ArrayList<String> locationDatasets = locationDAO.retrieveAllDatasets(locations);
     </div>
   </div>
 </div>
-<!-- END OF COMPARISON MODAL CONTAINER -->
+<!-- W7 - END OF COMPARISON WIDGET MODAL CONTENT -->
+
+
+<!-- JAVASCRIPT CONTENT -->
 <script>
+
+/* WIDGET ACTION FUNCTIONALITY */
 function closeWidget(widgetID){
 	
 	if(widgetID == 'widget1'){
@@ -842,10 +814,7 @@ function closeWidget(widgetID){
 		options = { to: { width: 200, height: 60 } };
 	}
 	// run the effect
-	console.log("meaow");
-	$( "#"+widgetID ).hide( 'scale', options, 500 );
-	console.log("meaow2");
-	
+	$( "#"+widgetID ).hide( 'scale', options, 500 );	
 }
 
 
@@ -892,10 +861,10 @@ function openWidget(widgetID){
 	    $( "#"+widgetID ).show( 'clip', options, 500 );
 	    return false;
 	}
-	
 }
-</script>
-<script>
+/* END OF WIDGET ACTION FUNCTIONALITY */
+
+/* USER TOOLTIPS */
 $("#uploadTooltip").tooltip();
 $("#poiTooltip").tooltip({container: 'body'});
 $("#filterTooltip").tooltip({container: 'body'});
@@ -988,61 +957,7 @@ var currentMarker;
 
 	
 	});
-	
 
-    /**
-     * Sector type mapped to a style rule.
-     * @type {Object}
-     * @const
-     */
-     
-     var LAYER_STYLES = {
-      'Flood': {
-        'min': 0,
-        'max': 100,
-        'colors': [
-           '#d0e0e3',
-           '#a2c4c9',
-           '#76a5af',
-           '#45818e',
-           '#134f5c'
-        ]
-      },
-      'Fire': {
-        'min': 0,
-        'max': 100,
-        'colors': [
-    '#f4cccc',
-    '#ea9999',
-    '#e06666',
-    '#cc0000',
-    '#990000'
-         
-        ]
-      },
-      'Earthquake': {
-        'min': 0,
-        'max': 100,
-        'colors': [
-          '#d9d2e9',
-          '#b4a7d6',
-          '#8e7cc3',
-          '#674ea7',
-          '#351c75'
-        ]
-      },
-      'Total': {
-          'min': 0,
-          'max': 100,
-          'colors': [
-            '#C4FEA8',
-            '#89FF89',
-            '#1FFE1E',
-            '#15BB00',
-            '#157100'
-         ]
-      }
-    }
      
 	var map, places, iw;
 	  var poiMarkers = [];
@@ -1113,17 +1028,12 @@ var currentMarker;
 	    
 
 	    google.maps.event.addListener(map, 'tilesloaded', tilesLoaded);
-	   
-	    // Create the search box and link it to the UI element.
-	    var input = /** @type {HTMLInputElement} */(
-	        document.getElementById('pac-input'));
+
+	    var input = (document.getElementById('pac-input'));
 	    map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
 
-	    var searchBox = new google.maps.places.SearchBox(
-	      /** @type {HTMLInputElement} */(input));
-	 // [START region_getplaces]
-	    // Listen for the event fired when the user selects an item from the
-	    // pick list. Retrieve the matching places for that item.
+	    var searchBox = new google.maps.places.SearchBox((input));
+
 	    google.maps.event.addListener(searchBox, 'places_changed', function() {
 	      var places = searchBox.getPlaces();
 
@@ -1158,18 +1068,7 @@ var currentMarker;
 
 	      map.fitBounds(bounds);
 	    });
-	    // [END region_getplaces]
-
-	    // Bias the SearchBox results towards places that are within the bounds of the
-	    // current map's viewport.
-	    /*
-	    google.maps.event.addListener(map, 'bounds_changed', function() {
-	      var bounds = map.getBounds();
-	      searchBox.setBounds(bounds);
-	    });*/
-	   
-	    
-	    
+ 
 	    document.getElementById('keyword').onkeyup = function(e) {
 	      if (!e) var e = window.event;
 	      if (e.keyCode != 13) return;
@@ -1277,26 +1176,6 @@ var currentMarker;
 	                	   
 	                	   
 	                	   results2.appendChild(tr);  
-	                	   
-	                	   /*
-	                	   if(i%2==0){
-	                             
-	                		   document.getElementById('results2').innerHTML += 
-	                               '<tr style="background-color: rgb(255, 255, 255);">'+
-	                               '<td>&nbsp;&nbsp;<input type="checkbox" onchange="updateVisibility('+i+')" id="markerCheckBox'+i+'" checked></td>'+
-	                               '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
-	                               '<td>'+ locations[i][2] + '</td>'
-	                               '</tr>';
-	                               
-	                           }
-	                           else{
-	                              document.getElementById('results2').innerHTML += 
-	                           	   '<tr style="background-color: rgb(240, 240, 240);">'+
-	                           	   '<td>&nbsp;&nbsp;<input type="checkbox" onchange="updateVisibility('+i+')" id="markerCheckBox'+i+'" checked></td>'+
-	                                  '<td><img src="'+ icons[number - 1] + '" class="placeIcon" classname="placeIcon"></td>'+
-	                                  '<td>'+ locations[i][2] + '</td>'
-	                                  '</tr>'; 
-	                          }*/
 	                 
 	                     //Hover Function for info window
 	                     google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
@@ -1354,19 +1233,10 @@ var currentMarker;
 			                         document.getElementById('type').value="";
 			                 	     clearResults();
 			                 	    clearPOImarkers();
-											                	    
-			                         /*typeSelect = document.getElementById('type');
-				                 	    typeSelect.onchange = function() {
-				                 		  //map.setCenter(marker.position);
-				                 	      search(marker.position,'true');
-				                 	      document.getElementByID("markerPosition").value = marker.position;
-				                 	      
-				                 	    };*/
 				                 	    
 				                 	 var  updatePoiRadBtn = document.getElementById('updatePoiRadBtn');
 				                 	   
 				                 	    updatePoiRadBtn.onclick = function() {
-				                 		  //map.setCenter(marker.position);
 				                 	      search(marker.position,'true',newPoiRad);
 				                 	      markerPos = marker.position;
 				                 	    };
@@ -1481,8 +1351,6 @@ var currentMarker;
 	                  }
 	  }
 
-
-	 
 	  //Hazard Map Functionalities
 	  var heatmapData = [];
 	  var gradient = [
@@ -1521,7 +1389,6 @@ var currentMarker;
 	      fireLayer.setMap(map);
         
         window.eqfeed_callback = function(results) {
-        	//var heatmapData = [];
 	        for (var i = 0; i < results.features.length; i++) {
 	          var fire = results.features[i];
 	          var geometry = fire.geometry;
@@ -1529,12 +1396,6 @@ var currentMarker;
 	          var latLng = new google.maps.LatLng(coords[1], coords[0]);
 	          heatmapData.push(latLng);
 	        }
-/* 	        fireLayer = new google.maps.visualization.HeatmapLayer({
-	          data: heatmapData,
-	          dissipating: true,
-	          radius: 40,
-	          map: map
-	        }); */
         }
 		  }
 	  }
@@ -1663,9 +1524,6 @@ var currentMarker;
 			        addResult(results[i], i,distance);	          
 		        }
 			    map.fitBounds(bounds);
-			    /*if(pagination.hasNextPage){
-			    	  pagination.nextPage();
-			    	}*/
 
 		      }
 		      
@@ -1786,122 +1644,8 @@ var currentMarker;
 	    return content;
 	  }
 	  google.maps.event.addDomListener(window, 'load', initialize);
-	  
-	  function updateLayerQuery(layer, sector, county) {
-	        var where = "'Risk Factor' = '" + sector + "'";
-	        if (county) {
-	          where += " AND 'name' = '" + county + "'";
-	        }
-	        layer.setOptions({
-	          query: {
-	            select: 'geometry',
-	            from: '1n6YmqLeeb7eXX0TqV2riidchOQ7nV-S2WIB8xfg',
-	            where: where
-	          }
-	        });
-	      }
-
-	      function createLegend(map, sector) {
-	        legendContent(legendWrapper, sector);
-	      }
-
-	      function legendContent(legendWrapper, sector) {
-	        var legend = document.createElement('div');
-	        legend.id = 'legend';
-
-	        var title = document.createElement('p');
-	        title.innerHTML = sector + ' Risk Probability';
-	        legend.appendChild(title);
-
-	        var layerStyle = LAYER_STYLES[sector];
-	        var colors = layerStyle.colors;
-	        var minNum = layerStyle.min;
-	        var maxNum = layerStyle.max;
-	        var step = (maxNum - minNum) / colors.length;
-	        for (var i = 0; i < colors.length; i++) {
-	          var legendItem = document.createElement('div');
-
-	          var color = document.createElement('div');
-	          color.setAttribute('class', 'color');
-	          color.style.backgroundColor = colors[i];
-	          legendItem.appendChild(color);
-
-	          var newMin = minNum + step * i;
-	          var newMax = newMin + step;
-	          var minMax = document.createElement('span');
-	          minMax.innerHTML = newMin + ' - ' + newMax;
-	          legendItem.appendChild(minMax);
-
-	          legend.appendChild(legendItem);
-	        }
-
-	        legendWrapper.appendChild(legend);
-	      }
-
-	      function updateLegend(sector) {
-	        var legendWrapper = document.getElementById('legendWrapper');
-	        var legend = document.getElementById('legend');
-	        legendWrapper.removeChild(legend);
-	        legendContent(legendWrapper, sector);
-	      }
-
-	      function styleLayerBySector(layer, sector,year) {
-	        var layerStyle = LAYER_STYLES[sector];
-	        var colors = layerStyle.colors;
-	        var minNum = layerStyle.min;
-	        var maxNum = layerStyle.max;
-	        var step = (maxNum - minNum) / colors.length;
-
-	        var styles = new Array();
-	        for (var i = 0; i < colors.length; i++) {
-	          var newMin = minNum + step * i;
-	          styles.push({
-	            where: generateWhere(newMin, sector,year),
-	            polygonOptions: {
-	              fillColor: colors[i],
-	              fillOpacity: 0.8
-	            }
-	          });
-	        }
-	        layer.set('styles', styles);
-	      }
-
-	      function generateWhere(minNum, sector,year) {
-	        var whereClause = new Array();
-	        whereClause.push("'Risk Factor' = '");
-	        whereClause.push(sector);
-	        whereClause.push("' AND '"+year+"' >= ");
-	        whereClause.push(minNum);
-	        return whereClause.join('');
-	      }
-
-	      function styleMap(map) {
-	        var style = [{
-	          featureType: 'all',
-	          stylers: [{
-	            saturation: -99
-	          }]
-	        }, {
-	          featureType: 'poi',
-	          stylers: [{
-	            visibility: 'off'
-	          }]
-	        }, {
-	          featureType: 'road',
-	          stylers: [{
-	            visibility: 'off'
-	          }]
-	        }];
-
-	        var styledMapType = new google.maps.StyledMapType(style, {
-	          map: map,
-	          name: 'Styled Map'
-	        });
-	        //map.mapTypes.set('map-style', styledMapType);
-	        //map.setMapTypeId('map-style');
-	      }
 	      
-	      //Historical Analysis Functionality
+	      /* W6 - HISTORICAL ANALYSIS WIDGET JAVASCRIPTS */
 	      google.load('visualization', '1', {packages: ['motionchart']});
 	      google.load('visualization', '1', { packages: ['table'] });
 	      google.load("visualization", "1", {packages:["corechart"]});
@@ -1990,7 +1734,8 @@ var currentMarker;
 	        }
 	      
 	      google.setOnLoadCallback(drawVisualization);
-	      
+	       /* W6 - END OF HISTORICAL ANALYSIS WIDGET JAVASCRIPTS */
+
 	//SLIDER SCRIPT      
 	$("#slideBuildingHeight").slider({});
 	$("#slideBuildingHeight").on('slide', function(slideEvt) {
@@ -2374,7 +2119,6 @@ var currentMarker;
                }
                riskIndex = riskIndex/table.getNumberOfRows();
                riskIndex = (1 - riskIndex/500)*100;
-               console.log(riskIndex);
                if (riskIndex > 0) {
             	   document.getElementById("averageFlood").innerHTML = "Flood: " + riskIndex.toFixed(1) + "% ";
                }
@@ -2399,39 +2143,12 @@ var currentMarker;
                  }
                  riskIndex = riskIndex/table1.getNumberOfRows();
                  riskIndex = (1 - riskIndex/20000)*100;
-                 console.log(riskIndex);
                  if (riskIndex > 0) {
                 	 document.getElementById("averageFire").innerHTML = "Fire: " + riskIndex.toFixed(1) + "% ";
                  }
                  else {
                 	 document.getElementById("averageFire").innerHTML = "Fire: " + 0 + "% ";
                  }
-                 /*
-                 var query2, queryText2, gvizQuery2;
-                 query1 = "SELECT 'gridcode' " +
-                 "FROM [HUNG PUT THE LINK TO EARTHQUAKE HERE] "+
-                 "WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + myLatlng2.lat() + ", " + myLatlng2.lng() + ")," + radius + "))";
-                 queryText2 = encodeURIComponent(query2);
-                 gvizQuery2 = new google.visualization.Query(
-                     'http://www.google.com/fusiontables/gvizdata?tq=' + queryText1);
-                 gvizQuery2.send(function(response) {	
-                   var table2 = response.getDataTable();
-                   var riskIndex = 0;
-                   for(var i=0;i<table2.getNumberOfRows();i++){
-                	   riskIndex += table2.getValue(i,0);
-                   }
-                   riskIndex = riskIndex/table2.getNumberOfRows();
-                   riskIndex = (1 - riskIndex/20000)*100;
-                   console.log(riskIndex);
-                   if (riskIndex > 0) {
-                  	 document.getElementById("averageEarthquake").innerHTML = "Earthquake: " + riskIndex.toFixed(1) + "% ";
-                   }
-                   else {
-                  	 document.getElementById("averageEarthquake").innerHTML = "Earthquake: " + 0 + "% ";
-                   }
-               });
-                 */
-                 //DELETE THIS AFTER YOU FINISH
                  document.getElementById("averageEarthquake").innerHTML = "Earthquake: " + 0 + "% ";
                });
              

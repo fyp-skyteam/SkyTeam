@@ -89,7 +89,6 @@ public class UploadFileServlet extends HttpServlet{
             HashMap<String,ArrayList<String>> locationErrors = uploadManager.getLocationErrors();  
             
             if(!locationErrors.isEmpty() || !fileErrors.isEmpty()){      
-                //out.println("test error");
                 String errorMsg = "<strong>You have successuflly uploaded " + allLocations.size() + " building locations on the map</strong></br>";
                 if(!fileErrors.isEmpty()){
                 	errorMsg += "<strong>Warning! The following files have not been uploaded. Please upload either a csv file or a zip file containing only csv files:</strong></br>";

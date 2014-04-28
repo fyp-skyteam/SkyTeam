@@ -7,7 +7,6 @@ public class LocationMetadata implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id private Long id;
-    //private long id;
 	private String columnName; 
 	private boolean required;
     private String value;

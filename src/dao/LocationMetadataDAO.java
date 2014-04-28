@@ -8,7 +8,6 @@ import java.util.*;
 
 public class LocationMetadataDAO implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
-    //private static final String TBLNAME = "location";
      
     public LocationMetadata retrieve(Long id) {
 		try{
@@ -36,10 +35,6 @@ public class LocationMetadataDAO implements java.io.Serializable{
 	    Iterable<Key<LocationMetadata>> allKeys = ofy.query(LocationMetadata.class).fetchKeys();
 	    ofy.delete(allKeys); 
 	}
-	
-	/*public LocationMetadata retrieveByColumnName(String columnName){
-    	return (LocationMetadata)OfyService.getOfy().query(LocationMetadata.class).filter("columnName =",columnName).get();
-    }*/
 
 	public List<LocationMetadata> retrieveByColumnName(String columnName){
 		List<LocationMetadata> output = new ArrayList<LocationMetadata>();
