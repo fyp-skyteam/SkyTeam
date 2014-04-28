@@ -112,4 +112,12 @@ $('input[type="checkbox"].style1').checkbox({
       .highestValue {
         background:#F0E890;
       }
+      
+      #closeBottom {
+        width:20px;
+        right:0; 
+        background: rgba(32,153,223,0.91);
+        border: 0;
+        color: white;
+      }
 </style>

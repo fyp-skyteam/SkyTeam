@@ -54,7 +54,7 @@ for(int i=0;i<userDatasetList.size();i++){
 <!-- WIDGET BAR CONTAINER -->  
 <nav class="cbp-spmenu cbp-spmenu-horizontal cbp-spmenu-bottom" id="cbp-spmenu-s4" style="margin: auto;">
 	
-	<!-- E: INSERT WIDGET ID AT ONLCIK. if you don't want to display show all for some user, just comment that line out-->
+	<!-- E: INSERT WIDGET ID AT ONCLICK. if you don't want to display show all for some user, just comment that line out-->
 	<!-- Widget buttons and their ID:
 		ID			Widget
 		-------------------------
@@ -69,20 +69,19 @@ for(int i=0;i<userDatasetList.size();i++){
 		w8		Simulation
 		w9		Show All
 	 -->
-
-	<a href="#" id="w0" style="text-decoration:none;" onclick="location.reload();location.href='bootstrap-menu.jsp'">Admin Tools</a>
-	<a href="#" id="w1" style="text-decoration:none;" onclick="openWidget('widget1')">Upload New File</a>
-	<a href="#" id="w2" style="text-decoration:none;" onclick="openWidget('widget2')">Points of Interest</a>
-	<a href="#" id="w3" style="text-decoration:none;" onclick="openWidget('widget3')">Filter Data</a>
-	<a href="#" id="w4" style="text-decoration:none;" onclick="openWidget('widget4')">Hazard Map</a>
-	<a href="#" id="w5" style="text-decoration:none;" onclick="openWidget('widget5')">Risk Calculation</a>
-	<a href="#" id="w6" style="text-decoration:none;" onclick="openWidget('widget6')">Historical Analysis</a>
-  	<a href="#" id="w7" style="text-decoration:none;" onclick="openWidget('widget7')">Comparison</a>
-  	<a href="#" id="w8" style="text-decoration:none;" onclick="openWidget('widget8')">Simulation</a>
-	<a href="#" id="w9" style="text-decoration:none;" onclick="openWidget('widget9')"><b>Show All</b></a>
+  <a href="#" class="w9" style="text-decoration:none;" onclick="openWidget('widget9')"><b>Show All</b></a>
+	<a href="#" class="w0" style="text-decoration:none;" onclick="location.reload();location.href='bootstrap-menu.jsp'">Admin Tools</a>
+	<a href="#" class="w1" style="text-decoration:none;" onclick="openWidget('widget1')">Upload New File</a>
+	<a href="#" class="w2" style="text-decoration:none;" onclick="openWidget('widget2')">Points of Interest</a>
+	<a href="#" class="w3" style="text-decoration:none;" onclick="openWidget('widget3')">Filter Data</a>
+	<a href="#" class="w4" style="text-decoration:none;" onclick="openWidget('widget4')">Hazard Map</a>
+	<a href="#" class="w5" style="text-decoration:none;" onclick="openWidget('widget5')">Risk Calculation</a>
+	<a href="#" class="w6" style="text-decoration:none;" onclick="openWidget('widget6')">Historical Analysis</a>
+  <a href="#" class="w7" style="text-decoration:none;" onclick="openWidget('widget7')">Comparison</a>
+  <a href="#" class="w8" style="text-decoration:none;" onclick="openWidget('widget8')">Simulation</a>
 	<section>
 	<!-- Class "cbp-spmenu-open" gets applied to menu -->
-	<button id="closeBottom" style="width:20px;right:0; background: rgba(32,153,223,0.91);">x</button>
+	<button id="closeBottom">x</button>
 	</section>
 </nav>
 </div>
@@ -92,8 +91,6 @@ for(int i=0;i<userDatasetList.size();i++){
   <a onclick="closeWidget('[WIDGETID]')" style="color: #00b3ff; text-decoration:none;" href="#"  class="closeBtn">x</a>
 </div>
 -->
-
-
 
 <!-- WIDGET MODAL CONTAINER -->
 <div class="modal fade" id="WidgetModal" tabindex="-1" role="dialog" aria-labelledby="UploadModalLabel" aria-hidden="true">
@@ -116,27 +113,30 @@ for(int i=0;i<userDatasetList.size();i++){
       		}
       	</style>
       	<div class="row">
-      		<div class="col-md-4">
+      	<div class="col-md-4 w0">
+            <button href="#" onclick="openWidget('widget0')"  style="text-decoration:none;" class="widget-btn">Administration Tools</button>
+          </div>
+      		<div class="col-md-4 w1">
       			<button href="#" onclick="openWidget('widget1')"  style="text-decoration:none;" class="widget-btn">Upload New File</button>
       		</div>
-      		<div class="col-md-4">
+      		<div class="col-md-4 w2">
       			<button href="#" onclick="openWidget('widget2')"  style="text-decoration:none;" class="widget-btn">Points of Interest</button>
       		</div>
-      		<div class="col-md-4">
+      		<div class="col-md-4 w3">
       			<button href="#" onclick="openWidget('widget3')"style="text-decoration:none;" class="widget-btn">Filter Data</button>
       		</div>
-      		<div class="col-md-4">
+      		<div class="col-md-4 w4">
 				<button href="#" onclick="openWidget('widget4')" style="text-decoration:none;" class="widget-btn">Hazard Map</button>      		</div>
-      		<div class="col-md-4">
+      		<div class="col-md-4 w5">
 				<button href="#" onclick="openWidget('widget5')" style="text-decoration:none;" class="widget-btn">Risk Calculation</button>
       		</div>
-      		<div class="col-md-4">
+      		<div class="col-md-4 w7">
 				<button href="#" onclick="openWidget('widget7')" style="text-decoration:none;" class="widget-btn">Comparison</button>
       		</div>
-      		<div class="col-md-4">
+      		<div class="col-md-4 w8">
  				<button href="#" onclick="openWidget('widget8')" style="text-decoration:none;" class="widget-btn">Simulation</button>
       		</div>
-      		<div class="col-md-4">
+      		<div class="col-md-4 w6">
       			<button href="#" onclick="openWidget('widget6')" style="text-decoration:none;" class="widget-btn">Historical Analysis</button>
       		</div>
       		
@@ -251,7 +251,6 @@ for(int i=0;i<userDatasetList.size();i++){
     <table id="resultsTable" style="background-color:none;">
     <tbody id="results">
     <div id="noResultMsg"></div>
-
     </tbody>
     </table>
   </div>
@@ -934,9 +933,46 @@ var currentMarker;
 	    $('.selectpicker').selectpicker();
 	    $( "#draggable" ).draggable();
 	    $( "#simulationSlider" ).hide();
-	    $( "#w6" ).hide();
-	    $( "#w7" ).hide();
-	    $( "#w8" ).hide();
+	    $(".w9").show();
+	    $( ".w0" ).hide();
+      $( ".w1" ).hide();
+      $( ".w2" ).hide();
+      $( ".w3" ).hide();
+      $( ".w4" ).hide();
+      $( ".w5" ).hide();
+	    $( ".w6" ).hide();
+	    $( ".w7" ).hide();
+	    $( ".w8" ).hide();
+	    
+	    <%
+	    for (int a = 0; a < widgetAccess.size(); a++) {
+	      String widget = widgetAccess.get(a);
+	      if (widget.equals("Administration Tools")){
+	    	  %>$(".w0").show();<%
+	      }
+	      else if (widget.equals("Upload New File")) {
+	    	  %>$(".w1").show();<%
+	      }
+	      else if (widget.equals("Filter Data")) {
+	    	  %>$(".w2").show();<%
+	      }
+	      else if (widget.equals("Hazard Map")) {
+	    	  %>$(".w3").show();<%
+	      }
+	      else if (widget.equals("Risk Calculation")) {
+	    	  %>$(".w4").show();<%
+	      }
+	      else if (widget.equals("Comparison")) {
+	    	  %>$(".w5").show();<%
+	      }
+	      else if (widget.equals("Simulation")) {
+	    	  %>$(".w6").show();<%
+	      }
+	      else if (widget.equals("Historical Analysis")) {
+	    	  %>$(".w7").show();<%
+	      }
+	    }
+	    %>
 	  });
 	
 	$(function() {
